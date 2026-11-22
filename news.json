@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T18:57:39Z",
+ "updated": "2026-11-22T19:02:20Z",
  "items": [
   {
    "section": "scotus",
@@ -636,14 +636,14 @@
  ],
  "status": {
   "sec-press": "ok (25)",
-  "sec-lit": "error: HTTPError (kept 0)",
-  "sec-admin": "error: HTTPError (kept 0)",
-  "sec-halts": "error: HTTPError (kept 0)",
+  "sec-lit": "error: HTTP 403 (kept 0)",
+  "sec-admin": "error: HTTP 403 (kept 0)",
+  "sec-halts": "error: HTTP 403 (kept 0)",
   "sec-speech": "ok (25)",
   "fr-sec": "ok (12)",
   "fr-ftc": "ok (12)",
   "fr-privacy": "ok (12)",
-  "ftc-press": "error: HTTPError (kept 0)",
+  "ftc-press": "error: HTTP 403 (kept 0)",
   "cg-president": "ok (6)",
   "cg-viewed": "ok (1)",
   "scotus-ops": "error: ParseError (kept 0)",
