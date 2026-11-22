@@ -190,7 +190,7 @@ i { font-style: normal; display: block; }
 .paperwrap.on .paper { clip-path: inset(0 0 0 0); }
 
 .mast { text-align: center; }
-.mast-top { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(40, 28, 14, .5);
+.mast-top { display: flex; justify-content: center; min-height: 1.2em; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(40, 28, 14, .5);
   font: 500 11px/1.2 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #5a4a30; }
 .mast-name { margin: .1em 0 .04em; font: normal 400 clamp(42px, 7.4vw, 100px)/1.04 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #17110a; }
 .mast-name .kw { margin-right: -.1em; }
@@ -236,8 +236,6 @@ i { font-style: normal; display: block; }
   .paper { font-size: 16px; max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px); }
   .p-cols { column-count: 1; column-rule: 0; }
   .mast-top { letter-spacing: .1em; font-size: 10px; }
-  .mast-top span:first-child { display: none; }
-  .mast-top { justify-content: center; }
   .st.lead h3 { font-size: 27px; }
   .p-empty ul { columns: 1; }
 }
@@ -1121,7 +1119,7 @@ i { font-style: normal; display: block; }
   ];
   var SECLABEL = {};
   SECTIONS.forEach(function (x) { SECLABEL[x.id] = x.label; });
-  var NEWS_URLS = ['https://raw.githubusercontent.com/jjwillis111/The-Willis-Writ/main/news.json', 'news.json'];
+  var NEWS_URLS = ['news.json', 'https://raw.githubusercontent.com/jjwillis111/The-Willis-Writ/main/news.json'];
   var SOURCE_LINKS = [
     ['SEC press releases', 'https://www.sec.gov/newsroom/press-releases'],
     ['FTC press releases', 'https://www.ftc.gov/news-events/news/press-releases'],
@@ -1141,19 +1139,30 @@ i { font-style: normal; display: block; }
     return list.slice().sort(function (a, b) { return (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0); });
   }
 
+  function fetchJson(u) {
+    var p = fetch(u, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) { throw new Error('bad status'); }
+      return r.json();
+    }).then(function (d) {
+      if (!d || !d.items) { throw new Error('bad data'); }
+      return d;
+    }).catch(function () { return null; });
+    var t = new Promise(function (res) { setTimeout(function () { res(null); }, 7000); });
+    return Promise.race([p, t]);
+  }
+
+  // Load the site's own copy and the GitHub copy, then keep the newest one.
+  // The GitHub copy can be up to five minutes stale, so it never wins on its own.
   function loadNews() {
     if (S.newsP) { return S.newsP; }
-    function tryAt(i) {
-      if (i >= NEWS_URLS.length) { return Promise.resolve(null); }
-      return fetch(NEWS_URLS[i], { cache: 'no-cache' }).then(function (r) {
-        if (!r.ok) { throw new Error('bad status'); }
-        return r.json();
-      }).then(function (d) {
-        if (!d || !d.items) { throw new Error('bad data'); }
-        return d;
-      }).catch(function () { return tryAt(i + 1); });
-    }
-    S.newsP = tryAt(0).then(function (d) { if (!d) { S.newsP = null; } return d; });
+    S.newsP = Promise.all(NEWS_URLS.map(fetchJson)).then(function (all) {
+      var best = null;
+      all.forEach(function (d) {
+        if (d && (!best || (Date.parse(d.updated) || 0) > (Date.parse(best.updated) || 0))) { best = d; }
+      });
+      if (!best) { S.newsP = null; }
+      return best;
+    });
     return S.newsP;
   }
 
@@ -1200,7 +1209,7 @@ i { font-style: normal; display: block; }
     paper.setAttribute('aria-label', 'The Legal Wire');
     paper.innerHTML =
       '<header class="mast">' +
-        '<div class="mast-top"><span>Law, Regulation and the Courts</span><span class="mast-upd" id="p-upd"></span></div>' +
+        '<div class="mast-top"><span class="mast-upd" id="p-upd"></span></div>' +
         '<h2 class="mast-name" aria-label="The Legal Wire">The Legal <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">ire</span></h2>' +
         '<div class="mast-date"><span>' + esc(ds) + '</span><span>From The Willis Writ</span></div>' +
       '</header>' +

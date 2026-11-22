@@ -12,6 +12,7 @@ import json
 import re
 import sys
 import html
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -167,7 +168,8 @@ def main():
         except Exception as exc:
             kept = [i for i in old if i.get('feed') == feed['id']]
             items += kept
-            status[feed['id']] = 'error: %s (kept %d)' % (type(exc).__name__, len(kept))
+            reason = 'HTTP %d' % exc.code if isinstance(exc, urllib.error.HTTPError) else type(exc).__name__
+            status[feed['id']] = 'error: %s (kept %d)' % (reason, len(kept))
         print(feed['id'], status[feed['id']])
 
     seen, unique = set(), []
