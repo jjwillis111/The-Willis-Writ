@@ -55,10 +55,10 @@ FEEDS = [
     # stands in for the FTC press release feed, which refuses automated requests.
     {'id': 'fr-ftc-notices', 'section': 'privacy', 'source': 'Federal Register (FTC)', 'kind': 'fr',
      'params': {'conditions[agencies][]': 'federal-trade-commission',
-                'conditions[term]': 'privacy "data security" "personal information" COPPA',
+                'conditions[term]': 'privacy',
                 'conditions[type][]': ['NOTICE']}, 'limit': 8},
     {'id': 'fr-privacy', 'section': 'privacy', 'source': 'Federal Register', 'kind': 'fr',
-     'params': {'conditions[term]': 'privacy "personal information" "data security"',
+     'params': {'conditions[term]': 'privacy "data security"',
                 'conditions[type][]': ['RULE', 'PRORULE']}, 'limit': 8},
     {'id': 'calprivacy', 'section': 'privacy', 'source': 'CalPrivacy', 'kind': 'rss',
      'url': 'https://privacy.ca.gov/category/content-types/news/feed/', 'limit': 8},  # CHECK
@@ -66,7 +66,8 @@ FEEDS = [
      'url': 'https://www.insideprivacy.com/feed/', 'limit': 8},  # CHECK
     {'id': 'dataprotection', 'section': 'privacy', 'source': 'Data Protection Report', 'kind': 'rss',
      'url': 'https://www.dataprotectionreport.com/feed/', 'limit': 8},  # CHECK
-    {'id': 'privacy-news', 'section': 'privacy', 'source': 'News', 'kind': 'rss', 'use_source': True, 'limit': 12,
+    {'id': 'privacy-news', 'section': 'privacy', 'source': 'News', 'kind': 'rss', 'use_source': True, 'limit': 10,
+     'require': r'\b(settle\w*|fines?|fined|lawsuits?|sues?|sued|enforcement|rules?|ruling|laws?|court|attorneys? general|FTC|HHS|OCR|regulators?|class action|penalt\w*|complaint|bills?|legislat\w*)\b',
      'url': 'https://news.google.com/rss/search?q=' + urllib.parse.quote(
          '("privacy law" OR "privacy enforcement" OR HIPAA OR COPPA OR CCPA OR "data privacy" OR "attorney general" privacy) when:7d')
          + '&hl=en-US&gl=US&ceid=US:en'},  # CHECK
@@ -141,6 +142,8 @@ def parse_rss(data, feed):
             suffix = ' - ' + source
             if title.endswith(suffix):
                 title = title[:-len(suffix)].rstrip()
+        if feed.get('require') and not re.search(feed['require'], title, re.I):
+            continue
         if title and link.startswith('http'):
             items.append({'section': feed['section'], 'title': title, 'url': link,
                           'source': source, 'date': date, 'feed': feed['id']})
