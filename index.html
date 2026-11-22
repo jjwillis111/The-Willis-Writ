@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Jackson Willis | Legal portfolio and research tools">
-<title>Jackson Willis | Legal Library</title>
+<meta name="description" content="The Willis Writ | Jackson Willis’s legal portfolio, writing, and research workspace">
+<title>The Willis Writ | Jackson Willis</title>
 <style>
 @font-face{font-family:JSLAncient;src:url('assets/JSLAncientItalic.ttf') format('truetype');font-display:swap}
 :root{--ink:#e9e3d5;--muted:#b9b09e;--gold:#b89a65;--gold2:#8d754a;--panel:#171714;--line:#5b4a30;--wood:#211910;--wood2:#30251a}
@@ -11,7 +11,7 @@
 body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 48% 20%,#53432c44,transparent 60%),linear-gradient(120deg,#0e0e0c,#211b13 55%,#0c0c0b)}
 body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.14;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent 0 4px,#8a6d3e12 5px),repeating-linear-gradient(90deg,transparent 0 8px,#00000012 9px)}
 header{max-width:1200px;margin:auto;padding:30px 28px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #76603c55}
-.brand{font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#e5d7b8}.brand small{display:block;font-size:10px;letter-spacing:.24em;color:var(--muted);margin-top:7px}
+.brand{font-family:JSLAncient,Georgia,serif;font-size:27px;letter-spacing:.02em;text-transform:none;color:#e5d7b8}.brand small{display:block;font-family:Georgia,'Times New Roman',serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:7px}
 nav{display:flex;gap:24px;flex-wrap:wrap}nav a{color:#c9bda7;text-decoration:none;font-size:12px;letter-spacing:.13em;text-transform:uppercase}nav a:hover{color:#f0d59e}
 main{max-width:1200px;margin:0 auto;padding:26px}
 .hero{min-height:380px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;padding:52px 30px 36px}
@@ -46,7 +46,7 @@ footer{padding:30px;text-align:center;color:#948875;font-size:12px;letter-spacin
 @media(max-width:760px){header{display:block;padding:22px}nav{margin-top:18px;gap:13px}nav a{font-size:10px}.hero{grid-template-columns:1fr;padding:30px 8px}.hero-visual{height:260px}.cards{grid-template-columns:1fr}.section{padding:35px 8px}.book{width:26px}.book span{font-size:8px}}
 </style></head>
 <body>
-<header><div class="brand">Jackson Willis<small>Legal Library · Portfolio & Research</small></div><nav><a href="#about">About</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#radar">Radar</a><a href="#case">Case Tool</a><a href="#contact">Contact</a></nav></header>
+<header><div class="brand">The Willis Writ<small>Jackson Willis · Legal Portfolio & Research</small></div><nav><a href="#about">About</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#radar">Radar</a><a href="#case">Case Tool</a><a href="#contact">Contact</a></nav></header>
 <main>
 <section class="hero"><div><div class="eyebrow">Law · Investigations · Emerging Technology</div><h1>Jackson <em>Willis</em></h1><p>A legal portfolio and working research library exploring investigations, securities regulation, privacy, and emerging technology.</p></div>
 <div class="hero-visual" aria-label="Interactive bookshelf"><div class="shelf">
@@ -61,7 +61,7 @@ FTC · Privacy — Sample placeholder: consumer protection development.
 DOJ · Investigations — Sample placeholder: public enforcement policy update.</div><small style="color:#978a74">Sample content only. Live feeds are not yet connected.</small></div></section>
 <section class="section" id="case"><div class="eyebrow">Volume V · Research Tool</div><h2>Case Analysis</h2><p>Paste an opinion or excerpt to create a basic structured outline. This browser-only prototype does not provide legal advice or AI analysis.</p><div class="tool"><textarea id="caseText" rows="8" placeholder="Paste case text here…"></textarea><button id="analyze">Create outline</button><div id="caseResult" class="result"></div></div></section>
 <section class="section" id="contact"><div class="eyebrow">Final Volume</div><h2>Contact</h2><p>For professional inquiries, collaboration, or conversation.</p><div class="cards"><div class="card"><h3>Resume</h3><p>Resume link will be added here.</p></div><div class="card"><h3>LinkedIn</h3><p>LinkedIn profile link will be added here.</p></div><div class="card"><h3>Email</h3><p>Email contact link will be added here.</p></div></div></section>
-</main><footer>Jackson Willis · Legal Library <span id="year"></span> · Research tools are informational and not legal advice.</footer>
+</main><footer>Jackson Willis · The Willis Writ <span id="year"></span> · Research tools are informational and not legal advice.</footer>
 <script>
 document.querySelectorAll('.book').forEach(b=>b.addEventListener('click',()=>{const target=document.getElementById(b.dataset.target);target?.scrollIntoView({behavior:'smooth'});b.style.transform='translateY(-18px)';setTimeout(()=>b.style.transform='',400)}));
 document.getElementById('year').textContent=new Date().getFullYear();
