@@ -182,21 +182,25 @@ i { font-style: normal; display: block; }
 .paper-shadow { position: absolute; left: 1%; right: 1%; top: 3%; bottom: -1%; box-shadow: 0 34px 80px 10px rgba(0, 0, 0, .7); opacity: 0; transition: opacity 700ms ease 200ms; pointer-events: none; }
 .paperwrap.on .paper-shadow { opacity: 1; }
 .paper { position: relative; box-sizing: border-box; font-size: 17px; font-family: 'EB Garamond', Georgia, serif; color: #221b12;
-  max-height: min(calc(100vh - 128px), 900px); max-height: min(calc(100dvh - 128px), 900px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; overflow: hidden;
+  height: min(calc(100vh - 128px), 900px); height: min(calc(100dvh - 128px), 900px);
   padding: clamp(14px, 2.2vw, 28px) clamp(16px, 3vw, 40px) 16px; border-radius: 2px;
   background-color: #e8dec4; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.55 .9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"), linear-gradient(180deg, #ece3cb, #ddd1b2);
-  clip-path: inset(0 50% 0 50%); transition: clip-path 900ms cubic-bezier(.25, .75, .2, 1);
-  scrollbar-width: thin; scrollbar-color: #9c8a63 transparent; }
+  clip-path: inset(0 50% 0 50%); transition: clip-path 900ms cubic-bezier(.25, .75, .2, 1); }
 .paperwrap.on .paper { clip-path: inset(0 0 0 0); }
 
+.p-head { flex: none; }
+.p-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: #9c8a63 transparent; padding-right: 2px; }
 .mast { text-align: center; padding-top: 2px; }
 .mast-name { margin: .1em 0 .04em; font: normal 400 clamp(42px, 7.4vw, 100px)/1.04 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #17110a; }
 .mast-name .kw { margin-right: -.1em; }
 .mast-date { display: flex; justify-content: space-between; gap: 12px; padding: 7px 2px; border-top: 3px double #2b2116; border-bottom: 1px solid #2b2116;
+  max-height: 40px; overflow: hidden;
   font: normal 400 clamp(13px, 1.3vw, 17px)/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #3a2d1a; }
 
-.p-tabs { position: sticky; top: -1px; z-index: 5; display: flex; justify-content: center; flex-wrap: wrap; gap: 4px clamp(12px, 2.2vw, 30px); padding: 9px 0 8px;
-  background-color: #e4dac0; border-bottom: 1px solid rgba(40, 28, 14, .55); }
+.p-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px clamp(12px, 2.2vw, 30px); padding: 9px 0 8px;
+  background-color: transparent; border-top: 0 double #2b2116; border-bottom: 1px solid rgba(40, 28, 14, .55); }
 .p-tab { position: relative; border: 0; background: transparent; cursor: pointer; padding: .2em .1em; color: #4a3a20;
   font: normal 400 clamp(15px, 1.5vw, 19px)/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; }
 .p-tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: #6e1f1a; transform: scaleX(0); transition: transform 240ms ease; }
@@ -231,7 +235,7 @@ i { font-style: normal; display: block; }
 @media (max-width: 900px) { .p-cols { column-count: 2; } }
 @media (max-width: 640px) {
   .paperwrap { width: calc(100vw - 20px); top: calc(50% + 24px); }
-  .paper { font-size: 16px; max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px); }
+  .paper { font-size: 16px; height: calc(100vh - 150px); height: calc(100dvh - 150px); }
   .p-cols { column-count: 1; column-rule: 0; }
   .st.lead h3 { font-size: 30px; }
   .p-empty ul { columns: 1; }
@@ -1231,11 +1235,11 @@ i { font-style: normal; display: block; }
     } else {
       list = byDate(items.filter(function (it) { return it.section === tab; }));
     }
-    if (!list.length) { body.innerHTML = emptyHtml(!data); body.scrollTop = 0; return; }
+    if (!list.length) { body.innerHTML = emptyHtml(!data); if (S.scroller) { S.scroller.scrollTop = 0; } return; }
     var rest = list.slice(1);
     body.innerHTML = '<div class="p-lead">' + storyHtml(list[0], true) + '</div>' +
       (rest.length ? '<div class="p-cols">' + rest.map(function (it) { return storyHtml(it, false); }).join('') + '</div>' : '');
-    S.paper.scrollTop = 0;
+    if (S.scroller) { S.scroller.scrollTop = 0; }
   }
 
   function buildPaper() {
@@ -1244,18 +1248,41 @@ i { font-style: normal; display: block; }
     var paper = el('article', 'paper');
     paper.setAttribute('aria-label', 'The Legal Wire');
     paper.innerHTML =
-      '<header class="mast">' +
+      '<div class="p-head"><header class="mast">' +
         '<h2 class="mast-name" aria-label="The Legal Wire">The Legal <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">ire</span></h2>' +
         '<div class="mast-date"><span>' + esc(ds) + '</span><span>From The Willis Writ</span></div>' +
       '</header>' +
-      '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav>' +
-      '<div class="p-body" id="p-body"><p class="p-load">Setting the type</p></div>' +
-      '<footer class="p-foot">Headlines and links from public sources. Each story opens at its source.</footer>';
+      '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav></div>' +
+      '<div class="p-scroll">' +
+        '<div class="p-body" id="p-body"><p class="p-load">Setting the type</p></div>' +
+        '<footer class="p-foot">Headlines and links from public sources. Each story opens at its source.</footer>' +
+      '</div>';
     pw.appendChild(el('div', 'paper-shadow'));
     pw.appendChild(paper);
     mount.innerHTML = '';
     mount.appendChild(pw);
     S.pw = pw; S.paper = paper;
+    // The masthead stays pinned and shrinks smoothly as the page is scrolled
+    var scroller = $('.p-scroll', paper); S.scroller = scroller;
+    var pend = false, nameEl = $('.mast-name', paper), dateEl = $('.mast-date', paper), tabsEl = $('.p-tabs', paper);
+    scroller.addEventListener('scroll', function () {
+      if (pend) { return; }
+      pend = true;
+      requestAnimationFrame(function () {
+        pend = false;
+        var p = Math.max(0, Math.min(1, scroller.scrollTop / 150));
+        var full = Math.max(42, Math.min(100, window.innerWidth * 0.074));
+        nameEl.style.fontSize = (full * (1 - 0.6 * p)).toFixed(1) + 'px';
+        nameEl.style.marginTop = (0.1 * (1 - p)).toFixed(3) + 'em';
+        var q = Math.min(1, p * 2.2);
+        dateEl.style.maxHeight = (40 * (1 - q)).toFixed(1) + 'px';
+        dateEl.style.paddingTop = dateEl.style.paddingBottom = (7 * (1 - q)).toFixed(1) + 'px';
+        dateEl.style.opacity = (1 - q).toFixed(2);
+        dateEl.style.borderBottomWidth = (1 - q).toFixed(2) + 'px';
+        dateEl.style.borderTopWidth = (3 * (1 - q)).toFixed(2) + 'px';
+        tabsEl.style.borderTopWidth = (3 * q).toFixed(2) + 'px';
+      });
+    }, { passive: true });
 
     var tabs = $('.p-tabs', paper), cur = 'all';
     [{ id: 'all', label: 'Front Page' }].concat(SECTIONS).forEach(function (t) {
@@ -1312,7 +1339,7 @@ i { font-style: normal; display: block; }
     mount.innerHTML = '';
     var b = S.btn, nxt = S.next;
     S.open = false; S.busy = false; S.turning = false; S.leaves = []; S.book = null; S.wrap = null; S.dirty = false; S.sp = null;
-    S.pw = null; S.paper = null;
+    S.pw = null; S.paper = null; S.scroller = null;
     if (S.globe) { S.globe.classList.remove('flare', 'hov'); }
     viewport.classList.remove('opening');
     if (nxt && BY[nxt]) {
@@ -1335,18 +1362,25 @@ i { font-style: normal; display: block; }
           var from = shelfRect(v);
           var sp = makeSprite(v, L, true);
           S.sp = sp;
-          S.wrap.style.transition = 'none'; S.wrap.style.opacity = '0';
-          stage.classList.remove('dimmed');
-          world.classList.remove('pushed');
-          viewport.classList.remove('opening');
-          var lifted = { cx: from.cx, cy: from.cy - 14, w: from.w, h: from.h };
-          var mid = { cx: (from.cx + L.cx) / 2, cy: Math.min(from.cy, L.cy) - 30, w: (from.w + L.w) / 2.2, h: (from.h + L.h) / 2.2 };
-          anim(sp, [{ transform: tf(L, dm, 0, 1) }, { transform: tf(mid, dm, -2.5, 1), offset: 0.5 }, { transform: tf(lifted, dm, -1.5, 1.07) }], 1000, 'cubic-bezier(.45,.05,.2,1)');
-          later(1000, function () {
+          // Hand-off mirrors the opening: the flat cover fades in over the real book first,
+          // then the book (with its leather border) fades away underneath, so nothing pops.
+          sp.style.opacity = '0';
+          anim(sp, [{ opacity: 0 }, { opacity: 1 }], 200, 'ease');
+          later(200, function () {
+            S.wrap.style.transition = 'opacity 240ms ease'; S.wrap.style.opacity = '0';
+            stage.classList.remove('dimmed');
+            world.classList.remove('pushed');
+            viewport.classList.remove('opening');
+            var lifted = { cx: from.cx, cy: from.cy - 14, w: from.w, h: from.h };
+            var mid = { cx: (from.cx + L.cx) / 2, cy: Math.min(from.cy, L.cy) - 30, w: (from.w + L.w) / 2.2, h: (from.h + L.h) / 2.2 };
+            anim(sp, [{ transform: tf(L, dm, 0, 1) }, { transform: tf(mid, dm, -2.5, 1), offset: 0.5 }, { transform: tf(lifted, dm, -1.5, 1.07) }], 1000, 'cubic-bezier(.45,.05,.2,1)');
+          });
+          later(1200, function () {
             sp.classList.remove('lit');
+            var lifted = { cx: from.cx, cy: from.cy - 14, w: from.w, h: from.h };
             anim(sp, [{ transform: tf(lifted, dm, -1.5, 1.07) }, { transform: tf(from, dm, 0, 1) }], 260, 'cubic-bezier(.3,.7,.3,1)');
           });
-          later(1290, function () {
+          later(1490, function () {
             v.hs.style.visibility = ''; v.slot.classList.remove('on');
             if (sp.parentNode) sp.parentNode.removeChild(sp);
             finishClose(v);
