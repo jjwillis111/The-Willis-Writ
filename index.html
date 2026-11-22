@@ -1003,6 +1003,7 @@ i { font-style: normal; display: block; }
     };
   }
   var leafCurve = bezier(0.45, 0.05, 0.25, 1);
+  var CROSS = (function () { var lo = 0, hi = 1, m, i; for (i = 0; i < 30; i += 1) { m = (lo + hi) / 2; if (leafCurve(m) < 0.5) { lo = m; } else { hi = m; } } return m; })();
   // The left board is the inside of the cover once it has swung past vertical,
   // so its width is the cover's horizontal reach to the left: max(0, -cos(angle)).
   function trackBoard(bl, opening, ms) {
@@ -1024,7 +1025,11 @@ i { font-style: normal; display: block; }
       if (!S.leaves[j] || S.leaves[j] !== l) return;
       var d = dur * K;
       l.style.transition = 'transform ' + d + 'ms ' + LEAF_EASE + ', opacity ' + (fwd ? '160ms linear ' + Math.round(d * 0.62) + 'ms' : '100ms linear 0ms');
-      l.style.zIndex = 200 + (fwd ? j : N - j);
+      // Turning forward, later leaves land on top of earlier ones. Turning back, a leaf starts
+      // above the pile on the left, then drops beneath the leaves that follow it once it has
+      // swung past vertical, so the next leaf (and finally the cover) always lands on top.
+      l.style.zIndex = fwd ? 200 + j : 200 + j;
+      if (!fwd) { setTimeout(function () { l.style.zIndex = 200 + N - j; }, d * CROSS); }
       l.classList.toggle('flipped', fwd);
       setTimeout(function () { l.style.zIndex = fwd ? j : N - j; }, d + 30);
     }, delay * K);
@@ -1042,8 +1047,9 @@ i { font-style: normal; display: block; }
     S.spread = target;
     S.turning = true;
     var edge = (cur === 0 || target === 0), cdl = edge ? list.indexOf(0) * stagger : 0;
-    [S.stkL, S.stkR].forEach(function (k) {
+    [S.stkL, S.stkR].forEach(function (k, ki) {
       if (!k) { return; }
+      if (ki === 0 && target === 0) { k.style.transition = 'width ' + Math.round((cdl + dur * 0.16) * K) + 'ms ease-in'; return; }
       k.style.transition = edge ? ('width ' + Math.round(dur * 0.4 * K) + 'ms ease ' + Math.round((cdl + dur * (target === 0 ? 0.55 : 0.6)) * K) + 'ms') : '';
     });
     updateUI();
@@ -1264,7 +1270,7 @@ i { font-style: normal; display: block; }
     S.pw = pw; S.paper = paper;
     // The masthead stays pinned and shrinks smoothly as the page is scrolled
     var scroller = $('.p-scroll', paper); S.scroller = scroller;
-    var pend = false, nameEl = $('.mast-name', paper), dateEl = $('.mast-date', paper), tabsEl = $('.p-tabs', paper);
+    var pend = false, nameEl = $('.mast-name', paper), dateEl = $('.mast-date', paper);
     scroller.addEventListener('scroll', function () {
       if (pend) { return; }
       pend = true;
@@ -1274,13 +1280,9 @@ i { font-style: normal; display: block; }
         var full = Math.max(42, Math.min(100, window.innerWidth * 0.074));
         nameEl.style.fontSize = (full * (1 - 0.6 * p)).toFixed(1) + 'px';
         nameEl.style.marginTop = (0.1 * (1 - p)).toFixed(3) + 'em';
-        var q = Math.min(1, p * 2.2);
-        dateEl.style.maxHeight = (40 * (1 - q)).toFixed(1) + 'px';
-        dateEl.style.paddingTop = dateEl.style.paddingBottom = (7 * (1 - q)).toFixed(1) + 'px';
-        dateEl.style.opacity = (1 - q).toFixed(2);
-        dateEl.style.borderBottomWidth = (1 - q).toFixed(2) + 'px';
-        dateEl.style.borderTopWidth = (3 * (1 - q)).toFixed(2) + 'px';
-        tabsEl.style.borderTopWidth = (3 * q).toFixed(2) + 'px';
+        var df = Math.max(13, Math.min(17, window.innerWidth * 0.013));
+        dateEl.style.fontSize = (df * (1 - 0.15 * p)).toFixed(1) + 'px';
+        dateEl.style.paddingTop = dateEl.style.paddingBottom = (7 - 4 * p).toFixed(1) + 'px';
       });
     }, { passive: true });
 
