@@ -150,6 +150,99 @@ i { font-style: normal; display: block; }
 
 
 /* ==========================================================================
+   Globe hotspot and brass caption (opens the Legal Wire)
+   ========================================================================== */
+.hot-globe { position: absolute; z-index: 3; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 50% 50% 50% 50% / 46% 46% 54% 54%; }
+.hot-globe:focus-visible { outline: 2px solid #e4cd92; outline-offset: 3px; }
+.hot-globe::before { content: ""; position: absolute; left: -12%; right: -12%; top: -6%; bottom: 10%; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 320ms ease;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 222, 150, .42), rgba(255, 196, 110, .16) 52%, rgba(255, 190, 100, 0) 72%); mix-blend-mode: screen; }
+.hot-globe::after { content: ""; position: absolute; left: 0; right: 0; top: 5%; bottom: 15%; border-radius: 50%; pointer-events: none; opacity: 0;
+  border: 1px solid rgba(240, 208, 140, .7); animation: globepulse 4.8s ease-out 2.4s infinite; }
+.hot-globe:hover::before, .hot-globe:focus-visible::before, .hot-globe.hov::before, .hot-globe.flare::before { opacity: 1; }
+.hot-globe.flare::before { animation: globeflare 520ms ease-out; }
+.opening .hot-globe::after { animation: none; opacity: 0; }
+@keyframes globepulse { 0% { opacity: 0; transform: scale(.97); } 18% { opacity: .75; } 100% { opacity: 0; transform: scale(1.12); } }
+@keyframes globeflare { 0% { opacity: 0; transform: scale(.9); } 40% { opacity: 1; } 100% { opacity: 1; transform: scale(1.3); } }
+@media (prefers-reduced-motion: reduce) { .hot-globe::after { animation: none; } .hot-globe.flare::before { animation: none; } }
+
+.globe-cap { position: absolute; z-index: 3; transform: translate(-50%, -22%); pointer-events: none; white-space: nowrap;
+  padding: .2em .95em .3em; border: 1px solid rgba(58, 36, 8, .75); border-radius: 2px;
+  font: normal 400 clamp(11px, 1.02vw, 17px)/1.15 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #2a1a06; letter-spacing: .02em;
+  background: linear-gradient(180deg, #ecd69a, #b98f45 55%, #dcc07e);
+  box-shadow: inset 0 1px 0 rgba(255, 240, 196, .65), 0 2px 6px rgba(0, 0, 0, .65); transition: filter 300ms ease; }
+.hot-globe:hover + .globe-cap, .hot-globe:focus-visible + .globe-cap, .hot-globe.hov + .globe-cap { filter: brightness(1.14); }
+.pt .globe-cap { transform: translate(-50%, -85%); font-size: 11px; padding: .15em .7em .25em; }
+
+/* ==========================================================================
+   The Legal Wire broadsheet
+   ========================================================================== */
+.paperwrap { position: absolute; left: 50%; top: calc(50% + 18px); width: min(1060px, calc(100vw - 28px)); pointer-events: auto;
+  transform: translate(-50%, -47%) scale(.965); opacity: 0; transition: transform 900ms cubic-bezier(.2, .8, .2, 1), opacity 420ms ease; }
+.paperwrap.on { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.paper-shadow { position: absolute; left: 1%; right: 1%; top: 3%; bottom: -1%; box-shadow: 0 34px 80px 10px rgba(0, 0, 0, .7); opacity: 0; transition: opacity 700ms ease 200ms; pointer-events: none; }
+.paperwrap.on .paper-shadow { opacity: 1; }
+.paper { position: relative; box-sizing: border-box; font-size: 17px; font-family: 'EB Garamond', Georgia, serif; color: #221b12;
+  max-height: min(calc(100vh - 128px), 900px); max-height: min(calc(100dvh - 128px), 900px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding: clamp(14px, 2.2vw, 28px) clamp(16px, 3vw, 40px) 16px; border-radius: 2px;
+  background-color: #e8dec4; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.55 .9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"), linear-gradient(180deg, #ece3cb, #ddd1b2);
+  clip-path: inset(0 50% 0 50%); transition: clip-path 900ms cubic-bezier(.25, .75, .2, 1);
+  scrollbar-width: thin; scrollbar-color: #9c8a63 transparent; }
+.paperwrap.on .paper { clip-path: inset(0 0 0 0); }
+
+.mast { text-align: center; }
+.mast-top { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(40, 28, 14, .5);
+  font: 500 11px/1.2 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #5a4a30; }
+.mast-name { margin: .1em 0 .04em; font: normal 400 clamp(42px, 7.4vw, 100px)/1.04 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #17110a; }
+.mast-name .kw { margin-right: -.1em; }
+.mast-date { display: flex; justify-content: space-between; gap: 12px; padding: 7px 2px; border-top: 3px double #2b2116; border-bottom: 1px solid #2b2116;
+  font: normal 400 clamp(13px, 1.3vw, 17px)/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #3a2d1a; }
+
+.p-tabs { position: sticky; top: -1px; z-index: 5; display: flex; justify-content: center; flex-wrap: wrap; gap: 4px clamp(12px, 2.2vw, 30px); padding: 9px 0 8px;
+  background-color: #e4dac0; border-bottom: 1px solid rgba(40, 28, 14, .55); }
+.p-tab { position: relative; border: 0; background: transparent; cursor: pointer; padding: .2em .1em; color: #4a3a20;
+  font: normal 400 clamp(15px, 1.5vw, 19px)/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; }
+.p-tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: #6e1f1a; transform: scaleX(0); transition: transform 240ms ease; }
+.p-tab:hover, .p-tab:focus-visible { color: #1b130a; }
+.p-tab.on { color: #5c1713; }
+.p-tab.on::after, .p-tab:hover::after { transform: scaleX(1); }
+.p-tab:focus-visible { outline: 2px solid #6e1f1a; outline-offset: 3px; }
+
+.p-body { padding-top: 16px; }
+.p-load { margin: 30px 0; text-align: center; font-style: italic; color: #6a5a40; }
+.p-lead { padding-bottom: 16px; margin-bottom: 18px; border-bottom: 2px solid #2b2116; text-align: center; }
+.st { break-inside: avoid; }
+.st .sk { margin: 0 0 .3em; font: normal 400 15px/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #6e1f1a; letter-spacing: .02em; }
+.st h3 { margin: 0; font: 700 1.3em/1.14 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; text-indent: 0; color: #1d160d; }
+.st h3 a { color: inherit; text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 260ms ease; }
+.st h3 a:hover, .st h3 a:focus-visible { background-size: 100% 1px; }
+.st h3 a:focus-visible { outline: 2px solid #6e1f1a; outline-offset: 2px; }
+.st .ss { margin: .4em 0 0; font: italic 400 14px/1.3 'EB Garamond', Georgia, serif; color: #5a4a30; }
+.st.lead .sk { font-size: 18px; }
+.st.lead h3 { margin: 0 auto; max-width: 22em; font-size: clamp(28px, 3.7vw, 52px); line-height: 1.05; }
+.st.lead .ss { font-size: 15px; }
+.p-cols { column-count: 3; column-gap: 32px; column-rule: 1px solid rgba(40, 28, 14, .4); }
+.p-cols .st { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px dotted rgba(40, 28, 14, .5); }
+.p-foot { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(40, 28, 14, .5); text-align: center; font: italic 400 13px/1.3 'EB Garamond', Georgia, serif; color: #6a5a40; }
+.p-empty { max-width: 34em; margin: 0 auto; padding: 26px 8px 14px; text-align: center; }
+.p-empty h3 { margin: 0 0 .4em; font: 700 1.9em/1.1 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #1d160d; }
+.p-empty p { margin: 0 0 .8em; color: #4a3a20; }
+.p-empty ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 24px; text-align: left; }
+.p-empty li { margin: 0 0 .5em; }
+.p-empty a { color: #5c1713; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 900px) { .p-cols { column-count: 2; } }
+@media (max-width: 640px) {
+  .paperwrap { width: calc(100vw - 20px); top: calc(50% + 24px); }
+  .paper { font-size: 16px; max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px); }
+  .p-cols { column-count: 1; column-rule: 0; }
+  .mast-top { letter-spacing: .1em; font-size: 10px; }
+  .mast-top span:first-child { display: none; }
+  .mast-top { justify-content: center; }
+  .st.lead h3 { font-size: 27px; }
+  .p-empty ul { columns: 1; }
+}
+
+/* ==========================================================================
    STAGE (the open book, shown over the desk)
    ========================================================================== */
 #stage { position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 20; visibility: hidden; pointer-events: none; }
@@ -577,14 +670,14 @@ i { font-style: normal; display: block; }
       writing:    [866, 313, 169, 209],
       legal:      [1055, 313, 174, 209],
       research:   [1250, 313, 172, 209]
-    } },
+    }, globe: [1234, 105, 156, 184] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
       experience: [265, 539, 144, 241],
       writing:    [426, 539, 146, 241],
       legal:      [586, 539, 144, 241],
       research:   [746, 539, 146, 241]
-    } }
+    }, globe: [718, 320, 162, 190] }
   };
   var IW = 1672, IH = 941;
   // Colors of the board edges around the pages, matched to each cover.
@@ -610,6 +703,9 @@ i { font-style: normal; display: block; }
               sub: s.getAttribute('data-sub') || '', pages: $$('.pg', s) };
     VOLS.push(v); BY[v.id] = v;
   });
+
+  var NEWS = { id: 'news', label: 'Legal Wire', sub: 'Law, regulation and the courts', pages: [] };
+  VOLS.splice(Math.max(0, VOLS.length - 1), 0, NEWS); BY.news = NEWS;
 
   var viewport = $('#viewport'), room = $('#room'), world = $('#world'), hero = $('#hero'), top = $('#top'), nav = $('#nav'), fly = $('#fly');
   var stage = $('#stage'), mount = $('#mount');
@@ -650,6 +746,15 @@ i { font-style: normal; display: block; }
       world.appendChild(slot); world.appendChild(hs); world.appendChild(b);
       v.slot = slot; v.hs = hs; v.hot = b;
     });
+
+    var gb = el('button', 'hot-globe', '<span class="vh">Open the Legal Wire newspaper</span>');
+    gb.type = 'button'; gb.setAttribute('data-id', 'news');
+    var gc = el('div', 'globe-cap', '<span>Legal Wire</span>');
+    gb.addEventListener('click', function () { openVol('news', gb); });
+    NEWS.nav.addEventListener('mouseenter', function () { if (!S.open) gb.classList.add('hov'); });
+    NEWS.nav.addEventListener('mouseleave', function () { gb.classList.remove('hov'); });
+    world.appendChild(gb); world.appendChild(gc);
+    S.globe = gb; S.cap = gc; NEWS.hot = gb;
   }
   var bgblur = $('#bgblur');
   function applyPlate(key) {
@@ -664,6 +769,12 @@ i { font-style: normal; display: block; }
       v.rect = p.rect[v.id];
       pos(v.slot, v.rect); pos(v.hs, v.rect); pos(v.hot, v.rect);
     });
+    if (S.globe && p.globe) {
+      var g = p.globe;
+      pos(S.globe, g);
+      S.cap.style.left = ((g[0] + g[2] / 2) / IW * 100) + '%';
+      S.cap.style.top = ((g[1] + g[3]) / IH * 100) + '%';
+    }
   }
   function btnFor(id) { var v = BY[id]; return v ? (v.hot || v.nav) : null; }
 
@@ -955,7 +1066,7 @@ i { font-style: normal; display: block; }
     room.setAttribute('inert', '');
     viewport.classList.add('opening');
 
-    var dm = bookDims(), L = landRect(), sp = null, tLand;
+    var dm = bookDims(), L = landRect(), sp = null, tLand, isNews = (id === 'news');
     if (v.hs) {
       var from = shelfRect(v);
       sp = makeSprite(v, from, false);
@@ -971,11 +1082,13 @@ i { font-style: normal; display: block; }
       });
       tLand = 1450;
     } else {
-      later(60, function () { world.classList.add('pushed'); });
-      tLand = 800;
+      if (isNews && S.globe) { S.globe.classList.add('flare'); }
+      later(isNews ? 420 : 60, function () { world.classList.add('pushed'); });
+      tLand = isNews ? 1150 : 800;
     }
 
     later(tLand, function () {
+      if (isNews) { openPaper(v); return; }
       buildBook(v, 0, !!sp);
       stage.classList.add('on', 'dimmed');
       stage.setAttribute('aria-hidden', 'false');
@@ -995,6 +1108,164 @@ i { font-style: normal; display: block; }
     });
   }
 
+  /* ==================================================================
+     Legal Wire: the newspaper that unfolds when the globe is clicked
+     Stories come from news.json, refreshed daily by a GitHub Action.
+     ================================================================== */
+  var SECTIONS = [
+    { id: 'sec', label: 'SEC' },
+    { id: 'privacy', label: 'Privacy' },
+    { id: 'regs', label: 'Regulations' },
+    { id: 'congress', label: 'Congress' },
+    { id: 'scotus', label: 'Supreme Court' }
+  ];
+  var SECLABEL = {};
+  SECTIONS.forEach(function (x) { SECLABEL[x.id] = x.label; });
+  var NEWS_URLS = ['https://raw.githubusercontent.com/jjwillis111/The-Willis-Writ/main/news.json', 'news.json'];
+  var SOURCE_LINKS = [
+    ['SEC press releases', 'https://www.sec.gov/newsroom/press-releases'],
+    ['FTC press releases', 'https://www.ftc.gov/news-events/news/press-releases'],
+    ['Federal Register', 'https://www.federalregister.gov/'],
+    ['Congress.gov', 'https://www.congress.gov/'],
+    ['Supreme Court opinions', 'https://www.supremecourt.gov/opinions/opinions.aspx']
+  ];
+
+  function escA(t) { return esc(t).replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+  function safeUrl(u) { return /^https?:\/\//i.test(String(u || '')) ? String(u) : '#'; }
+  function fmtDay(iso) {
+    var t = Date.parse(iso);
+    if (isNaN(t)) { return ''; }
+    return new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+  function byDate(list) {
+    return list.slice().sort(function (a, b) { return (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0); });
+  }
+
+  function loadNews() {
+    if (S.newsP) { return S.newsP; }
+    function tryAt(i) {
+      if (i >= NEWS_URLS.length) { return Promise.resolve(null); }
+      return fetch(NEWS_URLS[i], { cache: 'no-cache' }).then(function (r) {
+        if (!r.ok) { throw new Error('bad status'); }
+        return r.json();
+      }).then(function (d) {
+        if (!d || !d.items) { throw new Error('bad data'); }
+        return d;
+      }).catch(function () { return tryAt(i + 1); });
+    }
+    S.newsP = tryAt(0).then(function (d) { if (!d) { S.newsP = null; } return d; });
+    return S.newsP;
+  }
+
+  function storyHtml(it, lead) {
+    var when = fmtDay(it.date), sec = SECLABEL[it.section] || '';
+    return '<article class="st' + (lead ? ' lead' : '') + '">' +
+      '<p class="sk">' + esc(sec) + (when ? ' &middot; ' + esc(when) : '') + '</p>' +
+      '<h3><a href="' + escA(safeUrl(it.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(it.title) + '</a></h3>' +
+      '<p class="ss">' + esc(it.source || '') + '</p></article>';
+  }
+
+  function emptyHtml(failed) {
+    var links = SOURCE_LINKS.map(function (l) {
+      return '<li><a href="' + escA(l[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(l[0]) + '</a></li>';
+    }).join('');
+    return '<div class="p-empty"><h3>' + (failed ? 'The wire is quiet right now.' : 'No stories have been filed yet.') + '</h3>' +
+      '<p>' + (failed ? 'The latest edition could not be loaded. Try again in a moment, or read at the source:' : 'The paper fills in each morning. In the meantime, read at the source:') + '</p>' +
+      '<ul>' + links + '</ul></div>';
+  }
+
+  function renderPaperBody(tab) {
+    var body = $('#p-body', S.paper); if (!body) { return; }
+    var data = S.newsData, items = (data && data.items) || [], list;
+    if (tab === 'all') {
+      list = [];
+      SECTIONS.forEach(function (x) {
+        list = list.concat(byDate(items.filter(function (it) { return it.section === x.id; })).slice(0, 5));
+      });
+      list = byDate(list);
+    } else {
+      list = byDate(items.filter(function (it) { return it.section === tab; }));
+    }
+    if (!list.length) { body.innerHTML = emptyHtml(!data); body.scrollTop = 0; return; }
+    var rest = list.slice(1);
+    body.innerHTML = '<div class="p-lead">' + storyHtml(list[0], true) + '</div>' +
+      (rest.length ? '<div class="p-cols">' + rest.map(function (it) { return storyHtml(it, false); }).join('') + '</div>' : '');
+    S.paper.scrollTop = 0;
+  }
+
+  function buildPaper() {
+    var ds = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    var pw = el('div', 'paperwrap');
+    var paper = el('article', 'paper');
+    paper.setAttribute('aria-label', 'The Legal Wire');
+    paper.innerHTML =
+      '<header class="mast">' +
+        '<div class="mast-top"><span>Law, Regulation and the Courts</span><span class="mast-upd" id="p-upd"></span></div>' +
+        '<h2 class="mast-name" aria-label="The Legal Wire">The Legal <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">ire</span></h2>' +
+        '<div class="mast-date"><span>' + esc(ds) + '</span><span>From The Willis Writ</span></div>' +
+      '</header>' +
+      '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav>' +
+      '<div class="p-body" id="p-body"><p class="p-load">Setting the type</p></div>' +
+      '<footer class="p-foot">Headlines and links from public sources. Each story opens at its source.</footer>';
+    pw.appendChild(el('div', 'paper-shadow'));
+    pw.appendChild(paper);
+    mount.innerHTML = '';
+    mount.appendChild(pw);
+    S.pw = pw; S.paper = paper;
+
+    var tabs = $('.p-tabs', paper), cur = 'all';
+    [{ id: 'all', label: 'Front Page' }].concat(SECTIONS).forEach(function (t) {
+      var b = el('button', 'p-tab' + (t.id === 'all' ? ' on' : ''), esc(t.label));
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', t.id === 'all' ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        cur = t.id;
+        $$('.p-tab', tabs).forEach(function (x) {
+          var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        renderPaperBody(cur);
+      });
+      tabs.appendChild(b);
+    });
+
+    loadNews().then(function (d) {
+      if (S.paper !== paper) { return; }
+      S.newsData = d;
+      var upd = $('#p-upd', paper);
+      if (d && d.updated && upd) {
+        var t = Date.parse(d.updated);
+        if (!isNaN(t)) { upd.textContent = 'Updated ' + new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+      }
+      renderPaperBody(cur);
+    });
+    return pw;
+  }
+
+  function openPaper(v) {
+    S.vol = v; S.spread = 0; S.total = 0; S.leaves = []; S.book = null; S.wrap = null;
+    var pw = buildPaper();
+    stage.classList.add('on', 'dimmed');
+    stage.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { pw.classList.add('on'); }); });
+    later(700, function () {
+      S.busy = false;
+      ui.top.classList.add('show');
+      ui.close.focus({ preventScroll: true });
+    });
+  }
+
+  function closePaper() {
+    S.busy = true;
+    var v = S.vol;
+    ui.top.classList.remove('show');
+    if (S.pw) { S.pw.classList.remove('on'); }
+    later(800, function () {
+      stage.classList.remove('dimmed');
+      world.classList.remove('pushed');
+      viewport.classList.remove('opening');
+      later(900, function () { finishClose(v); });
+    });
+  }
+
   function finishClose(v) {
     stage.classList.remove('on', 'dimmed');
     stage.setAttribute('aria-hidden', 'true');
@@ -1002,6 +1273,8 @@ i { font-style: normal; display: block; }
     mount.innerHTML = '';
     var b = S.btn, nxt = S.next;
     S.open = false; S.busy = false; S.turning = false; S.leaves = []; S.book = null; S.wrap = null; S.dirty = false; S.sp = null;
+    S.pw = null; S.paper = null;
+    if (S.globe) { S.globe.classList.remove('flare', 'hov'); }
     viewport.classList.remove('opening');
     if (nxt && BY[nxt]) {
       var nb = btnFor(nxt);
@@ -1012,6 +1285,7 @@ i { font-style: normal; display: block; }
 
   function closeVol() {
     if (!S.open || S.busy || S.turning) return;
+    if (S.vol && S.vol.id === 'news') { closePaper(); return; }
     S.busy = true;
     var v = S.vol;
     ui.top.classList.remove('show'); ui.bot.classList.remove('show');
@@ -1050,7 +1324,7 @@ i { font-style: normal; display: block; }
   }
 
   function rebuildOpen() {
-    if (!S.open || !S.vol) return;
+    if (!S.open || !S.vol || S.vol.id === 'news') return;
     var oldDual = S.dual, sp = S.spread, pageIdx = sp < 1 ? -1 : (oldDual ? 2 * (sp - 1) : sp - 1);
     var ns = pageIdx < 0 ? 0 : (dual ? Math.floor(pageIdx / 2) + 1 : pageIdx + 1);
     buildBook(S.vol, ns, true);
