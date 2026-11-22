@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="library.jpg">
+<link rel="preload" as="image" href="library-clean.jpg">
 <style>
 /* ==========================================================================
    SCENE (the photographic library plate, header, headline, nav)
@@ -35,13 +35,13 @@ i { font-style: normal; display: block; }
 
 #bgblur {
   display: none; position: absolute; left: -8%; top: -8%; right: -8%; bottom: -8%;
-  background: url(library.jpg) center / cover no-repeat; filter: blur(18px) brightness(.5) saturate(1.1);
+  background: url(library-clean.jpg) center / cover no-repeat; filter: blur(18px) brightness(.5) saturate(1.1);
 }
 .pt #bgblur { display: block; }
 
 #world {
   position: absolute; left: 0; top: 0; overflow: visible;
-  background: url(library.jpg) 0 0 / 100% 100% no-repeat;
+  background: url(library-clean.jpg) 0 0 / 100% 100% no-repeat;
   transition: transform 1100ms cubic-bezier(.6, .02, .2, 1), filter 1100ms ease;
   will-change: transform; animation: fadein 1400ms ease backwards;
 }
@@ -53,15 +53,25 @@ i { font-style: normal; display: block; }
   background: linear-gradient(90deg, #0d0705, #1b100a 45%, #0c0705); box-shadow: inset 0 0 14px 4px rgba(0, 0, 0, .9); }
 .slot.on { opacity: 1; }
 .hs {
-  position: absolute; background-repeat: no-repeat; background-image: url(library.jpg); pointer-events: none; border-radius: 2px;
-  transform-origin: 50% 100%;
-  transition: transform 280ms cubic-bezier(.2, .8, .2, 1), filter 280ms ease, box-shadow 280ms ease;
+  position:absolute; pointer-events:none; border-radius:3px; transform-origin:50% 100%;
+  transition:transform 280ms cubic-bezier(.2,.8,.2,1),filter 280ms ease,box-shadow 280ms ease;
 }
-.hs.hov {
-  transform: translateY(-2.2%) scale(1.03);
-  filter: brightness(1.18) saturate(1.08);
-  box-shadow: 0 0 26px 3px rgba(228, 184, 104, .42), 0 16px 20px rgba(0, 0, 0, .65);
+.scene-book {
+  position:absolute; z-index:2; border:1px solid rgba(210,174,105,.72); border-radius:4px 7px 7px 4px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  padding:7% 6%; color:#d9bc7c; background:linear-gradient(90deg,rgba(0,0,0,.48),transparent 8%,rgba(255,255,255,.07) 20%,transparent 38%,rgba(0,0,0,.2)),var(--book-color,#26332c);
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.25),inset 0 0 0 5px rgba(194,157,89,.14),3px 5px 12px rgba(0,0,0,.72);
+  text-shadow:0 1px 3px #000; transform-origin:50% 100%; transition:transform 260ms ease,filter 260ms ease,box-shadow 260ms ease;
+  cursor:pointer; overflow:hidden;
 }
+.scene-book:before {content:"";position:absolute;inset:6%;border:1px solid rgba(214,180,111,.62);pointer-events:none}
+.scene-book:after {content:"";position:absolute;left:9%;top:7%;bottom:7%;width:5%;background:linear-gradient(90deg,rgba(0,0,0,.65),rgba(255,255,255,.13),rgba(0,0,0,.25));}
+.scene-book .book-icon {width:28%;margin-bottom:10%;color:inherit;filter:drop-shadow(0 1px 1px #000)}
+.scene-book .book-icon svg {width:100%;height:auto}
+.scene-book .book-name {font:500 clamp(13px,1.25vw,22px)/1.1 'Cormorant Garamond',Georgia,serif;color:#e4c78f}
+.scene-book.hov,.scene-book:hover,.scene-book:focus-visible {transform:translateY(-7%) scale(1.045);filter:brightness(1.2);box-shadow:0 0 25px 3px rgba(228,184,104,.32),0 18px 22px rgba(0,0,0,.68)}
+.scene-book:focus-visible {outline:2px solid #e4cd92;outline-offset:4px}
+.hs.hov {transform:translateY(-3%) scale(1.04);filter:brightness(1.15);}
 .hot-book { position: absolute; z-index: 3; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 3px; }
 .hot-book:focus-visible { outline: 2px solid #e4cd92; outline-offset: 3px; }
 
@@ -118,7 +128,7 @@ i { font-style: normal; display: block; }
   background-image: radial-gradient(ellipse at 50% 46%, rgba(0, 0, 0, 0) 56%, rgba(0, 0, 0, .38) 100%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='1' seed='9'/><feColorMatrix values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 .1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>");
 }
 #fly { position: absolute; left: 0; top: 0; z-index: 25; pointer-events: none; }
-#fly .sp { position: absolute; left: 0; top: 0; background-repeat: no-repeat; background-image: url(library.jpg); border-radius: 3px; transform-origin: 50% 50%;
+#fly .sp { position: absolute; left: 0; top: 0; background-repeat: no-repeat; background-image: url(library-clean.jpg); border-radius: 3px; transform-origin: 50% 50%;
   box-shadow: 0 16px 34px rgba(0, 0, 0, .6), 0 0 0 1px rgba(0, 0, 0, .4); will-change: transform; }
 
 /* cover design override: vector version of the shelf books */
@@ -574,14 +584,14 @@ i { font-style: normal; display: block; }
   /* ==================================================================
      Settings you may want to edit
      ================================================================== */
-  var IW = 1672, IH = 941;                         // pixel size of library.jpg
-  // Where each book sits in library.jpg: [x, y, width, height] in image pixels.
+  var IW = 1648, IH = 928;                         // pixel size of library-clean.jpg
+  // Where each book sits in library-clean.jpg: [x, y, width, height] in image pixels.
   var RECT = {
-    about:      [548, 318, 150, 186],
-    experience: [718, 318, 146, 186],
-    writing:    [884, 318, 150, 186],
-    legal:      [1050, 318, 170, 186],
-    research:   [1236, 318, 146, 186]
+    about:      [520, 345, 122, 190],
+    experience: [660, 345, 122, 190],
+    writing:    [800, 345, 122, 190],
+    legal:      [940, 345, 122, 190],
+    research:   [1080, 345, 122, 190]
   };
   var THEMES = {
     about: '#22302a', experience: '#6b2b21', writing: '#222c46',
@@ -629,23 +639,20 @@ i { font-style: normal; display: block; }
       var nb = el('button', 'nv', esc(v.label));
       nb.type = 'button'; nb.setAttribute('data-vol', v.id);
       nb.addEventListener('click', function () { openVol(v.id, nb); });
-      nav.appendChild(nb);
-      v.nav = nb;
-
-      var r = RECT[v.id];
-      if (!r) return;
+      nav.appendChild(nb); v.nav = nb;
+      var r = RECT[v.id]; if (!r) return;
       var slot = el('div', 'slot'); pos(slot, r);
-      var hs = el('div', 'hs'); pos(hs, r); crop(hs, r);
-      var b = el('button', 'hot-book', '<span class="vh">Open the ' + esc(v.label) + ' volume</span>');
-      b.type = 'button'; b.setAttribute('data-id', v.id); pos(b, r);
-      var on = function () { if (!S.open) hs.classList.add('hov'); };
-      var off = function () { hs.classList.remove('hov'); };
-      b.addEventListener('click', function () { openVol(v.id, b); });
-      b.addEventListener('mouseenter', on); b.addEventListener('focus', on);
-      b.addEventListener('mouseleave', off); b.addEventListener('blur', off);
-      v.nav.addEventListener('mouseenter', on); v.nav.addEventListener('mouseleave', off);
+      var hs = el('div', 'hs'); pos(hs, r);
+      var b = el('button', 'hot-book scene-book', '<span class="book-icon">'+(ICONS[v.id]||'')+'</span><span class="book-name">'+esc(v.label)+'</span>');
+      b.type='button'; b.setAttribute('aria-label','Open '+v.label); pos(b,r);
+      b.style.setProperty('--book-color',THEMES[v.id]||'#26332c');
+      var on=function(){if(!S.open)b.classList.add('hov');};
+      var off=function(){b.classList.remove('hov');};
+      b.addEventListener('click',function(){openVol(v.id,b);});
+      b.addEventListener('mouseenter',on); b.addEventListener('focus',on); b.addEventListener('mouseleave',off); b.addEventListener('blur',off);
+      v.nav.addEventListener('mouseenter',on); v.nav.addEventListener('mouseleave',off);
       world.appendChild(slot); world.appendChild(hs); world.appendChild(b);
-      v.slot = slot; v.hs = hs; v.hot = b; v.rect = r;
+      v.slot=slot; v.hs=hs; v.hot=b; v.rect=r;
     });
   }
   function btnFor(id) { var v = BY[id]; return v ? (v.hot || v.nav) : null; }
@@ -723,13 +730,11 @@ i { font-style: normal; display: block; }
      Flying sprite (the book lifting from the shelf to the desk)
      ================================================================== */
   function makeSprite(v, from) {
-    var d = bookDims();
-    var sp = el('div', 'sp');
-    sp.style.width = d.P + 'px'; sp.style.height = d.Hh + 'px';
-    crop(sp, v.rect);
-    fly.appendChild(sp);
-    sp.style.transform = tf(from, d, 0, 1);
-    return sp;
+    var d=bookDims(), sp=el('div','sp scene-book');
+    sp.style.width=d.P+'px'; sp.style.height=d.Hh+'px';
+    sp.style.setProperty('--book-color',THEMES[v.id]||'#26332c');
+    sp.innerHTML='<span class="book-icon">'+(ICONS[v.id]||'')+'</span><span class="book-name">'+esc(v.label)+'</span>';
+    fly.appendChild(sp); sp.style.transform=tf(from,d,0,1); return sp;
   }
   function tf(r, d, rot, mul) {
     return 'translate(' + Math.round(r.cx - d.P / 2) + 'px,' + Math.round(r.cy - d.Hh / 2) + 'px) rotate(' + rot + 'deg) scale(' + ((r.w / d.P) * mul) + ',' + ((r.h / d.Hh) * mul) + ')';
