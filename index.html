@@ -9,7 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="library.jpg">
+<link rel="preload" as="image" href="library.jpg" media="(min-aspect-ratio: 23/20)">
+<link rel="preload" as="image" href="library-m.jpg" media="(max-aspect-ratio: 23/20)">
 <style>
 /* ==========================================================================
    SCENE (the photographic library plate, header, headline, nav)
@@ -35,32 +36,46 @@ i { font-style: normal; display: block; }
 
 #bgblur {
   display: none; position: absolute; left: -8%; top: -8%; right: -8%; bottom: -8%;
-  background: url(library.jpg) center / cover no-repeat; filter: blur(18px) brightness(.5) saturate(1.1);
+  background-position: center; background-size: cover; background-repeat: no-repeat; filter: blur(18px) brightness(.5) saturate(1.1);
 }
 .pt #bgblur { display: block; }
 
 #world {
   position: absolute; left: 0; top: 0; overflow: visible;
-  background: url(library.jpg) 0 0 / 100% 100% no-repeat;
+  background-position: 0 0; background-size: 100% 100%; background-repeat: no-repeat;
   transition: transform 1100ms cubic-bezier(.6, .02, .2, 1), filter 1100ms ease;
   will-change: transform; animation: fadein 1400ms ease backwards;
 }
-.pt #world { -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, #000 11%, #000 89%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, #000 11%, #000 89%, rgba(0,0,0,0) 100%); }
+.pt #world {
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, #000 7%), linear-gradient(to right, rgba(0,0,0,0) 0, #000 5%, #000 95%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, #000 7%), linear-gradient(to right, rgba(0,0,0,0) 0, #000 5%, #000 95%, rgba(0,0,0,0) 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
 #world.pushed { transform: scale(1.5); filter: blur(7px) brightness(.42); }
 .pt #world.pushed { transform: scale(1.25); filter: blur(6px) brightness(.4); }
+
+/* the real cover art, used on the shelf, in flight, and on the opened book */
+.cv { position: relative; background-repeat: no-repeat; background-size: 100% 100%; background-position: 0 0; color: #dcc48c; }
+.cv .cv-in { position: absolute; left: 12%; right: 5%; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 3%; }
+.cv .cv-ic { width: 29%; color: #dfc283; }
+.cv .cv-ic svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .7)); }
+.cv h2 { margin: .55em 0 0; font: 500 2.55em/1.1 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-transform: none; text-indent: 0;
+  color: #e8d49f; background: none; filter: none; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 10px rgba(0, 0, 0, .4); }
+.cv.shade::after { content: ""; position: absolute; left: 0; top: 0; right: 0; bottom: 0; pointer-events: none; border-radius: 3px; transition: opacity 500ms ease;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0) 32%, rgba(0, 0, 0, .3)); }
+.cv.shade.lit::after, .hs.hov::after { opacity: 0; }
 
 .slot { position: absolute; opacity: 0; transition: opacity 180ms ease; pointer-events: none;
   background: linear-gradient(90deg, #0d0705, #1b100a 45%, #0c0705); box-shadow: inset 0 0 14px 4px rgba(0, 0, 0, .9); }
 .slot.on { opacity: 1; }
 .hs {
-  position: absolute; background-repeat: no-repeat; background-image: url(library.jpg); pointer-events: none; border-radius: 2px;
+  position: absolute; pointer-events: none; border-radius: 2px;
   transform-origin: 50% 100%;
-  transition: transform 280ms cubic-bezier(.2, .8, .2, 1), filter 280ms ease, box-shadow 280ms ease;
+  transition: transform 280ms cubic-bezier(.2, .8, .2, 1), filter 280ms ease;
 }
 .hs.hov {
   transform: translateY(-2.2%) scale(1.03);
-  filter: brightness(1.18) saturate(1.08);
-  box-shadow: 0 0 26px 3px rgba(228, 184, 104, .42), 0 16px 20px rgba(0, 0, 0, .65);
+  filter: brightness(1.16) saturate(1.08) drop-shadow(0 0 12px rgba(232, 188, 108, .55)) drop-shadow(0 12px 12px rgba(0, 0, 0, .65));
 }
 .hot-book { position: absolute; z-index: 3; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 3px; }
 .hot-book:focus-visible { outline: 2px solid #e4cd92; outline-offset: 3px; }
@@ -93,6 +108,9 @@ i { font-style: normal; display: block; }
 #nav .nv:last-child::after { right: 0; }
 
 #hero { position: absolute; left: 6vw; top: 58vh; display: table; color: #eee1c6; font-size: 40px; text-shadow: 0 2px 18px rgba(0, 0, 0, .75); }
+#hero::before { content: ""; position: absolute; z-index: -1; left: -9em; right: -5em; top: -3.2em; bottom: -2.4em; pointer-events: none;
+  background: radial-gradient(ellipse at 42% 52%, rgba(6, 4, 2, .8), rgba(6, 4, 2, .58) 52%, rgba(6, 4, 2, 0) 76%); }
+#hero.compact p { display: none; }
 #hero h2 { margin: 0; font: 400 1em/1.12 'Cormorant Garamond', Georgia, serif; letter-spacing: -.003em; white-space: nowrap; color: #f1e4c8; }
 #hero .hr { height: 1px; margin: .38em 0 .34em; background: linear-gradient(90deg, rgba(232, 208, 156, .7), rgba(232, 208, 156, .45)); }
 #hero p { margin: 0; font: 400 .44em/1.5 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #e4d5b4; white-space: nowrap; }
@@ -111,6 +129,7 @@ i { font-style: normal; display: block; }
 .pt #nav .nv:last-child { padding-right: 1.25em; }
 .pt #hero h2 { white-space: normal; }
 .pt #hero p { font-size: .5em; }
+.pt #hero::before { left: -20px; right: -20px; top: -90px; bottom: -1.4em; background: linear-gradient(180deg, rgba(6, 4, 2, .88) 0, rgba(6, 4, 2, .8) 62%, rgba(6, 4, 2, 0) 100%); }
 .nv.on { color: #ffe6ae; }
 
 #fx {
@@ -118,30 +137,8 @@ i { font-style: normal; display: block; }
   background-image: radial-gradient(ellipse at 50% 46%, rgba(0, 0, 0, 0) 56%, rgba(0, 0, 0, .38) 100%), url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='1' seed='9'/><feColorMatrix values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 .1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>");
 }
 #fly { position: absolute; left: 0; top: 0; z-index: 25; pointer-events: none; }
-#fly .sp { position: absolute; left: 0; top: 0; background-repeat: no-repeat; background-image: url(library.jpg); border-radius: 3px; transform-origin: 50% 50%;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, .6), 0 0 0 1px rgba(0, 0, 0, .4); will-change: transform; }
-
-/* cover design override: vector version of the shelf books */
-.cf { color: #d9c28a; }
-.cf .cf-frame { left: 11%; right: 7%; top: 5.5%; bottom: 5.5%; border: 1px solid rgba(208, 174, 108, .78); }
-.cf .cf-frame::after { left: 4px; right: 4px; top: 4px; bottom: 4px; border: 1px solid rgba(208, 174, 108, .32); }
-.cf .crn { position: absolute; width: 11%; height: 8%; color: #d0ae6c; opacity: .9; }
-.cf .crn svg { width: 100%; height: 100%; display: block; }
-.cf .crn.tl { left: 12.4%; top: 6.6%; }
-.cf .crn.tr { right: 8.4%; top: 6.6%; transform: scaleX(-1); }
-.cf .crn.bl { left: 12.4%; bottom: 6.6%; transform: scaleY(-1); }
-.cf .crn.br { right: 8.4%; bottom: 6.6%; transform: scale(-1, -1); }
-.cf .cf-in { left: 14%; right: 10%; top: 0; bottom: 0; justify-content: center; padding-bottom: 4%; }
-.cf .cf-ic { width: 26%; color: #d6b574; }
-.cf .cf-ic svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .55)); }
-.cf h2 {
-  margin: .9em 0 0; font: 500 1.75em/1.18 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-indent: 0; text-transform: none;
-  color: #e0cb94; background: none; -webkit-background-clip: border-box; background-clip: border-box; filter: none; text-shadow: 0 1px 0 rgba(0, 0, 0, .6);
-}
-.cf .hinge { width: 8.5%; background: linear-gradient(90deg, rgba(0, 0, 0, .62), rgba(255, 255, 255, .07) 30%, rgba(0, 0, 0, .5) 52%, rgba(255, 255, 255, .05) 70%, rgba(0, 0, 0, .35) 100%); }
-.cf .hinge::before, .cf .hinge::after { content: ""; position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(208, 174, 108, .55); }
-.cf .hinge::before { left: 28%; } .cf .hinge::after { left: 62%; }
-
+#fly .sp { position: absolute; left: 0; top: 0; border-radius: 3px; transform-origin: 50% 50%;
+  filter: drop-shadow(0 16px 22px rgba(0, 0, 0, .6)); will-change: transform; }
 
 @media (max-width: 759px) {
   #uibot { gap: 8px; }
@@ -574,18 +571,27 @@ i { font-style: normal; display: block; }
   /* ==================================================================
      Settings you may want to edit
      ================================================================== */
-  var IW = 1672, IH = 941;                         // pixel size of library.jpg
-  // Where each book sits in library.jpg: [x, y, width, height] in image pixels.
-  var RECT = {
-    about:      [548, 318, 150, 186],
-    experience: [718, 318, 146, 186],
-    writing:    [884, 318, 150, 186],
-    legal:      [1050, 318, 170, 186],
-    research:   [1236, 318, 146, 186]
+  var PLATES = {
+    l: { img: 'library.jpg', w: 1672, h: 941, rect: {
+      about:      [474, 313, 173, 209],
+      experience: [671, 313, 173, 209],
+      writing:    [866, 313, 169, 209],
+      legal:      [1055, 313, 174, 209],
+      research:   [1250, 313, 172, 209]
+    } },
+    p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
+      about:      [105, 539, 146, 241],
+      experience: [265, 539, 144, 241],
+      writing:    [426, 539, 146, 241],
+      legal:      [586, 539, 144, 241],
+      research:   [746, 539, 146, 241]
+    } }
   };
+  var IW = 1672, IH = 941;
+  // Colors of the board edges around the pages, matched to each cover.
   var THEMES = {
-    about: '#22302a', experience: '#6b2b21', writing: '#222c46',
-    legal: '#3a4430', research: '#5b2228', contact: '#3d2a45'
+    about: '#16301a', experience: '#5e1a0e', writing: '#17243a',
+    legal: '#46410f', research: '#561212', contact: '#3a1f55'
   };
   var ICONS = {
     about: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M8 24L32 10l24 14z"/><path d="M12 28h40M12 52h40M8 57h48"/><path d="M17 32v16M27 32v16M37 32v16M47 32v16"/></svg>',
@@ -595,7 +601,6 @@ i { font-style: normal; display: block; }
     research: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><circle cx="26" cy="26" r="16"/><path d="M38 38l20 20"/></svg>',
     contact: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="8" y="14" width="48" height="36" rx="3"/><path d="M8 18l24 18 24-18"/></svg>'
   };
-  var CORNER = '<svg viewBox="0 0 44 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 30V10Q2 2 10 2h30"/><path d="M8 30V13Q8 8 13 8h27"/><circle cx="13" cy="13" r="2.2" fill="currentColor" stroke="none"/></svg>';
 
   /* ==================================================================
      Read the content
@@ -619,10 +624,10 @@ i { font-style: normal; display: block; }
     e.style.left = (r[0] / IW * 100) + '%'; e.style.top = (r[1] / IH * 100) + '%';
     e.style.width = (r[2] / IW * 100) + '%'; e.style.height = (r[3] / IH * 100) + '%';
   }
-  function crop(e, r) {
-    e.style.backgroundSize = (IW / r[2] * 100) + '% ' + (IH / r[3] * 100) + '%';
-    e.style.backgroundPosition = (r[0] / (IW - r[2]) * 100) + '% ' + (r[1] / (IH - r[3]) * 100) + '%';
+  function coverInner(v) {
+    return '<div class="cv-in"><div class="cv-ic">' + (ICONS[v.id] || '') + '</div><h2>' + esc(v.label) + '</h2></div>';
   }
+  function coverImg(v) { return 'url(cover-' + v.id + '.webp)'; }
 
   function buildScene() {
     VOLS.forEach(function (v) {
@@ -632,12 +637,11 @@ i { font-style: normal; display: block; }
       nav.appendChild(nb);
       v.nav = nb;
 
-      var r = RECT[v.id];
-      if (!r) return;
-      var slot = el('div', 'slot'); pos(slot, r);
-      var hs = el('div', 'hs'); pos(hs, r); crop(hs, r);
+      if (!PLATES.l.rect[v.id]) return;
+      var slot = el('div', 'slot');
+      var hs = el('div', 'hs cv shade', coverInner(v)); hs.style.backgroundImage = coverImg(v);
       var b = el('button', 'hot-book', '<span class="vh">Open the ' + esc(v.label) + ' volume</span>');
-      b.type = 'button'; b.setAttribute('data-id', v.id); pos(b, r);
+      b.type = 'button'; b.setAttribute('data-id', v.id);
       var on = function () { if (!S.open) hs.classList.add('hov'); };
       var off = function () { hs.classList.remove('hov'); };
       b.addEventListener('click', function () { openVol(v.id, b); });
@@ -645,7 +649,21 @@ i { font-style: normal; display: block; }
       b.addEventListener('mouseleave', off); b.addEventListener('blur', off);
       v.nav.addEventListener('mouseenter', on); v.nav.addEventListener('mouseleave', off);
       world.appendChild(slot); world.appendChild(hs); world.appendChild(b);
-      v.slot = slot; v.hs = hs; v.hot = b; v.rect = r;
+      v.slot = slot; v.hs = hs; v.hot = b;
+    });
+  }
+  var bgblur = $('#bgblur');
+  function applyPlate(key) {
+    if (S.plateKey === key) return;
+    S.plateKey = key;
+    var p = PLATES[key];
+    IW = p.w; IH = p.h;
+    world.style.backgroundImage = 'url(' + p.img + ')';
+    bgblur.style.backgroundImage = 'url(' + p.img + ')';
+    VOLS.forEach(function (v) {
+      if (!v.hs) return;
+      v.rect = p.rect[v.id];
+      pos(v.slot, v.rect); pos(v.hs, v.rect); pos(v.hot, v.rect);
     });
   }
   function btnFor(id) { var v = BY[id]; return v ? (v.hot || v.nav) : null; }
@@ -667,32 +685,44 @@ i { font-style: normal; display: block; }
     dual = W >= 760;
     portrait = (W / H < 1.15) || W < 700;
     viewport.classList.toggle('pt', portrait);
-    var s, ox, oy;
+    applyPlate(portrait ? 'p' : 'l');
+    var s, ox, oy, org;
     if (!portrait) {
       s = Math.max(W / IW, H / IH);
       ox = (W - IW * s) / 2; oy = (H - IH * s) / 2;
       var left = Math.max(ox + 116 * s, W * 0.04);
+      hero.classList.remove('compact');
       hero.style.left = Math.round(left) + 'px';
       hero.style.top = Math.round(Math.max(oy + 538 * s, 0)) + 'px';
-      fitHero(Math.max(20, 52 * s), (ox + 700 * s) - left - 16);
+      fitHero(Math.max(20, 52 * s), (ox + 680 * s) - left - 16);
+      org = [840 * s, 860 * s];
     } else {
+      s = W / 860;
+      if (IH * s > H) s = H / IH;
+      ox = W / 2 - 470 * s; oy = H - IH * s;
       var hh = top.offsetHeight;
       var hl = W < 700 ? 20 : Math.round(W * 0.06);
+      var booksTop = oy + 539 * s;
+      hero.classList.remove('compact');
       hero.style.left = hl + 'px';
-      hero.style.top = (hh + 20) + 'px';
+      hero.style.top = (hh + 12) + 'px';
       fitHero(clamp(W * 0.074, 24, 46), W - 2 * hl);
-      var heroBottom = hero.offsetTop + hero.offsetHeight;
-      var pills = nav.offsetHeight + 30;
-      var bandTop = heroBottom + 4;
-      var availH = Math.max(160, H - bandTop - pills - 6);
-      s = Math.min(W / 930, availH / IH);
-      ox = W / 2 - 964 * s;
-      oy = bandTop + Math.max(0, (availH - IH * s) / 2);
+      if (hero.offsetTop + hero.offsetHeight > booksTop - 8) {
+        hero.classList.add('compact');
+        fitHero(clamp(W * 0.074, 22, 46), W - 2 * hl);
+        var over = hero.offsetTop + hero.offsetHeight - (booksTop - 8);
+        if (over > 0) {
+          var fs2 = parseFloat(hero.style.fontSize) * Math.max(0.6, 1 - over / Math.max(60, hero.offsetHeight));
+          hero.style.fontSize = fs2 + 'px';
+        }
+      }
+      org = [470 * s, 1250 * s];
     }
     sc.s = s; sc.ox = ox; sc.oy = oy;
     world.style.left = Math.round(ox) + 'px'; world.style.top = Math.round(oy) + 'px';
     world.style.width = Math.round(IW * s) + 'px'; world.style.height = Math.round(IH * s) + 'px';
-    world.style.transformOrigin = Math.round(840 * s) + 'px ' + Math.round((portrait ? 600 : 860) * s) + 'px';
+    world.style.transformOrigin = Math.round(org[0]) + 'px ' + Math.round(org[1]) + 'px';
+    VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s / 28) + 'px'; });
 
     if (S.open && !S.busy) rebuildOpen();
     else if (S.open) S.dirty = true;
@@ -703,10 +733,10 @@ i { font-style: normal; display: block; }
     if (dual) {
       P = Math.min(W * 0.455, 560);
       Hh = Math.min(H * 0.76, P * 1.38);
-      P = Math.min(P, Hh * 0.95);
+      P = Math.min(P, Hh * 0.8);
     } else {
       P = Math.min(W - 30, 520);
-      Hh = Math.min(H * 0.76, P * 1.5);
+      Hh = Math.min(H * 0.76, P * 1.4);
     }
     return { P: Math.round(P), Hh: Math.round(Hh) };
   }
@@ -722,11 +752,12 @@ i { font-style: normal; display: block; }
   /* ==================================================================
      Flying sprite (the book lifting from the shelf to the desk)
      ================================================================== */
-  function makeSprite(v, from) {
+  function makeSprite(v, from, lit) {
     var d = bookDims();
-    var sp = el('div', 'sp');
+    var sp = el('div', 'sp cv shade' + (lit ? ' lit' : ''), coverInner(v));
+    sp.style.backgroundImage = coverImg(v);
     sp.style.width = d.P + 'px'; sp.style.height = d.Hh + 'px';
-    crop(sp, v.rect);
+    sp.style.fontSize = clamp(d.P / 28, 13.5, 19) + 'px';
     fly.appendChild(sp);
     sp.style.transform = tf(from, d, 0, 1);
     return sp;
@@ -744,12 +775,6 @@ i { font-style: normal; display: block; }
      ================================================================== */
   var S = { open: false, busy: false, turning: false, id: null, btn: null, next: null, spread: 0, total: 0,
             dual: true, leaves: [], book: null, wrap: null, dirty: false, vol: null, sp: null };
-
-  function coverHTML(v) {
-    return '<i class="hinge"></i><div class="cf-frame"></div>' +
-           '<div class="crn tl">' + CORNER + '</div><div class="crn tr">' + CORNER + '</div><div class="crn bl">' + CORNER + '</div><div class="crn br">' + CORNER + '</div>' +
-           '<div class="cf-in"><div class="cf-ic">' + (ICONS[v.id] || '') + '</div><h2>' + esc(v.label) + '</h2></div>';
-  }
 
   function fillFace(face, src, idx) {
     if (!src) { face.className += ' blank'; return; }
@@ -792,7 +817,7 @@ i { font-style: normal; display: block; }
     function mkLeaf(cls) { var l = el('div', 'leaf ' + (cls || '')); leaves.push(l); book.appendChild(l); return l; }
 
     var cover = mkLeaf('cover');
-    var cf = el('div', 'face front cf', coverHTML(v)); cf.style.backgroundColor = color;
+    var cf = el('div', 'face front cv', coverInner(v)); cf.style.backgroundImage = coverImg(v);
     var cb = el('div', 'face back sheet l');
     if (d) fillFace(cb, pages[0], 0); else cb.className += ' blank';
     cover.appendChild(cf); cover.appendChild(cb);
@@ -934,12 +959,13 @@ i { font-style: normal; display: block; }
     var dm = bookDims(), L = landRect(), sp = null, tLand;
     if (v.hs) {
       var from = shelfRect(v);
-      sp = makeSprite(v, from);
+      sp = makeSprite(v, from, false);
       S.sp = sp;
       v.slot.classList.add('on'); v.hs.style.visibility = 'hidden';
       var lifted = { cx: from.cx, cy: from.cy - 14, w: from.w, h: from.h };
       anim(sp, [{ transform: tf(from, dm, 0, 1) }, { transform: tf(lifted, dm, -1.5, 1.07) }], 380, 'cubic-bezier(.2,.8,.2,1)');
       later(380, function () {
+        sp.classList.add('lit');
         world.classList.add('pushed');
         var mid = { cx: (from.cx + L.cx) / 2, cy: Math.min(from.cy, L.cy) - 30, w: (from.w + L.w) / 2.2, h: (from.h + L.h) / 2.2 };
         anim(sp, [{ transform: tf(lifted, dm, -1.5, 1.07) }, { transform: tf(mid, dm, 2.5, 1), offset: 0.5 }, { transform: tf(L, dm, 0, 1) }], 1050, 'cubic-bezier(.45,.05,.2,1)');
@@ -995,7 +1021,7 @@ i { font-style: normal; display: block; }
         var dm = bookDims(), L = landRect();
         if (v.hs) {
           var from = shelfRect(v);
-          var sp = makeSprite(v, L);
+          var sp = makeSprite(v, L, true);
           S.sp = sp;
           S.wrap.style.transition = 'none'; S.wrap.style.opacity = '0';
           stage.classList.remove('dimmed');
@@ -1005,6 +1031,7 @@ i { font-style: normal; display: block; }
           var mid = { cx: (from.cx + L.cx) / 2, cy: Math.min(from.cy, L.cy) - 30, w: (from.w + L.w) / 2.2, h: (from.h + L.h) / 2.2 };
           anim(sp, [{ transform: tf(L, dm, 0, 1) }, { transform: tf(mid, dm, -2.5, 1), offset: 0.5 }, { transform: tf(lifted, dm, -1.5, 1.07) }], 1000, 'cubic-bezier(.45,.05,.2,1)');
           later(1000, function () {
+            sp.classList.remove('lit');
             anim(sp, [{ transform: tf(lifted, dm, -1.5, 1.07) }, { transform: tf(from, dm, 0, 1) }], 260, 'cubic-bezier(.3,.7,.3,1)');
           });
           later(1290, function () {
