@@ -189,9 +189,7 @@ i { font-style: normal; display: block; }
   scrollbar-width: thin; scrollbar-color: #9c8a63 transparent; }
 .paperwrap.on .paper { clip-path: inset(0 0 0 0); }
 
-.mast { text-align: center; }
-.mast-top { display: flex; justify-content: center; min-height: 1.2em; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(40, 28, 14, .5);
-  font: 500 11px/1.2 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #5a4a30; }
+.mast { text-align: center; padding-top: 2px; }
 .mast-name { margin: .1em 0 .04em; font: normal 400 clamp(42px, 7.4vw, 100px)/1.04 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #17110a; }
 .mast-name .kw { margin-right: -.1em; }
 .mast-date { display: flex; justify-content: space-between; gap: 12px; padding: 7px 2px; border-top: 3px double #2b2116; border-bottom: 1px solid #2b2116;
@@ -212,19 +210,19 @@ i { font-style: normal; display: block; }
 .p-lead { padding-bottom: 16px; margin-bottom: 18px; border-bottom: 2px solid #2b2116; text-align: center; }
 .st { break-inside: avoid; }
 .st .sk { margin: 0 0 .3em; font: normal 400 15px/1.2 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #6e1f1a; letter-spacing: .02em; }
-.st h3 { margin: 0; font: 700 1.3em/1.14 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; text-indent: 0; color: #1d160d; }
+.st h3 { margin: 0; font: normal 400 1.55em/1.16 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; text-indent: 0; color: #1d160d; }
 .st h3 a { color: inherit; text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 260ms ease; }
 .st h3 a:hover, .st h3 a:focus-visible { background-size: 100% 1px; }
 .st h3 a:focus-visible { outline: 2px solid #6e1f1a; outline-offset: 2px; }
 .st .ss { margin: .4em 0 0; font: italic 400 14px/1.3 'EB Garamond', Georgia, serif; color: #5a4a30; }
 .st.lead .sk { font-size: 18px; }
-.st.lead h3 { margin: 0 auto; max-width: 22em; font-size: clamp(28px, 3.7vw, 52px); line-height: 1.05; }
+.st.lead h3 { margin: 0 auto; max-width: 20em; font-size: clamp(30px, 4.1vw, 58px); line-height: 1.1; }
 .st.lead .ss { font-size: 15px; }
 .p-cols { column-count: 3; column-gap: 32px; column-rule: 1px solid rgba(40, 28, 14, .4); }
 .p-cols .st { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px dotted rgba(40, 28, 14, .5); }
 .p-foot { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(40, 28, 14, .5); text-align: center; font: italic 400 13px/1.3 'EB Garamond', Georgia, serif; color: #6a5a40; }
 .p-empty { max-width: 34em; margin: 0 auto; padding: 26px 8px 14px; text-align: center; }
-.p-empty h3 { margin: 0 0 .4em; font: 700 1.9em/1.1 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #1d160d; }
+.p-empty h3 { margin: 0 0 .4em; font: normal 400 2em/1.1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: 0; text-transform: none; color: #1d160d; }
 .p-empty p { margin: 0 0 .8em; color: #4a3a20; }
 .p-empty ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 24px; text-align: left; }
 .p-empty li { margin: 0 0 .5em; }
@@ -235,8 +233,7 @@ i { font-style: normal; display: block; }
   .paperwrap { width: calc(100vw - 20px); top: calc(50% + 24px); }
   .paper { font-size: 16px; max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px); }
   .p-cols { column-count: 1; column-rule: 0; }
-  .mast-top { letter-spacing: .1em; font-size: 10px; }
-  .st.lead h3 { font-size: 27px; }
+  .st.lead h3 { font-size: 30px; }
   .p-empty ul { columns: 1; }
 }
 
@@ -1209,7 +1206,6 @@ i { font-style: normal; display: block; }
     paper.setAttribute('aria-label', 'The Legal Wire');
     paper.innerHTML =
       '<header class="mast">' +
-        '<div class="mast-top"><span class="mast-upd" id="p-upd"></span></div>' +
         '<h2 class="mast-name" aria-label="The Legal Wire">The Legal <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">ire</span></h2>' +
         '<div class="mast-date"><span>' + esc(ds) + '</span><span>From The Willis Writ</span></div>' +
       '</header>' +
@@ -1239,11 +1235,6 @@ i { font-style: normal; display: block; }
     loadNews().then(function (d) {
       if (S.paper !== paper) { return; }
       S.newsData = d;
-      var upd = $('#p-upd', paper);
-      if (d && d.updated && upd) {
-        var t = Date.parse(d.updated);
-        if (!isNaN(t)) { upd.textContent = 'Updated ' + new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-      }
       renderPaperBody(cur);
     });
     return pw;
