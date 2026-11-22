@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Jackson Willis | Legal portfolio and research tools">
+<title>Jackson Willis | Legal Library</title>
+<style>
+@font-face{font-family:JSLAncient;src:url('assets/JSLAncientItalic.ttf') format('truetype');font-display:swap}
+:root{--ink:#e9e3d5;--muted:#b9b09e;--gold:#b89a65;--gold2:#8d754a;--panel:#171714;--line:#5b4a30;--wood:#211910;--wood2:#30251a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#171511;font-family:Georgia,'Times New Roman',serif}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 48% 20%,#53432c44,transparent 60%),linear-gradient(120deg,#0e0e0c,#211b13 55%,#0c0c0b)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.14;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent 0 4px,#8a6d3e12 5px),repeating-linear-gradient(90deg,transparent 0 8px,#00000012 9px)}
+header{max-width:1200px;margin:auto;padding:30px 28px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #76603c55}
+.brand{font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#e5d7b8}.brand small{display:block;font-size:10px;letter-spacing:.24em;color:var(--muted);margin-top:7px}
+nav{display:flex;gap:24px;flex-wrap:wrap}nav a{color:#c9bda7;text-decoration:none;font-size:12px;letter-spacing:.13em;text-transform:uppercase}nav a:hover{color:#f0d59e}
+main{max-width:1200px;margin:0 auto;padding:26px}
+.hero{min-height:380px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;padding:52px 30px 36px}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+h1{font-weight:normal;font-size:clamp(42px,6vw,76px);line-height:1.02;margin:0 0 20px;color:#eee4d1}
+h1 em{font-family:JSLAncient,Georgia,serif;font-weight:normal;color:#d2b17b}
+.hero p{max-width:560px;color:#c6bcaa;line-height:1.8;font-size:17px}
+.hero-visual{height:330px;position:relative;border:1px solid #705b3b;box-shadow:0 25px 60px #0008,inset 0 0 50px #0006;background:linear-gradient(90deg,#16120d,#3a2a19 12%,#20170e 13%,#332516 82%,#120f0b);padding:20px;display:flex;align-items:end;justify-content:center;overflow:hidden}
+.hero-visual:before{content:"";position:absolute;inset:18px;border:1px solid #b49a6244;box-shadow:inset 0 0 35px #0008}
+.shelf{position:absolute;top:44px;left:25px;right:25px;height:155px;display:flex;align-items:end;gap:7px;padding:0 12px 13px;border-bottom:13px solid #3c2b1b;box-shadow:0 8px 12px #0007}
+.book{width:clamp(24px,5vw,43px);height:var(--h,130px);border:1px solid #aa8a5c55;border-radius:3px 2px 0 0;background:linear-gradient(90deg,#1b1712,#4c3825 40%,#251c13 82%);box-shadow:2px 0 4px #0008;position:relative;cursor:pointer;transition:transform .25s,filter .25s;display:flex;align-items:center;justify-content:center}
+.book:nth-child(3n){background:linear-gradient(90deg,#25291f,#59604a 42%,#24261c)}.book:nth-child(4n){background:linear-gradient(90deg,#301b19,#70423a 40%,#321d19)}
+.book:after{content:"";position:absolute;left:4px;right:4px;top:13px;bottom:13px;border-top:1px solid #c2a36c55;border-bottom:1px solid #c2a36c55}
+.book span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.08em;color:#d5c3a0;text-transform:uppercase;text-align:center;max-height:80%}
+.book:hover{transform:translateY(-12px);filter:brightness(1.25)}
+.desk{width:100%;height:110px;background:linear-gradient(180deg,#6b4d2c,#372517 17%,#24170f);border-top:3px solid #957247;box-shadow:0 -12px 24px #0006;position:relative}
+.desk:before{content:"";position:absolute;top:14px;left:12%;right:12%;height:1px;background:#b3915b44}
+.ornament{position:absolute;right:15%;bottom:35px;width:68px;height:80px;border:1px solid #b59b6a77;border-radius:50% 50% 3px 3px;background:linear-gradient(110deg,#342d20,#8b7547,#31291d);opacity:.8}
+.introline{border-top:1px solid #68543855;border-bottom:1px solid #68543855;padding:18px 0;text-align:center;color:#a99c87;letter-spacing:.1em;font-size:12px;text-transform:uppercase}
+.section{padding:50px 20px;border-bottom:1px solid #6a543655}
+.section h2{font-size:30px;font-weight:normal;color:#e7d8b7;margin:0 0 18px}
+.section p{color:#c3b8a6;line-height:1.8;max-width:780px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:25px}
+.card{background:#191713cc;border:1px solid #59472d;padding:22px;min-height:150px;transition:border-color .2s,transform .2s}.card:hover{border-color:#ad9061;transform:translateY(-3px)}
+.card h3{font-weight:normal;color:#d8c59e;font-size:18px;margin:0 0 12px}.card p{font-size:14px;margin:0}
+.tool{margin-top:24px;padding:24px;border:1px solid #625033;background:#151411}
+input,textarea,select{width:100%;background:#0e0e0c;border:1px solid #665336;color:var(--ink);padding:12px;font:15px Georgia,serif;margin:8px 0}
+button{background:#79603a;color:#f0e4cb;border:1px solid #ad8c58;padding:11px 18px;font-family:inherit;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}button:hover{background:#94774a}
+.result{white-space:pre-wrap;color:#cfc4b1;line-height:1.7;margin-top:15px}
+footer{padding:30px;text-align:center;color:#948875;font-size:12px;letter-spacing:.08em}
+.hidden{display:none}.mobile-books{display:none}
+@media(max-width:760px){header{display:block;padding:22px}nav{margin-top:18px;gap:13px}nav a{font-size:10px}.hero{grid-template-columns:1fr;padding:30px 8px}.hero-visual{height:260px}.cards{grid-template-columns:1fr}.section{padding:35px 8px}.book{width:26px}.book span{font-size:8px}}
+</style></head>
+<body>
+<header><div class="brand">Jackson Willis<small>Legal Library · Portfolio & Research</small></div><nav><a href="#about">About</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#radar">Radar</a><a href="#case">Case Tool</a><a href="#contact">Contact</a></nav></header>
+<main>
+<section class="hero"><div><div class="eyebrow">Law · Investigations · Emerging Technology</div><h1>Jackson <em>Willis</em></h1><p>A legal portfolio and working research library exploring investigations, securities regulation, privacy, and emerging technology.</p></div>
+<div class="hero-visual" aria-label="Interactive bookshelf"><div class="shelf">
+<div class="book" style="--h:125px" data-target="about"><span>About</span></div><div class="book" style="--h:142px" data-target="experience"><span>Experience</span></div><div class="book" style="--h:116px" data-target="writing"><span>Writing</span></div><div class="book" style="--h:138px" data-target="radar"><span>Regulatory Radar</span></div><div class="book" style="--h:128px" data-target="case"><span>Case Analysis</span></div><div class="book" style="--h:115px" data-target="contact"><span>Contact</span></div><div class="book" style="--h:133px" data-target="writing"><span>Research</span></div>
+</div><div class="ornament"></div><div class="desk"></div></div></section>
+<div class="introline">Select a volume to explore · A living legal research workspace</div>
+<section class="section" id="about"><div class="eyebrow">Volume I</div><h2>About</h2><p>I'm a law student interested in federal investigations and enforcement, securities regulation, privacy, and the legal questions surrounding emerging technologies. This site is both a professional portfolio and an evolving collection of research tools.</p><div class="cards"><div class="card"><h3>Investigations & Enforcement</h3><p>Interest in investigative work, enforcement strategy, and protecting fair markets.</p></div><div class="card"><h3>Privacy & Technology</h3><p>Legal questions at the intersection of privacy, health, media, and innovation.</p></div><div class="card"><h3>Space Law</h3><p>Research on international frameworks for space-resource governance.</p></div></div></section>
+<section class="section" id="experience"><div class="eyebrow">Volume II</div><h2>Experience</h2><div class="cards"><div class="card"><h3>SEC · Division of Enforcement</h3><p>Investigative and enforcement-related experience, including work involving enforcement processes and remedies.</p></div><div class="card"><h3>Student Innovations Law Clinic</h3><p>Privacy, Health & Media practice group. Client-facing legal work on technology and privacy issues.</p></div><div class="card"><h3>Legal Experience</h3><p>Prior public-sector and private legal work supporting research, investigation, and case preparation.</p></div></div></section>
+<section class="section" id="writing"><div class="eyebrow">Volume III</div><h2>Writing & Research</h2><p>Research and writing on space-resource governance, regulatory policy, and emerging legal issues. Publication details and writing samples will be added as they are ready for public release.</p><div class="card"><h3>Space Resource Governance</h3><p>Comparative analysis of international governance models and the evolving legal framework for space-resource extraction.</p></div></section>
+<section class="section" id="radar"><div class="eyebrow">Volume IV · Research Tool</div><h2>Regulatory Radar</h2><p>A curated view of agency activity. This prototype currently shows sample entries. Live source feeds and filtering will be connected in a later iteration.</p><div class="cards"><div class="card"><h3>SEC</h3><p>Enforcement, securities markets, disclosure, and investor protection.</p></div><div class="card"><h3>FTC</h3><p>Competition, consumer protection, privacy, and technology.</p></div><div class="card"><h3>DOJ</h3><p>Federal enforcement, investigations, and policy developments.</p></div></div><div class="tool"><label for="radarFilter">Filter sample updates</label><input id="radarFilter" placeholder="Search agency or topic…"><div id="radarItems" class="result">SEC · Enforcement — Sample placeholder: enforcement and remedies update.
+FTC · Privacy — Sample placeholder: consumer protection development.
+DOJ · Investigations — Sample placeholder: public enforcement policy update.</div><small style="color:#978a74">Sample content only. Live feeds are not yet connected.</small></div></section>
+<section class="section" id="case"><div class="eyebrow">Volume V · Research Tool</div><h2>Case Analysis</h2><p>Paste an opinion or excerpt to create a basic structured outline. This browser-only prototype does not provide legal advice or AI analysis.</p><div class="tool"><textarea id="caseText" rows="8" placeholder="Paste case text here…"></textarea><button id="analyze">Create outline</button><div id="caseResult" class="result"></div></div></section>
+<section class="section" id="contact"><div class="eyebrow">Final Volume</div><h2>Contact</h2><p>For professional inquiries, collaboration, or conversation.</p><div class="cards"><div class="card"><h3>Resume</h3><p>Resume link will be added here.</p></div><div class="card"><h3>LinkedIn</h3><p>LinkedIn profile link will be added here.</p></div><div class="card"><h3>Email</h3><p>Email contact link will be added here.</p></div></div></section>
+</main><footer>Jackson Willis · Legal Library <span id="year"></span> · Research tools are informational and not legal advice.</footer>
+<script>
+document.querySelectorAll('.book').forEach(b=>b.addEventListener('click',()=>{const target=document.getElementById(b.dataset.target);target?.scrollIntoView({behavior:'smooth'});b.style.transform='translateY(-18px)';setTimeout(()=>b.style.transform='',400)}));
+document.getElementById('year').textContent=new Date().getFullYear();
+const radar=document.getElementById('radarItems'),radarText=radar.textContent;
+document.getElementById('radarFilter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();radar.textContent=radarText.split('\n').filter(line=>line.toLowerCase().includes(q)).join('\n')||'No sample results.'});
+document.getElementById('analyze').addEventListener('click',()=>{const t=document.getElementById('caseText').value.trim();if(!t){document.getElementById('caseResult').textContent='Paste some text first.';return;}const sentences=t.replace(/\s+/g,' ').split(/(?<=[.!?])\s+/);const out='CASE TEXT OUTLINE\n\nOpening excerpt:\n'+sentences.slice(0,3).join(' ')+'\n\nPotential issue (manual review required):\nIdentify the legal question presented in the text.\n\nFacts / reasoning excerpt:\n'+sentences.slice(3,8).join(' ')+'\n\nHolding / disposition:\nReview the source text and identify the court’s holding and disposition.\n\nNOTE: This is a simple text segmentation prototype, not substantive legal analysis.';document.getElementById('caseResult').textContent=out;});
+</script></body></html>
