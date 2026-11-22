@@ -1,4 +1,652 @@
 {
- "updated": null,
- "items": []
+ "updated": "2026-11-22T18:57:39Z",
+ "items": [
+  {
+   "section": "scotus",
+   "title": "The next round of Supreme Court forecasts",
+   "url": "https://www.scotusblog.com/2026/11/the-next-round-of-supreme-court-forecasts/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-21T04:55:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "Statement on Proposal to Restructure the Consolidated Audit Trail",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/atkins-statement-proposal-restructure-consolidated-audit-trail-112026",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-20T19:05:50Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Statement on Proposal to Restructure the Governance and Funding of the Consolidated Audit Trail",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/uyeda-statement-consolidated-audit-trail-112026",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-20T19:04:22Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Issues Proposal to Restructure the Consolidated Audit Trail",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-117-sec-issues-proposal-restructure-consolidated-audit-trail",
+   "source": "SEC Press Releases",
+   "date": "2026-11-20T18:03:24Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "scotus",
+   "title": "Criminal law is constitutional law",
+   "url": "https://www.scotusblog.com/2026/11/criminal-law-is-constitutional-law/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-20T15:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "scotus",
+   "title": "Even justices have regrets",
+   "url": "https://www.scotusblog.com/2026/11/even-justices-have-regrets/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-20T14:30:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Charges Indianapolis-Based Backward Hat Capital and Its Co-Founders With $560 Million Dollar Offering Fraud and Obtains Emergency Relief",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-116-sec-charges-indianapolis-based-backward-hat-capital-its-co-founders-560-million-dollar-offering",
+   "source": "SEC Press Releases",
+   "date": "2026-11-20T14:28:28Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "scotus",
+   "title": "Trump administration brings climate grant dispute to SCOTUS",
+   "url": "https://www.scotusblog.com/2026/11/trump-administration-brings-climate-grant-dispute-to-scotus/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-20T14:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Alden Graham",
+   "url": "https://www.federalregister.gov/documents/2026/11/20/2026-23705/petition-for-rulemaking-of-alden-graham",
+   "source": "Federal Register",
+   "date": "2026-11-20T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "scotus",
+   "title": "Trump administration withdraws application to Supreme Court to block lower court ruling on protected status for Venezuelan nationals",
+   "url": "https://www.scotusblog.com/2026/11/trump-administration-asks-supreme-court-to-block-lower-court-ruling-keeping-protected-status-in-/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-19T21:35:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "Remarks to the American Bar Association Federal Regulation of Securities Winter Meeting",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/uyeda-remarks-american-bar-association-meeting-111926",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-19T21:33:28Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Opening Remarks at the 2026 Compliance Outreach Program National Seminar for Investment Advisers and Investment Companies",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/atkins-remarks-compliance-outreach-program-111926",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-19T18:39:47Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "scotus",
+   "title": "Calls for court packing fail the test of history",
+   "url": "https://www.scotusblog.com/2026/11/calls-for-court-packing-fail-the-test-of-history/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-19T15:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "SEC: Eight Entities Used Fake Crypto Asset Trading Platforms to Steal More Than $37 Million From U.S. Investors",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-115-sec-eight-entities-used-fake-crypto-asset-trading-platforms-steal-more-37-million-us-investors",
+   "source": "SEC Press Releases",
+   "date": "2026-11-19T14:39:02Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "scotus",
+   "title": "Five major issues that may still make it onto this term’s oral argument docket",
+   "url": "https://www.scotusblog.com/2026/11/five-major-issues-that-may-still-make-it-onto-this-terms-oral-argument-docket/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-19T14:30:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "scotus",
+   "title": "The Supreme Court and congressional investigations",
+   "url": "https://www.scotusblog.com/2026/11/the-supreme-court-and-congressional-investigations/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-19T14:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "regs",
+   "title": "Executive Compensation Disclosure Reform",
+   "url": "https://www.federalregister.gov/documents/2026/11/19/2026-23555/executive-compensation-disclosure-reform",
+   "source": "Federal Register",
+   "date": "2026-11-19T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "privacy",
+   "title": "Medicare, Medicaid, and Marketplace Programs; Comprehensive Regulations To Uncover Suspicious Healthcare (CRUSH)",
+   "url": "https://www.federalregister.gov/documents/2026/11/19/2026-23461/medicare-medicaid-and-marketplace-programs-comprehensive-regulations-to-uncover-suspicious",
+   "source": "Federal Register",
+   "date": "2026-11-19T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "HIPAA Privacy Rule: Changes To Support Coordinated Care and Individual Engagement and Reduce Regulatory Burdens",
+   "url": "https://www.federalregister.gov/documents/2026/11/19/2026-23429/hipaa-privacy-rule-changes-to-support-coordinated-care-and-individual-engagement-and-reduce",
+   "source": "Federal Register",
+   "date": "2026-11-19T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "scotus",
+   "title": "The Supreme Court before it stood apart",
+   "url": "https://www.scotusblog.com/2026/11/the-supreme-court-before-it-stood-apart/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-18T15:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "scotus",
+   "title": "An election impact on the Supreme Court’s immigration docket",
+   "url": "https://www.scotusblog.com/2026/11/an-election-impact-on-the-supreme-courts-immigration-docket/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-18T14:30:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "scotus",
+   "title": "All eyes on the justices’ next private conference",
+   "url": "https://www.scotusblog.com/2026/11/all-eyes-on-the-justices-next-private-conference/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-18T14:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "scotus",
+   "title": "Justices to consider disputes over transgender servicemembers, E. Jean Carroll’s jury award, and acting U.S. attorneys at next private conference",
+   "url": "https://www.scotusblog.com/2026/11/justices-to-consider-disputes-over-transgender-servicemembers-e-jean-carrolls-jury-award-and-act/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-17T20:41:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "Statement on Proposing Release for Executive Compensation Disclosure Reform",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/atkins-statement-proposing-release-executive-compensation-disclosure-reform-111326",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-13T17:04:02Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Statement on Proposing Release for Executive Compensation Disclosure Reform",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/uyeda-statement-executive-compensation-111326",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-13T16:58:40Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Proposes Executive and Director Compensation Disclosure Reforms",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-114-sec-proposes-executive-director-compensation-disclosure-reforms",
+   "source": "SEC Press Releases",
+   "date": "2026-11-13T16:57:00Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "Mo’ Data, Mo’ Problems",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/selway-remarks-baruch-college-conference-111326",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-13T14:00:00Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Remarks at the 2026 Corporate Financial Reporting Insights (CFRI) Conference",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/atkins-remarks-2026-cfri-conference-111226-remarks-2026-corporate-financial-reporting-insights-cfri-conference",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-12T13:54:08Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "privacy",
+   "title": "Housing and Community Development Act of 1980: Verification of Eligible Status",
+   "url": "https://www.federalregister.gov/documents/2026/11/12/2026-23003/housing-and-community-development-act-of-1980-verification-of-eligible-status",
+   "source": "Federal Register",
+   "date": "2026-11-12T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "sec",
+   "title": "The Economics of Attention",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/white-economics-attention-nacd-111126",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-11T19:01:58Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Remarks at the 26th Annual A.A. Sommer Lecture",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/woodcock-remarks-aa-sommer-lecture-111026",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-10T18:58:02Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Announces Enforcement Annual Results for Fiscal Year 2026",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-113-sec-announces-enforcement-annual-results-fiscal-year-2026",
+   "source": "SEC Press Releases",
+   "date": "2026-11-10T16:15:35Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "Closing Remarks at Roundtable on Machine-Understandable Data in the Age of Super Intelligence",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/atkins-remarks-super-intelligence-110926",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-09T20:27:14Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "sec",
+   "title": "Machine-Understandable Data in the Age of Super Intelligence",
+   "url": "https://www.sec.gov/newsroom/speeches-statements/white-remarks-super-intelligence-110926",
+   "source": "SEC Speeches and Statements",
+   "date": "2026-11-09T14:31:30Z",
+   "feed": "sec-speech"
+  },
+  {
+   "section": "regs",
+   "title": "Amendments to the “Small Business” and “Small Organization” Definitions for Investment Companies and Investment Advisers for Purposes of the Regulatory Flexibility Act",
+   "url": "https://www.federalregister.gov/documents/2026/11/06/2026-22741/amendments-to-the-small-business-and-small-organization-definitions-for-investment-companies-and",
+   "source": "Federal Register",
+   "date": "2026-11-06T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of New Hope Now",
+   "url": "https://www.federalregister.gov/documents/2026/11/05/2026-22581/petition-for-rulemaking-of-new-hope-now",
+   "source": "Federal Register",
+   "date": "2026-11-05T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Adopts Amendments to Update Definitions of Small Entity for Investment Companies and Investment Advisers",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-112-sec-adopts-amendments-update-definitions-small-entity-investment-companies-investment-advisers",
+   "source": "SEC Press Releases",
+   "date": "2026-11-04T16:28:00Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Issues Exemptive Relief from Treasury Clearing Requirements for Certain Inter-Affiliate and Non-U.S. Repo Transactions",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-111-sec-issues-exemptive-relief-treasury-clearing-requirements-certain-inter-affiliate-non-us-repo",
+   "source": "SEC Press Releases",
+   "date": "2026-10-30T19:30:00Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "Two Entities Charged in $130 Million Fraud Scheme That Used False SEC Filings to Boost Investor Confidence",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-110-two-entities-charged-130-million-fraud-scheme-used-false-sec-filings-boost-investor-confidence",
+   "source": "SEC Press Releases",
+   "date": "2026-10-29T16:42:37Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Announces Fiscal Year 2027 Examination Priorities",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-109-sec-announces-fiscal-year-2027-examination-priorities",
+   "source": "SEC Press Releases",
+   "date": "2026-10-23T14:10:00Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "regs",
+   "title": "List of Rules To Be Reviewed Pursuant to the Regulatory Flexibility Act",
+   "url": "https://www.federalregister.gov/documents/2026/10/23/2026-21657/list-of-rules-to-be-reviewed-pursuant-to-the-regulatory-flexibility-act",
+   "source": "Federal Register",
+   "date": "2026-10-23T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Jason Plotzker",
+   "url": "https://www.federalregister.gov/documents/2026/10/21/2026-21510/petition-for-rulemaking-of-jason-plotzker",
+   "source": "Federal Register",
+   "date": "2026-10-21T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "sec",
+   "title": "SEC and AMF Announce Supervisory MOU To Enhance Cooperation for Investment Advisers and Investment Service Providers",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-108-sec-amf-announce-supervisory-mou-enhance-cooperation-investment-advisers-investment-service",
+   "source": "SEC Press Releases",
+   "date": "2026-10-20T13:25:16Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "sec",
+   "title": "SEC, FSA Hold Autumn Financial Regulatory Dialogue",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-107-sec-fsa-hold-autumn-financial-regulatory-dialogue",
+   "source": "SEC Press Releases",
+   "date": "2026-10-20T12:51:00Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "regs",
+   "title": "Interval Fund Modernization; Expansion of Multiple Share Class to Registered Closed-End Management Investment Companies and Business Development Companies",
+   "url": "https://www.federalregister.gov/documents/2026/10/20/C1-2026-20360/interval-fund-modernization-expansion-of-multiple-share-class-to-registered-closed-end-management",
+   "source": "Federal Register",
+   "date": "2026-10-20T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Announces Roundtable on Machine-Understandable Data in the Age of Super Intelligence",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-106-sec-announces-roundtable-machine-understandable-data-age-super-intelligence",
+   "source": "SEC Press Releases",
+   "date": "2026-10-19T17:19:43Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "regs",
+   "title": "Investment Company Cross Trading",
+   "url": "https://www.federalregister.gov/documents/2026/10/15/2026-21037/investment-company-cross-trading",
+   "source": "Federal Register",
+   "date": "2026-10-15T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Investment Adviser Performance-Based Compensation Modernization",
+   "url": "https://www.federalregister.gov/documents/2026/10/06/2026-20474/investment-adviser-performance-based-compensation-modernization",
+   "source": "Federal Register",
+   "date": "2026-10-06T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Adviser and Regulated Fund Custody Rules; Crypto Custody Rules",
+   "url": "https://www.federalregister.gov/documents/2026/10/06/2026-20466/adviser-and-regulated-fund-custody-rules-crypto-custody-rules",
+   "source": "Federal Register",
+   "date": "2026-10-06T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Adoption of Updated EDGAR Filer Manual",
+   "url": "https://www.federalregister.gov/documents/2026/10/06/2026-20461/adoption-of-updated-edgar-filer-manual",
+   "source": "Federal Register",
+   "date": "2026-10-06T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Interval Fund Modernization; Expansion of Multiple Share Class to Registered Closed-End Management Investment Companies and Business Development Companies",
+   "url": "https://www.federalregister.gov/documents/2026/10/05/2026-20360/interval-fund-modernization-expansion-of-multiple-share-class-to-registered-closed-end-management",
+   "source": "Federal Register",
+   "date": "2026-10-05T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Commission Quorum Requirement",
+   "url": "https://www.federalregister.gov/documents/2026/10/02/2026-20262/commission-quorum-requirement",
+   "source": "Federal Register",
+   "date": "2026-10-02T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Rule on Impersonation of Government and Businesses",
+   "url": "https://www.federalregister.gov/documents/2026/10/01/2026-20143/rule-on-impersonation-of-government-and-businesses",
+   "source": "Federal Register",
+   "date": "2026-10-01T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Malik Tony Singleton",
+   "url": "https://www.federalregister.gov/documents/2026/09/30/2026-20078/petition-for-rulemaking-of-malik-tony-singleton",
+   "source": "Federal Register",
+   "date": "2026-09-30T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "regs",
+   "title": "Rules of Practice",
+   "url": "https://www.federalregister.gov/documents/2026/09/24/2026-19598/rules-of-practice",
+   "source": "Federal Register",
+   "date": "2026-09-24T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "regs",
+   "title": "Rules of Practice",
+   "url": "https://www.federalregister.gov/documents/2026/09/24/2026-19597/rules-of-practice",
+   "source": "Federal Register",
+   "date": "2026-09-24T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "regs",
+   "title": "Rescission of Rule 14a-8's Federal Regulation of Shareholder Proposals and Amendments to Rule 14a-4",
+   "url": "https://www.federalregister.gov/documents/2026/09/21/2026-19260/rescission-of-rule-14a-8s-federal-regulation-of-shareholder-proposals-and-amendments-to-rule-14a-4",
+   "source": "Federal Register",
+   "date": "2026-09-21T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Proxy Solicitation Modernization",
+   "url": "https://www.federalregister.gov/documents/2026/09/21/2026-19259/proxy-solicitation-modernization",
+   "source": "Federal Register",
+   "date": "2026-09-21T00:00:00Z",
+   "feed": "fr-sec"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Robert Michael Vanleeuwen",
+   "url": "https://www.federalregister.gov/documents/2026/09/15/2026-18854/petition-for-rulemaking-of-robert-michael-vanleeuwen",
+   "source": "Federal Register",
+   "date": "2026-09-15T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "regs",
+   "title": "Telemarketing Sales Rule Fees",
+   "url": "https://www.federalregister.gov/documents/2026/08/26/2026-17428/telemarketing-sales-rule-fees",
+   "source": "Federal Register",
+   "date": "2026-08-26T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "privacy",
+   "title": "Beneficial Ownership Information Reporting Requirement Revision",
+   "url": "https://www.federalregister.gov/documents/2026/08/14/2026-16576/beneficial-ownership-information-reporting-requirement-revision",
+   "source": "Federal Register",
+   "date": "2026-08-14T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "OCC Rules Regarding the Availability of OCC Information",
+   "url": "https://www.federalregister.gov/documents/2026/08/05/2026-15867/occ-rules-regarding-the-availability-of-occ-information",
+   "source": "Federal Register",
+   "date": "2026-08-05T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Matheus Garcia Pereira",
+   "url": "https://www.federalregister.gov/documents/2026/08/04/2026-15824/petition-for-rulemaking-of-matheus-garcia-pereira",
+   "source": "Federal Register",
+   "date": "2026-08-04T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "privacy",
+   "title": "Suitability Action Appeals",
+   "url": "https://www.federalregister.gov/documents/2026/08/03/2026-15650/suitability-action-appeals",
+   "source": "Federal Register",
+   "date": "2026-08-03T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of the National Consumers League, Campaign for Fairer Gambling, the National Council for Problem Gambling, the Public Health Advocacy Institute, and Truth in Advertising, Inc.",
+   "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15182/petition-for-rulemaking-of-the-national-consumers-league-campaign-for-fairer-gambling-the-national",
+   "source": "Federal Register",
+   "date": "2026-07-28T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "privacy",
+   "title": "Public Charge Ground of Inadmissibility",
+   "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14539/public-charge-ground-of-inadmissibility",
+   "source": "Federal Register",
+   "date": "2026-07-20T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "Alien Registration Form and Evidence of Registration",
+   "url": "https://www.federalregister.gov/documents/2026/06/29/2026-13057/alien-registration-form-and-evidence-of-registration",
+   "source": "Federal Register",
+   "date": "2026-06-29T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "Event Data Recorders",
+   "url": "https://www.federalregister.gov/documents/2026/05/18/2026-09849/event-data-recorders",
+   "source": "Federal Register",
+   "date": "2026-05-18T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "regs",
+   "title": "Petition for Rulemaking of Animal Rescuers for Change",
+   "url": "https://www.federalregister.gov/documents/2026/04/24/2026-07997/petition-for-rulemaking-of-animal-rescuers-for-change",
+   "source": "Federal Register",
+   "date": "2026-04-24T00:00:00Z",
+   "feed": "fr-ftc"
+  },
+  {
+   "section": "privacy",
+   "title": "Improving Customer Service and Protecting Consumers Through Onshoring",
+   "url": "https://www.federalregister.gov/documents/2026/04/23/2026-07960/improving-customer-service-and-protecting-consumers-through-onshoring",
+   "source": "Federal Register",
+   "date": "2026-04-23T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "Concept Release on Consolidated Audit Trail and Other Audit Trails and Data Sources",
+   "url": "https://www.federalregister.gov/documents/2026/04/20/2026-07651/concept-release-on-consolidated-audit-trail-and-other-audit-trails-and-data-sources",
+   "source": "Federal Register",
+   "date": "2026-04-20T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "privacy",
+   "title": "Medicare Program; Contract Year 2027 and Certain Contract Year 2026 Policy and Technical Changes to the Medicare Advantage Program, Medicare Prescription Drug Benefit Program, and Medicare Cost Plan Program",
+   "url": "https://www.federalregister.gov/documents/2026/04/06/2026-06600/medicare-program-contract-year-2027-and-certain-contract-year-2026-policy-and-technical-changes-to",
+   "source": "Federal Register",
+   "date": "2026-04-06T00:00:00Z",
+   "feed": "fr-privacy"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.10159",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/10159",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.8552",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/8552",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.4930",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/4930",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.8352",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/8352",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.5284",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/5284",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "H.R.1550",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/1550",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "Most-Viewed Bills - Week of November 15, 2026",
+   "url": "https://www.congress.gov/most-viewed-bills",
+   "source": "Congress.gov",
+   "date": "",
+   "feed": "cg-viewed"
+  }
+ ],
+ "status": {
+  "sec-press": "ok (25)",
+  "sec-lit": "error: HTTPError (kept 0)",
+  "sec-admin": "error: HTTPError (kept 0)",
+  "sec-halts": "error: HTTPError (kept 0)",
+  "sec-speech": "ok (25)",
+  "fr-sec": "ok (12)",
+  "fr-ftc": "ok (12)",
+  "fr-privacy": "ok (12)",
+  "ftc-press": "error: HTTPError (kept 0)",
+  "cg-president": "ok (6)",
+  "cg-viewed": "ok (1)",
+  "scotus-ops": "error: ParseError (kept 0)",
+  "scotusblog": "ok (25)"
+ }
 }
