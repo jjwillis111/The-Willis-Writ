@@ -73,12 +73,14 @@ FEEDS = [
          + '&hl=en-US&gl=US&ceid=US:en'},  # CHECK
 
     # Congress: Congress.gov feeds
-    {'id': 'cg-president', 'section': 'congress', 'source': 'Congress.gov', 'kind': 'rss', 'desc': True, 'debug': True,
+    {'id': 'cg-president', 'section': 'congress', 'source': 'Congress.gov, sent to the President', 'kind': 'rss', 'bill': True,
      'url': 'https://www.congress.gov/rss/presented-to-president.xml'},
-    {'id': 'govtrack-enacted', 'section': 'congress', 'source': 'GovTrack', 'kind': 'rss', 'desc': True, 'debug': True,
-     'url': 'https://www.govtrack.us/events/events.rss?feeds=misc%3Aenactedbills'},  # CHECK
-    {'id': 'govinfo-plaw', 'section': 'congress', 'source': 'GovInfo', 'kind': 'rss', 'desc': True, 'debug': True,
-     'url': 'https://www.govinfo.gov/rss/plaw.xml'},  # CHECK
+    {'id': 'govtrack-enacted', 'section': 'congress', 'source': 'GovTrack, signed into law', 'kind': 'rss', 'bill': True,
+     'url': 'https://www.govtrack.us/events/events.rss?feeds=misc%3Aenactedbills'},
+    # New bill activity on topics that matter here (privacy, securities, investigations, data)
+    {'id': 'govtrack-bills', 'section': 'congress', 'source': 'GovTrack, bill activity', 'kind': 'rss', 'bill': True, 'limit': 8,
+     'url': 'https://www.govtrack.us/events/events.rss?feeds=misc%3Aallbills',  # CHECK
+     'require': r'\b(privacy|data|securit\w*|exchange commission|investigat\w*|cyber\w*|consumer|artificial intelligence|biometric|financial)\b'},
 
     # Supreme Court (supremecourt.gov RSS returned a web page to the bot, so SCOTUSblog only)
     {'id': 'scotusblog', 'section': 'scotus', 'source': 'SCOTUSblog', 'kind': 'rss',
@@ -94,7 +96,12 @@ def get(url, timeout=25):
 
 def clean(text):
     text = html.unescape(re.sub(r'<[^>]+>', ' ', text or ''))
+    text = text.replace('\u2014', ' - ').replace('\u2013', '-')
     return re.sub(r'\s+', ' ', text).strip()
+
+
+def trim(text, n):
+    return text if len(text) <= n else text[:n].rsplit(' ', 1)[0].rstrip(',;:') + '...'
 
 
 def to_iso(value):
@@ -123,6 +130,13 @@ def local(tag):
 def parse_rss(data, feed):
     root = ET.fromstring(data)
     items = []
+    chan_date = ''
+    for node in root.iter():
+        name = local(node.tag)
+        if name in ('item', 'entry'):
+            break
+        if name in ('pubDate', 'lastBuildDate', 'updated') and not chan_date:
+            chan_date = to_iso(node.text)
     for node in root.iter():
         name = local(node.tag)
         if name not in ('item', 'entry'):
@@ -137,13 +151,22 @@ def parse_rss(data, feed):
                 fields[cn] = child.text or ''
         title = clean(fields.get('title'))
         link = link or clean(fields.get('guid'))
-        date = to_iso(fields.get('pubDate') or fields.get('updated') or fields.get('published') or fields.get('date'))
+        date = to_iso(fields.get('pubDate') or fields.get('updated') or fields.get('published') or fields.get('date')) or chan_date
         source = feed['source']
         if feed.get('use_source') and clean(fields.get('source')):
             source = clean(fields.get('source'))
             suffix = ' - ' + source
             if title.endswith(suffix):
                 title = title[:-len(suffix)].rstrip()
+        if feed.get('bill'):
+            m = re.match(r'^([A-Za-z.\s]{1,16}\d+):\s*(.+)$', title)
+            if m:
+                source = '%s (%s)' % (m.group(1).strip(), feed['source'])
+                title = m.group(2).strip()
+            elif re.match(r'^[A-Za-z.]+\d+$', title):
+                full = trim(clean(fields.get('description')), 150)
+                source = '%s (%s)' % (title, feed['source'])
+                title = full or title
         if feed.get('require') and not re.search(feed['require'], title, re.I):
             continue
         if title and link.startswith('http'):
