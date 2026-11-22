@@ -237,6 +237,9 @@ i { font-style: normal; display: block; }
   .p-empty ul { columns: 1; }
 }
 
+/* the left board is animated from script so it follows the cover */
+.book.dual .bd.bl { transition: none; }
+
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
    ========================================================================== */
@@ -981,12 +984,42 @@ i { font-style: normal; display: block; }
   /* ==================================================================
      Turning pages
      ================================================================== */
+  /* The cover leaf turns with this curve. The left board, the page-edge strips and the
+     recentering of the book all follow the same curve, so nothing moves ahead of the cover. */
+  var LEAF_EASE = 'cubic-bezier(.45,.05,.25,1)';
+  function bezier(x1, y1, x2, y2) {
+    return function (t) {
+      var lo = 0, hi = 1, m = t, i;
+      for (i = 0; i < 24; i += 1) {
+        m = (lo + hi) / 2;
+        var x = 3 * (1 - m) * (1 - m) * m * x1 + 3 * (1 - m) * m * m * x2 + m * m * m;
+        if (x < t) { lo = m; } else { hi = m; }
+      }
+      return 3 * (1 - m) * (1 - m) * m * y1 + 3 * (1 - m) * m * m * y2 + m * m * m;
+    };
+  }
+  var leafCurve = bezier(0.45, 0.05, 0.25, 1);
+  // The left board is the inside of the cover once it has swung past vertical,
+  // so its width is the cover's horizontal reach to the left: max(0, -cos(angle)).
+  function trackBoard(bl, opening, ms) {
+    var kf = [], n = 32, i;
+    for (i = 0; i <= n; i += 1) {
+      var t = i / n, a = leafCurve(t);
+      if (!opening) { a = 1 - a; }
+      kf.push({ offset: t, transform: 'scaleX(' + Math.max(0, -Math.cos(Math.PI * a)).toFixed(4) + ')' });
+    }
+    if (!bl.animate) { return; }
+    bl.getAnimations().forEach(function (x) { x.cancel(); });
+    var an = bl.animate(kf, { duration: Math.max(1, ms), easing: 'linear', fill: 'forwards' });
+    an.onfinish = function () { an.cancel(); };
+  }
+
   function flipEl(j, fwd, dur, delay) {
     var l = S.leaves[j], N = S.leaves.length;
     setTimeout(function () {
       if (!S.leaves[j] || S.leaves[j] !== l) return;
       var d = dur * K;
-      l.style.transition = 'transform ' + d + 'ms cubic-bezier(.45,.05,.25,1), opacity ' + (fwd ? '160ms linear ' + Math.round(d * 0.62) + 'ms' : '100ms linear 0ms');
+      l.style.transition = 'transform ' + d + 'ms ' + LEAF_EASE + ', opacity ' + (fwd ? '160ms linear ' + Math.round(d * 0.62) + 'ms' : '100ms linear 0ms');
       l.style.zIndex = 200 + (fwd ? j : N - j);
       l.classList.toggle('flipped', fwd);
       setTimeout(function () { l.style.zIndex = fwd ? j : N - j; }, d + 30);
@@ -1004,6 +1037,11 @@ i { font-style: normal; display: block; }
     list.forEach(function (j, i) { flipEl(j, dir > 0, dur, i * stagger); });
     S.spread = target;
     S.turning = true;
+    var edge = (cur === 0 || target === 0), cdl = edge ? list.indexOf(0) * stagger : 0;
+    [S.stkL, S.stkR].forEach(function (k) {
+      if (!k) { return; }
+      k.style.transition = edge ? ('width ' + Math.round(dur * 0.4 * K) + 'ms ease ' + Math.round((cdl + dur * (target === 0 ? 0.55 : 0.6)) * K) + 'ms') : '';
+    });
     updateUI();
     if (cur === 0 || target === 0) {
       var cd = list.indexOf(0) * stagger;
@@ -1011,7 +1049,8 @@ i { font-style: normal; display: block; }
       setTimeout(function () {
         if (S.book !== bk) return;
         bk.style.transitionDuration = (dur * K) + 'ms';
-        $$('.bd.bl', bk).forEach(function (x) { x.style.transitionDuration = (dur * K) + 'ms'; });
+        bk.style.transitionTimingFunction = LEAF_EASE;
+        $$('.bd.bl', bk).forEach(function (x) { trackBoard(x, target > 0, dur * K); });
         bk.classList.toggle('open', target > 0);
       }, cd * K);
     }
