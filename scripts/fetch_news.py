@@ -64,9 +64,7 @@ FEEDS = [
     {'id': 'cg-viewed', 'section': 'congress', 'source': 'Congress.gov', 'kind': 'rss',
      'url': 'https://www.congress.gov/rss/most-viewed-bills.xml'},  # CHECK
 
-    # Supreme Court
-    {'id': 'scotus-ops', 'section': 'scotus', 'source': 'Supreme Court Opinions', 'kind': 'rss',
-     'url': 'https://www.supremecourt.gov/rss/slipopinions.aspx'},  # CHECK
+    # Supreme Court (supremecourt.gov RSS returned a web page to the bot, so SCOTUSblog only)
     {'id': 'scotusblog', 'section': 'scotus', 'source': 'SCOTUSblog', 'kind': 'rss',
      'url': 'https://www.scotusblog.com/feed/'},  # CHECK
 ]
