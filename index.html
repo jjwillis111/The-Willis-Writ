@@ -165,13 +165,14 @@ i { font-style: normal; display: block; }
 @keyframes globeflare { 0% { opacity: 0; transform: scale(.9); } 40% { opacity: 1; } 100% { opacity: 1; transform: scale(1.3); } }
 @media (prefers-reduced-motion: reduce) { .hot-globe::after { animation: none; } .hot-globe.flare::before { animation: none; } }
 
-.globe-cap { position: absolute; z-index: 3; transform: translate(-50%, -22%); pointer-events: none; white-space: nowrap;
+.globe-cap, .bust-cap { position: absolute; z-index: 3; transform: translate(-50%, -22%); pointer-events: none; white-space: nowrap;
   padding: .2em .95em .3em; border: 1px solid rgba(58, 36, 8, .75); border-radius: 2px;
   font: normal 400 clamp(11px, 1.02vw, 17px)/1.15 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #2a1a06; letter-spacing: .02em;
   background: linear-gradient(180deg, #ecd69a, #b98f45 55%, #dcc07e);
   box-shadow: inset 0 1px 0 rgba(255, 240, 196, .65), 0 2px 6px rgba(0, 0, 0, .65); transition: filter 300ms ease; }
-.hot-globe:hover + .globe-cap, .hot-globe:focus-visible + .globe-cap, .hot-globe.hov + .globe-cap { filter: brightness(1.14); }
-.pt .globe-cap { transform: translate(-50%, -85%); font-size: 11px; padding: .15em .7em .25em; }
+.hot-globe:hover + .globe-cap, .hot-globe:focus-visible + .globe-cap, .hot-globe.hov + .globe-cap,
+.hot-bust:hover + .bust-cap, .hot-bust:focus-visible + .bust-cap, .hot-bust.hov + .bust-cap { filter: brightness(1.14); }
+.pt .globe-cap, .pt .bust-cap { transform: translate(-50%, -85%); font-size: 11px; padding: .15em .7em .25em; }
 
 /* ==========================================================================
    The Legal Wire broadsheet
@@ -243,6 +244,57 @@ i { font-style: normal; display: block; }
 
 /* the left board is animated from script so it follows the cover */
 .book.dual .bd.bl { transition: none; }
+
+/* ==========================================================================
+   Jefferson bust and the letter it opens
+   ========================================================================== */
+.hot-bust { position: absolute; z-index: 3; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 44% 44% 10% 10% / 40% 40% 8% 8%; }
+.hot-bust:focus-visible { outline: 2px solid #e4cd92; outline-offset: 3px; }
+.hot-bust::before { content: ""; position: absolute; left: -14%; right: -14%; top: -8%; bottom: 2%; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 320ms ease;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 222, 150, .40), rgba(255, 196, 110, .15) 52%, rgba(255, 190, 100, 0) 72%); mix-blend-mode: screen; }
+.hot-bust:hover::before, .hot-bust:focus-visible::before, .hot-bust.hov::before, .hot-bust.flare::before { opacity: 1; }
+.hot-bust.flare::before { animation: globeflare 520ms ease-out; }
+
+.letterwrap { position: absolute; left: 50%; top: calc(50% + 14px); width: min(780px, calc(100vw - 28px)); pointer-events: auto;
+  transform: translate(-50%, -44%) rotate(-3.5deg) scale(.93); opacity: 0; transition: transform 1000ms cubic-bezier(.2, .8, .2, 1), opacity 480ms ease; }
+.letterwrap.on { transform: translate(-50%, -50%) rotate(-.7deg) scale(1); opacity: 1; }
+.letter-shadow { position: absolute; left: 2%; right: 2%; top: 4%; bottom: -1%; box-shadow: 0 34px 80px 8px rgba(0, 0, 0, .7); pointer-events: none; }
+.letter { position: relative; box-sizing: border-box; color: #2a1b10;
+  padding: clamp(26px, 5.2vw, 64px) clamp(24px, 5.6vw, 72px) clamp(22px, 4vw, 48px);
+  background-color: #e9dcb8;
+  background-image:
+    radial-gradient(ellipse at 12% 18%, rgba(150, 100, 40, .20), rgba(150, 100, 40, 0) 38%),
+    radial-gradient(ellipse at 88% 82%, rgba(120, 75, 25, .26), rgba(120, 75, 25, 0) 42%),
+    radial-gradient(circle at 70% 12%, rgba(130, 85, 30, .12), rgba(130, 85, 30, 0) 18%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 31.5%, rgba(80, 50, 15, .10) 33%, rgba(255, 245, 215, .22) 34.2%, rgba(0, 0, 0, 0) 35.5%, rgba(0, 0, 0, 0) 64.5%, rgba(80, 50, 15, .10) 66%, rgba(255, 245, 215, .22) 67.2%, rgba(0, 0, 0, 0) 68.5%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.55 .9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"), linear-gradient(180deg, #efe3c2, #e0cf9f);
+  box-shadow: inset 0 0 70px rgba(110, 70, 20, .42), inset 0 0 14px rgba(90, 55, 15, .35);
+  clip-path: polygon(0.4% 0.8%, 8% 0.2%, 17% 0.9%, 29% 0.3%, 41% 0.8%, 55% 0.2%, 68% 0.9%, 82% 0.3%, 93% 0.8%, 99.6% 0.5%,
+    99.8% 12%, 99.3% 27%, 99.9% 43%, 99.4% 58%, 99.8% 73%, 99.3% 88%, 99.7% 99.4%,
+    92% 99.8%, 80% 99.2%, 66% 99.8%, 52% 99.3%, 38% 99.9%, 24% 99.3%, 11% 99.8%, 0.5% 99.5%,
+    0.2% 86%, 0.8% 71%, 0.1% 56%, 0.7% 41%, 0.2% 26%, 0.8% 12%); }
+.lt-scroll { max-height: min(calc(100vh - 190px), 760px); max-height: min(calc(100dvh - 190px), 760px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #9c8a63 transparent;
+  font-family: 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; }
+.lt-date { text-align: right; font-size: clamp(17px, 1.9vw, 24px); line-height: 1.2; color: #4a3520; }
+.lt-to { margin-top: .5em; font-size: clamp(18px, 2.1vw, 26px); line-height: 1.2; color: #3a2915; }
+.lt-body { margin-top: clamp(14px, 2.4vw, 28px); font-size: clamp(22px, 2.75vw, 34px); line-height: 1.42; color: #231509; text-shadow: 0 0 1px rgba(35, 21, 9, .35); }
+.lt-body p { margin: 0 0 .55em; }
+.lt-body .w { opacity: 0; filter: blur(2px); transition: opacity 380ms ease, filter 380ms ease; }
+.letterwrap.on .lt-body .w { opacity: 1; filter: none; }
+.lt-sign { position: relative; margin-top: clamp(10px, 2vw, 24px); text-align: right; }
+.lt-name { display: inline-block; font-size: clamp(30px, 4.2vw, 56px); line-height: 1.1; color: #1c1108; text-shadow: 0 0 1px rgba(28, 17, 8, .4); transform: rotate(-2.5deg); transform-origin: 100% 100%;
+  clip-path: inset(-10% 100% -10% -4%); transition: clip-path 1100ms cubic-bezier(.4, .1, .3, 1); }
+.letterwrap.on .lt-name { clip-path: inset(-10% -4% -10% -4%); }
+.lt-flourish { display: block; margin: -.28em 0 0 auto; width: clamp(170px, 24vw, 300px); height: auto; overflow: visible; }
+.lt-flourish path { fill: none; stroke: #1c1108; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1100ms cubic-bezier(.45, .1, .3, 1); }
+.letterwrap.on .lt-flourish path { stroke-dashoffset: 0; }
+.letter.still .w, .letter.still .lt-name, .letter.still .lt-flourish path { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .lt-body .w, .lt-name, .lt-flourish path { transition: none !important; transition-delay: 0ms !important; } }
+@media (max-width: 640px) {
+  .letterwrap { top: calc(50% + 6px); }
+  .lt-body { font-size: clamp(20px, 5.4vw, 26px); }
+}
+#stage.on { pointer-events: auto; }
 
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
@@ -672,14 +724,14 @@ i { font-style: normal; display: block; }
       writing:    [866, 313, 169, 209],
       legal:      [1055, 313, 174, 209],
       research:   [1250, 313, 172, 209]
-    }, globe: [1234, 105, 156, 184] },
+    }, globe: [1234, 105, 156, 184], bust: [548, 112, 126, 178] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
       experience: [265, 539, 144, 241],
       writing:    [426, 539, 146, 241],
       legal:      [586, 539, 144, 241],
       research:   [746, 539, 146, 241]
-    }, globe: [718, 320, 162, 190] }
+    }, globe: [718, 320, 162, 190], bust: [250, 332, 126, 178] }
   };
   var IW = 1672, IH = 941;
   // Colors of the board edges around the pages, matched to each cover.
@@ -708,6 +760,7 @@ i { font-style: normal; display: block; }
 
   var NEWS = { id: 'news', label: 'Legal Wire', sub: 'Law, regulation and the courts', pages: [] };
   VOLS.splice(Math.max(0, VOLS.length - 1), 0, NEWS); BY.news = NEWS;
+  var JEFF = { id: 'jefferson', label: 'Thomas Jefferson', sub: '', pages: [] }; BY.jefferson = JEFF;
 
   var viewport = $('#viewport'), room = $('#room'), world = $('#world'), hero = $('#hero'), top = $('#top'), nav = $('#nav'), fly = $('#fly');
   var stage = $('#stage'), mount = $('#mount');
@@ -757,6 +810,13 @@ i { font-style: normal; display: block; }
     NEWS.nav.addEventListener('mouseleave', function () { gb.classList.remove('hov'); });
     world.appendChild(gb); world.appendChild(gc);
     S.globe = gb; S.cap = gc; NEWS.hot = gb;
+
+    var jb = el('button', 'hot-bust', '<span class="vh">Read a passage from Thomas Jefferson</span>');
+    jb.type = 'button'; jb.setAttribute('data-id', 'jefferson');
+    var jc = el('div', 'bust-cap', '<span>Jefferson</span>');
+    jb.addEventListener('click', function () { openVol('jefferson', jb); });
+    world.appendChild(jb); world.appendChild(jc);
+    S.bust = jb; S.bcap = jc; JEFF.hot = jb;
   }
   var bgblur = $('#bgblur');
   function applyPlate(key) {
@@ -776,6 +836,12 @@ i { font-style: normal; display: block; }
       pos(S.globe, g);
       S.cap.style.left = ((g[0] + g[2] / 2) / IW * 100) + '%';
       S.cap.style.top = ((g[1] + g[3]) / IH * 100) + '%';
+    }
+    if (S.bust && p.bust) {
+      var bb = p.bust;
+      pos(S.bust, bb);
+      S.bcap.style.left = ((bb[0] + bb[2] / 2) / IW * 100) + '%';
+      S.bcap.style.top = ((bb[1] + bb[3]) / IH * 100) + '%';
     }
   }
   function btnFor(id) { var v = BY[id]; return v ? (v.hot || v.nav) : null; }
@@ -1110,7 +1176,7 @@ i { font-style: normal; display: block; }
     room.setAttribute('inert', '');
     viewport.classList.add('opening');
 
-    var dm = bookDims(), L = landRect(), sp = null, tLand, isNews = (id === 'news');
+    var dm = bookDims(), L = landRect(), sp = null, tLand, isNews = (id === 'news'), isLetter = (id === 'jefferson');
     if (v.hs) {
       var from = shelfRect(v);
       sp = makeSprite(v, from, false);
@@ -1127,12 +1193,14 @@ i { font-style: normal; display: block; }
       tLand = 1450;
     } else {
       if (isNews && S.globe) { S.globe.classList.add('flare'); }
-      later(isNews ? 420 : 60, function () { world.classList.add('pushed'); });
-      tLand = isNews ? 1150 : 800;
+      if (isLetter && S.bust) { S.bust.classList.add('flare'); }
+      later(isNews ? 420 : (isLetter ? 300 : 60), function () { world.classList.add('pushed'); });
+      tLand = isNews ? 1150 : (isLetter ? 900 : 800);
     }
 
     later(tLand, function () {
       if (isNews) { openPaper(v); return; }
+      if (isLetter) { openLetter(v); return; }
       buildBook(v, 0, !!sp);
       stage.classList.add('on', 'dimmed');
       stage.setAttribute('aria-hidden', 'false');
@@ -1321,6 +1389,110 @@ i { font-style: normal; display: block; }
     });
   }
 
+
+  /* ==================================================================
+     Jefferson: click the bust for a notable passage, set as a letter
+     ================================================================== */
+  var JQ = [
+    { place: 'Paris', date: 'January 16, 1787', to: 'To Edward Carrington',
+      text: ['The basis of our governments being the opinion of the people, the very first object should be to keep that right; and were it left to me to decide whether we should have a government without newspapers, or newspapers without a government, I should not hesitate a moment to prefer the latter.'] },
+    { place: 'Paris', date: 'January 30, 1787', to: 'To James Madison',
+      text: ['I hold it that a little rebellion now and then is a good thing, and as necessary in the political world as storms in the physical.'] },
+    { place: 'Paris', date: 'August 10, 1787', to: 'To Peter Carr',
+      text: ['Fix reason firmly in her seat, and call to her tribunal every fact, every opinion.'] },
+    { place: 'Paris', date: 'December 20, 1787', to: 'To James Madison',
+      text: ['A bill of rights is what the people are entitled to against every government on earth, general or particular, and what no just government should refuse, or rest on inference.'] },
+    { place: 'Monticello', date: 'September 23, 1800', to: 'To Dr. Benjamin Rush',
+      text: ['I have sworn upon the altar of God eternal hostility against every form of tyranny over the mind of man.'] },
+    { place: 'Washington', date: 'March 4, 1801', to: 'From the First Inaugural Address',
+      text: ['If there be any among us who would wish to dissolve this Union or to change its republican form, let them stand undisturbed as monuments of the safety with which error of opinion may be tolerated where reason is left free to combat it.'] },
+    { place: 'Washington', date: 'January 1, 1802', to: 'To the Danbury Baptist Association',
+      text: ['Believing with you that religion is a matter which lies solely between man and his God, that he owes account to none other for his faith or his worship, that the legitimate powers of government reach actions only, and not opinions, I contemplate with sovereign reverence that act of the whole American people which declared that their legislature should "make no law respecting an establishment of religion, or prohibiting the free exercise thereof," thus building a wall of separation between Church and State.'] },
+    { place: 'Washington', date: 'June 11, 1807', to: 'To John Norvell',
+      text: ['The man who never looks into a newspaper is better informed than he who reads them; inasmuch as he who knows nothing is nearer to truth than he whose mind is filled with falsehoods and errors.'] },
+    { place: 'Monticello', date: 'August 13, 1813', to: 'To Isaac McPherson',
+      text: ['He who receives an idea from me, receives instruction himself without lessening mine; as he who lights his taper at mine, receives light without darkening me.'] },
+    { place: 'Monticello', date: 'October 28, 1813', to: 'To John Adams',
+      text: ['I agree with you that there is a natural aristocracy among men. The grounds of this are virtue and talents. The natural aristocracy I consider as the most precious gift of nature for the instruction, the trusts, and government of society.'] },
+    { place: 'Monticello', date: 'January 6, 1816', to: 'To Charles Yancey',
+      text: ['If a nation expects to be ignorant and free, in a state of civilization, it expects what never was and never will be. The functionaries of every government have propensities to command at will the liberty and property of their constituents. There is no safe deposit for these but with the people themselves; nor can they be safe with them without information. Where the press is free and every man able to read, all is safe.'] },
+    { place: 'Monticello', date: 'May 28, 1816', to: 'To John Taylor',
+      text: ['I sincerely believe, with you, that banking establishments are more dangerous than standing armies; and that the principle of spending money to be paid by posterity, under the name of funding, is but swindling futurity on a large scale.'] },
+    { place: 'Monticello', date: 'July 12, 1816', to: 'To Samuel Kercheval',
+      text: ['I am certainly not an advocate for frequent and untried changes in laws and constitutions. ... But I know also, that laws and institutions must go hand in hand with the progress of the human mind. ... We might as well require a man to wear still the coat which fitted him when a boy, as civilized society to remain ever under the regimen of their barbarous ancestors.'] },
+    { place: 'Monticello', date: 'August 1, 1816', to: 'To John Adams',
+      text: ['I like the dreams of the future better than the history of the past.'] },
+    { place: 'Poplar Forest', date: 'September 6, 1819', to: 'To Spencer Roane',
+      text: ['The Constitution, on this hypothesis, is a mere thing of wax in the hands of the judiciary, which they may twist, and shape into any form they please.'] },
+    { place: 'Monticello', date: 'September 28, 1820', to: 'To William Charles Jarvis',
+      text: ['. . . the ultimate arbiters of all constitutional questions; a very dangerous doctrine indeed, and one which would place us under the despotism of an oligarchy. Our judges are as honest as other men, and not more so.'] },
+    { place: 'Monticello', date: 'February 21, 1825', to: 'To Thomas Jefferson Smith',
+      text: ['A Decalogue of Canons for observation in practical life.', '1. Never put off till tomorrow what you can do to-day.', '2. Never trouble another for what you can do yourself.', '3. Never spend your money before you have it.', '. . .', '10. When angry, count ten, before you speak; if very angry, an hundred.'] },
+    { place: 'Monticello', date: 'June 24, 1826', to: 'To Roger C. Weightman',
+      text: ['The general spread of the light of science has already laid open to every view the palpable truth, that the mass of mankind has not been born with saddles on their backs, nor a favored few booted and spurred, ready to ride them legitimately, by the grace of God.'] },
+    { place: '', date: '1776', to: 'From the Declaration of Independence',
+      text: ['We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.'] },
+    { place: '', date: '1785', to: 'From Notes on the State of Virginia, Query XVII',
+      text: ['The legitimate powers of government extend to such acts only as are injurious to others. But it does me no injury for my neighbor to say there are twenty gods, or no god. It neither picks my pocket nor breaks my leg.'] }
+  ];
+  var jbag = [], jlast = -1;
+  function nextQuote() {
+    if (!jbag.length) {
+      var i, j, t;
+      for (i = 0; i < JQ.length; i += 1) { jbag.push(i); }
+      for (i = jbag.length - 1; i > 0; i -= 1) { j = Math.floor(Math.random() * (i + 1)); t = jbag[i]; jbag[i] = jbag[j]; jbag[j] = t; }
+      if (jbag[jbag.length - 1] === jlast && jbag.length > 1) { t = jbag[0]; jbag[0] = jbag[jbag.length - 1]; jbag[jbag.length - 1] = t; }
+    }
+    jlast = jbag.pop();
+    return JQ[jlast];
+  }
+
+  function buildLetter() {
+    var q = nextQuote();
+    var lw = el('div', 'letterwrap');
+    var lt = el('article', 'letter' + (reduce ? ' still' : ''));
+    lt.setAttribute('aria-label', 'A passage from Thomas Jefferson');
+    var n = 0, i;
+    q.text.forEach(function (p) { n += p.split(/\s+/).length; });
+    var per = Math.min(70, 3000 / Math.max(1, n)), k = 0;
+    var body = q.text.map(function (p) {
+      return '<p>' + p.split(/\s+/).map(function (w) {
+        var d = Math.round((600 + k * per) * K); k += 1;
+        return '<span class="w" style="transition-delay:' + d + 'ms">' + esc(w) + '</span> ';
+      }).join('') + '</p>';
+    }).join('');
+    var tEnd = Math.round((600 + k * per) * K);
+    var dateLine = (q.place ? q.place + ', ' : '') + q.date;
+    lt.innerHTML =
+      '<div class="lt-scroll">' +
+        '<div class="lt-date">' + esc(dateLine) + '</div>' +
+        '<div class="lt-to">' + esc(q.to) + '</div>' +
+        '<div class="lt-body">' + body + '</div>' +
+        '<div class="lt-sign"><span class="lt-name" style="transition-delay:' + (tEnd + Math.round(250 * K)) + 'ms">Th: Jefferson</span>' +
+          '<svg class="lt-flourish" viewBox="0 0 320 44" aria-hidden="true"><path pathLength="1" style="transition-delay:' + (tEnd + Math.round(900 * K)) + 'ms" d="M6 30 C46 8 92 40 146 24 S226 8 268 28 C282 34 292 24 282 19 C274 15 268 26 286 31 C300 34 312 26 316 20"/></svg>' +
+        '</div>' +
+      '</div>';
+    lw.appendChild(el('div', 'letter-shadow'));
+    lw.appendChild(lt);
+    mount.innerHTML = '';
+    mount.appendChild(lw);
+    S.pw = lw; S.paper = null; S.scroller = null;
+    return lw;
+  }
+
+  function openLetter(v) {
+    S.vol = v; S.spread = 0; S.total = 0; S.leaves = []; S.book = null; S.wrap = null;
+    var lw = buildLetter();
+    stage.classList.add('on', 'dimmed');
+    stage.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { lw.classList.add('on'); }); });
+    later(700, function () {
+      S.busy = false;
+      ui.top.classList.add('show');
+      ui.close.focus({ preventScroll: true });
+    });
+  }
+
   function closePaper() {
     S.busy = true;
     var v = S.vol;
@@ -1343,6 +1515,7 @@ i { font-style: normal; display: block; }
     S.open = false; S.busy = false; S.turning = false; S.leaves = []; S.book = null; S.wrap = null; S.dirty = false; S.sp = null;
     S.pw = null; S.paper = null; S.scroller = null;
     if (S.globe) { S.globe.classList.remove('flare', 'hov'); }
+    if (S.bust) { S.bust.classList.remove('flare', 'hov'); }
     viewport.classList.remove('opening');
     if (nxt && BY[nxt]) {
       var nb = btnFor(nxt);
@@ -1353,7 +1526,7 @@ i { font-style: normal; display: block; }
 
   function closeVol() {
     if (!S.open || S.busy || S.turning) return;
-    if (S.vol && S.vol.id === 'news') { closePaper(); return; }
+    if (S.vol && (S.vol.id === 'news' || S.vol.id === 'jefferson')) { closePaper(); return; }
     S.busy = true;
     var v = S.vol;
     ui.top.classList.remove('show'); ui.bot.classList.remove('show');
@@ -1399,7 +1572,7 @@ i { font-style: normal; display: block; }
   }
 
   function rebuildOpen() {
-    if (!S.open || !S.vol || S.vol.id === 'news') return;
+    if (!S.open || !S.vol || S.vol.id === 'news' || S.vol.id === 'jefferson') return;
     var oldDual = S.dual, sp = S.spread, pageIdx = sp < 1 ? -1 : (oldDual ? 2 * (sp - 1) : sp - 1);
     var ns = pageIdx < 0 ? 0 : (dual ? Math.floor(pageIdx / 2) + 1 : pageIdx + 1);
     buildBook(S.vol, ns, true);
@@ -1409,6 +1582,12 @@ i { font-style: normal; display: block; }
      Events
      ================================================================== */
   ui.close.addEventListener('click', closeVol);
+  var tapAway = window.matchMedia ? window.matchMedia('(pointer: coarse), (max-width: 759px)') : null;
+  stage.addEventListener('click', function (e) {
+    if (!tapAway || !tapAway.matches || !S.open) { return; }
+    var t = e.target;
+    if (t === stage || t === mount || t.id === 'dim' || t.id === 'uitop' || t.id === 'uibot') { closeVol(); }
+  });
   ui.prev.addEventListener('click', function () { step(-1); });
   ui.next.addEventListener('click', function () { step(1); });
   doc.addEventListener('keydown', function (e) {
