@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T19:02:20Z",
+ "updated": "2026-11-22T19:10:12Z",
  "items": [
   {
    "section": "scotus",
@@ -646,7 +646,6 @@
   "ftc-press": "error: HTTP 403 (kept 0)",
   "cg-president": "ok (6)",
   "cg-viewed": "ok (1)",
-  "scotus-ops": "error: ParseError (kept 0)",
   "scotusblog": "ok (25)"
  }
 }
