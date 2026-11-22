@@ -16,7 +16,7 @@
    SCENE (the photographic library plate, header, headline, nav)
    ========================================================================== */
 @font-face {
-  font-family: 'JSL Ancient'; src: url('JSLAncientItalic.ttf') format('truetype');
+  font-family: 'JSL Ancient'; src: url('JSLAncientItalic-J.ttf') format('truetype');
   font-style: normal; font-weight: 100 900; font-display: swap;
 }
 * { box-sizing: border-box; }
@@ -59,7 +59,7 @@ i { font-style: normal; display: block; }
 .cv .cv-in { position: absolute; left: 12%; right: 5%; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 3%; }
 .cv .cv-ic { width: 29%; color: #dfc283; }
 .cv .cv-ic svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .7)); }
-.cv h2 { margin: .55em 0 0; font: 500 2.55em/1.1 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-transform: none; text-indent: 0;
+.cv h2 { margin: .55em 0 0; font: normal 400 3em/1.1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-transform: none; text-indent: 0;
   color: #e8d49f; background: none; filter: none; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 10px rgba(0, 0, 0, .4); }
 .cv.shade::after { content: ""; position: absolute; left: 0; top: 0; right: 0; bottom: 0; pointer-events: none; border-radius: 3px; transition: opacity 500ms ease;
   background: linear-gradient(180deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0) 32%, rgba(0, 0, 0, .3)); }
@@ -148,7 +148,6 @@ i { font-style: normal; display: block; }
   .ui .cbtn { white-space: nowrap; padding: .55em 1em; letter-spacing: .14em; }
 }
 
-.plain { font-family: "EB Garamond", Georgia, serif !important; font-style: italic; }
 
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
@@ -368,7 +367,7 @@ i { font-style: normal; display: block; }
       <p class="kicker">Volume I</p>
       <h2>Jackson Willis</h2>
       <div class="orn"></div>
-      <p class="sub plain">Juris Doctor Candidate</p>
+      <p class="sub">Juris Doctor Candidate</p>
       <p class="sub2">Boston University School of Law</p>
     </article>
     <article class="pg">
@@ -389,7 +388,7 @@ i { font-style: normal; display: block; }
     <article class="pg">
       <h3>Education</h3>
       <h4>Boston University School of Law</h4>
-      <p class="meta plain">Juris Doctor candidate</p>
+      <p class="meta">Juris Doctor candidate</p>
       <p>Externship with the SEC's Division of Enforcement, transactional law clinic, and a law journal note in progress. <span class="todo">[Add honors, journal, and activities.]</span></p>
       <h4>Kansas State University</h4>
       <p class="meta">Political science and strategic communications</p>
@@ -882,7 +881,7 @@ i { font-style: normal; display: block; }
       if (!S.leaves[j] || S.leaves[j] !== l) return;
       var d = dur * K;
       l.style.transition = 'transform ' + d + 'ms cubic-bezier(.45,.05,.25,1), opacity ' + (fwd ? '160ms linear ' + Math.round(d * 0.62) + 'ms' : '100ms linear 0ms');
-      l.style.zIndex = 200;
+      l.style.zIndex = 200 + (fwd ? j : N - j);
       l.classList.toggle('flipped', fwd);
       setTimeout(function () { l.style.zIndex = fwd ? j : N - j; }, d + 30);
     }, delay * K);
