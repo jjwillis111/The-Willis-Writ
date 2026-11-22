@@ -1,71 +1,230 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="The Willis Writ | Jackson Willis’s legal portfolio, writing, and research workspace">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="The Willis Writ: Jackson Willis's legal portfolio, writing, and research workspace.">
 <title>The Willis Writ | Jackson Willis</title>
 <style>
 @font-face{font-family:JSLAncient;src:url('JSLAncientItalic.ttf') format('truetype');font-display:swap}
-:root{--ink:#e9e3d5;--muted:#b9b09e;--gold:#b89a65;--gold2:#8d754a;--panel:#171714;--line:#5b4a30;--wood:#211910;--wood2:#30251a}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#171511;font-family:Georgia,'Times New Roman',serif}
-body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 48% 20%,#53432c44,transparent 60%),linear-gradient(120deg,#0e0e0c,#211b13 55%,#0c0c0b)}
-body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.14;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent 0 4px,#8a6d3e12 5px),repeating-linear-gradient(90deg,transparent 0 8px,#00000012 9px)}
-header{max-width:1200px;margin:auto;padding:30px 28px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #76603c55}
-.brand{font-family:JSLAncient,Georgia,serif;font-size:27px;letter-spacing:.02em;text-transform:none;color:#e5d7b8}.brand small{display:block;font-family:Georgia,'Times New Roman',serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:7px}
-nav{display:flex;gap:24px;flex-wrap:wrap}nav a{color:#c9bda7;text-decoration:none;font-size:12px;letter-spacing:.13em;text-transform:uppercase}nav a:hover{color:#f0d59e}
-main{max-width:1200px;margin:0 auto;padding:26px}
-.hero{min-height:380px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:40px;padding:52px 30px 36px}
-.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
-h1{font-weight:normal;font-size:clamp(42px,6vw,76px);line-height:1.02;margin:0 0 20px;color:#eee4d1}
-h1 em{font-family:JSLAncient,Georgia,serif;font-weight:normal;color:#d2b17b}
-.hero p{max-width:560px;color:#c6bcaa;line-height:1.8;font-size:17px}
-.hero-visual{height:330px;position:relative;border:1px solid #705b3b;box-shadow:0 25px 60px #0008,inset 0 0 50px #0006;background:linear-gradient(90deg,#16120d,#3a2a19 12%,#20170e 13%,#332516 82%,#120f0b);padding:20px;display:flex;align-items:end;justify-content:center;overflow:hidden}
-.hero-visual:before{content:"";position:absolute;inset:18px;border:1px solid #b49a6244;box-shadow:inset 0 0 35px #0008}
-.shelf{position:absolute;top:44px;left:25px;right:25px;height:155px;display:flex;align-items:end;gap:7px;padding:0 12px 13px;border-bottom:13px solid #3c2b1b;box-shadow:0 8px 12px #0007}
-.book{width:clamp(24px,5vw,43px);height:var(--h,130px);border:1px solid #aa8a5c55;border-radius:3px 2px 0 0;background:linear-gradient(90deg,#1b1712,#4c3825 40%,#251c13 82%);box-shadow:2px 0 4px #0008;position:relative;cursor:pointer;transition:transform .25s,filter .25s;display:flex;align-items:center;justify-content:center}
-.book:nth-child(3n){background:linear-gradient(90deg,#25291f,#59604a 42%,#24261c)}.book:nth-child(4n){background:linear-gradient(90deg,#301b19,#70423a 40%,#321d19)}
-.book:after{content:"";position:absolute;left:4px;right:4px;top:13px;bottom:13px;border-top:1px solid #c2a36c55;border-bottom:1px solid #c2a36c55}
-.book span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.08em;color:#d5c3a0;text-transform:uppercase;text-align:center;max-height:80%}
-.book:hover{transform:translateY(-12px);filter:brightness(1.25)}
-.desk{width:100%;height:110px;background:linear-gradient(180deg,#6b4d2c,#372517 17%,#24170f);border-top:3px solid #957247;box-shadow:0 -12px 24px #0006;position:relative}
-.desk:before{content:"";position:absolute;top:14px;left:12%;right:12%;height:1px;background:#b3915b44}
-.ornament{position:absolute;right:15%;bottom:35px;width:68px;height:80px;border:1px solid #b59b6a77;border-radius:50% 50% 3px 3px;background:linear-gradient(110deg,#342d20,#8b7547,#31291d);opacity:.8}
-.introline{border-top:1px solid #68543855;border-bottom:1px solid #68543855;padding:18px 0;text-align:center;color:#a99c87;letter-spacing:.1em;font-size:12px;text-transform:uppercase}
-.section{padding:50px 20px;border-bottom:1px solid #6a543655}
-.section h2{font-size:30px;font-weight:normal;color:#e7d8b7;margin:0 0 18px}
-.section p{color:#c3b8a6;line-height:1.8;max-width:780px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:25px}
-.card{background:#191713cc;border:1px solid #59472d;padding:22px;min-height:150px;transition:border-color .2s,transform .2s}.card:hover{border-color:#ad9061;transform:translateY(-3px)}
-.card h3{font-weight:normal;color:#d8c59e;font-size:18px;margin:0 0 12px}.card p{font-size:14px;margin:0}
-.tool{margin-top:24px;padding:24px;border:1px solid #625033;background:#151411}
-input,textarea,select{width:100%;background:#0e0e0c;border:1px solid #665336;color:var(--ink);padding:12px;font:15px Georgia,serif;margin:8px 0}
-button{background:#79603a;color:#f0e4cb;border:1px solid #ad8c58;padding:11px 18px;font-family:inherit;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}button:hover{background:#94774a}
-.result{white-space:pre-wrap;color:#cfc4b1;line-height:1.7;margin-top:15px}
-footer{padding:30px;text-align:center;color:#948875;font-size:12px;letter-spacing:.08em}
-.hidden{display:none}.mobile-books{display:none}
-@media(max-width:760px){header{display:block;padding:22px}nav{margin-top:18px;gap:13px}nav a{font-size:10px}.hero{grid-template-columns:1fr;padding:30px 8px}.hero-visual{height:260px}.cards{grid-template-columns:1fr}.section{padding:35px 8px}.book{width:26px}.book span{font-size:8px}}
-</style></head>
+:root{--cream:#e8dfcb;--parchment:#c8b99b;--muted:#a99a7e;--gold:#b99a63;--gold-light:#dfc58f;--ink:#17130e;--panel:#201a13;--panel2:#292117;--line:#655035;--deep:#100e0b;--wood:#362414;--shadow:0 24px 60px #0009}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--deep);color:var(--cream);font-family:Georgia,'Times New Roman',serif;line-height:1.65}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 50% 0%,#3e2d1b 0,#1d1710 34%,#100e0b 78%);pointer-events:none}
+body:after{content:"";position:fixed;inset:0;z-index:10;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E")}
+a{color:inherit}
+.site-header{position:sticky;top:0;z-index:20;background:#110f0cd9;backdrop-filter:blur(12px);border-bottom:1px solid #80674455}
+.header-inner{max-width:1320px;margin:auto;padding:17px 34px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.wordmark{display:flex;align-items:center;gap:13px;text-decoration:none}
+.seal{width:40px;height:40px;border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold-light);font-size:17px;position:relative}
+.seal:after{content:"";position:absolute;inset:4px;border:1px solid #b99a634c}
+.brand-name{font-family:JSLAncient,Georgia,serif;font-size:25px;color:#e7d7b8;line-height:1.1}
+.brand-sub{font-size:9px;text-transform:uppercase;letter-spacing:.19em;color:#98866a;margin-top:4px}
+.nav{display:flex;gap:23px;align-items:center}
+.nav a{text-decoration:none;text-transform:uppercase;letter-spacing:.13em;font-size:10px;color:#b8a98c;transition:color .2s}
+.nav a:hover{color:var(--gold-light)}
+main{overflow:hidden}
+.hero{max-width:1320px;margin:0 auto;padding:48px 34px 28px;position:relative}
+.hero-stage{min-height:590px;position:relative;overflow:hidden;border:1px solid #715735;background:linear-gradient(90deg,#17120d 0%,#21180f 45%,#100d09 100%);box-shadow:var(--shadow)}
+.room-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 68% 24%,#b68b4934,transparent 38%),linear-gradient(90deg,#100d0bc9 0%,#17110b88 49%,#0e0c08a6 100%)}
+.library-wall{position:absolute;inset:0 0 120px;background:linear-gradient(#251a10 0 8px,#120e09 8px 15px,transparent 15px),repeating-linear-gradient(90deg,#17110b 0 5px,#332416 5px 9px,#120e09 9px 14px);opacity:.78}
+.shelf-row{position:absolute;left:0;right:0;height:168px;border-bottom:17px solid #4a311b;box-shadow:0 12px 16px #0008;display:flex;align-items:end;padding:0 35px 15px;gap:7px;background:linear-gradient(180deg,#100c08aa,#281b10cc)}
+.shelf-row.one{top:35px}.shelf-row.two{top:226px;left:22%;right:0}
+.book-spine{flex:1;max-width:62px;min-width:18px;height:var(--height);position:relative;border-radius:2px 2px 0 0;border:1px solid #a1814b55;background:linear-gradient(90deg,var(--b1),var(--b2) 24%,var(--b3) 70%,var(--b1));box-shadow:inset 3px 0 4px #0006,2px 0 4px #0008;display:flex;justify-content:center;align-items:center;transition:transform .2s,filter .2s}
+.book-spine:before{content:"";position:absolute;left:5px;right:5px;top:9px;bottom:9px;border-top:1px solid #d0ad6b66;border-bottom:1px solid #d0ad6b66}
+.book-spine:after{content:"";position:absolute;left:6px;right:6px;top:14px;height:4px;border-bottom:1px solid #d0ad6b44}
+.book-spine span{writing-mode:vertical-rl;transform:rotate(180deg);text-transform:uppercase;letter-spacing:.08em;font-size:8px;color:#d7c29a;text-shadow:0 1px #000;max-height:80%;overflow:hidden}
+.book-spine:hover{transform:translateY(-7px);filter:brightness(1.2)}
+.shelf-row .book-spine:nth-child(3n){--b1:#171b13;--b2:#3b4932;--b3:#252d20}
+.shelf-row .book-spine:nth-child(4n){--b1:#251310;--b2:#63392e;--b3:#321c17}
+.shelf-row .book-spine:nth-child(5n){--b1:#20180d;--b2:#72572d;--b3:#392815}
+.shelf-row .book-spine:nth-child(7n){--b1:#141923;--b2:#34465a;--b3:#1c2734}
+.shelf-row .book-spine:nth-child(odd){--b1:#2a1d12;--b2:#59402a;--b3:#302014}
+.lamp{position:absolute;right:11%;top:105px;width:150px;height:230px;opacity:.88}
+.lamp-shade{width:110px;height:62px;margin:auto;background:linear-gradient(100deg,#65502e,#d0ad6c 48%,#775a31);clip-path:polygon(17% 0,83% 0,100% 100%,0 100%);filter:drop-shadow(0 5px 8px #0008)}
+.lamp-stem{width:8px;height:116px;margin:auto;background:linear-gradient(90deg,#4c3920,#c0a16a,#554027)}
+.lamp-base{width:68px;height:15px;margin:auto;border-radius:50%;background:linear-gradient(90deg,#594324,#c3a36b,#4c3820)}
+.lamp-light{position:absolute;right:4%;top:120px;width:390px;height:330px;background:radial-gradient(ellipse,#d3a75a1c,transparent 67%);pointer-events:none}
+.hero-copy{position:relative;z-index:3;padding:90px 8% 44px;max-width:780px}
+.kicker{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-light);margin-bottom:21px}
+.hero h1{font-weight:normal;font-size:clamp(47px,7vw,90px);line-height:1.04;letter-spacing:-.03em;margin:0;color:#f0e6d3;text-shadow:0 5px 24px #000}
+.hero h1 em{font-family:JSLAncient,Georgia,serif;color:#c9a56c;font-weight:normal}
+.hero-lede{max-width:590px;color:#d0c2a7;font-size:17px;line-height:1.8;margin:24px 0 27px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 18px;border:1px solid #a18350;text-decoration:none;text-transform:uppercase;letter-spacing:.12em;font-size:10px;color:#e5d2ad;background:#21190f99;transition:background .2s,border .2s}
+.btn:hover{background:#594126;border-color:#d2b278}
+.btn.filled{background:#8c6b3e;color:#f6ead2;border-color:#b99a63}
+.desk-front{position:absolute;bottom:0;left:0;right:0;height:118px;background:linear-gradient(180deg,#8a6236 0 5px,#50341c 8px,#302012 22px,#1b120b 100%);box-shadow:0 -12px 25px #0006}
+.desk-front:before{content:"";position:absolute;left:8%;right:8%;top:19px;height:1px;background:#b58a4b55}
+.desk-book{position:absolute;right:14%;bottom:29px;width:230px;height:36px;background:linear-gradient(180deg,#d5c4a0,#766447 48%,#392919);transform:skew(-13deg) rotate(-5deg);box-shadow:0 9px 14px #0009}
+.desk-book:before{content:"";position:absolute;left:8px;right:8px;top:4px;bottom:4px;border:1px solid #e2d0aa55}
+.desk-book:after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:4px;background:#b9a27b}
+.desk-object{position:absolute;right:9%;bottom:47px;width:28px;height:60px;background:linear-gradient(90deg,#332619,#987346,#3a2b1b);border-radius:4px 4px 0 0}
+.hero-caption{display:flex;justify-content:space-between;gap:20px;padding:13px 3px 0;color:#87775b;text-transform:uppercase;font-size:9px;letter-spacing:.16em}
+.library-nav{max-width:1320px;margin:0 auto;padding:12px 34px 52px}
+.nav-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px;color:#9b896a;text-transform:uppercase;letter-spacing:.2em;font-size:10px}
+.volumes{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.volume{position:relative;min-height:150px;padding:21px 17px 18px;text-decoration:none;border:1px solid #60492c;background:linear-gradient(130deg,#302116,#17110c);box-shadow:inset 5px 0 #52361d,0 9px 22px #0004;transition:transform .2s,border .2s,background .2s}
+.volume:before{content:"";position:absolute;left:10px;right:10px;top:12px;bottom:12px;border:1px solid #9d794640}
+.volume:hover{transform:translateY(-4px);border-color:#b99a63;background:linear-gradient(130deg,#48311c,#20160e)}
+.volume-number{font-size:9px;letter-spacing:.18em;color:#8f7957;text-transform:uppercase}
+.volume-title{font-size:16px;color:#d7c39e;margin-top:16px;line-height:1.35}
+.volume-note{font-size:10px;color:#9d8b6d;margin-top:6px}
+main .content{max-width:1200px;margin:auto;padding:0 34px}
+.section{padding:63px 0;border-top:1px solid #65503566}
+.section-head{display:grid;grid-template-columns:180px 1fr;gap:25px;margin-bottom:30px}
+.section-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);padding-top:8px}
+.section h2{font-size:clamp(28px,4vw,42px);font-weight:normal;line-height:1.15;color:#e6d7b8;margin:0}
+.section-intro{max-width:740px;color:#c2b49a;margin:14px 0 0;line-height:1.8}
+.columns{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.paper-card{background:linear-gradient(135deg,#261e15,#19140e);border:1px solid #5c472c;padding:25px 23px;position:relative;min-height:190px;box-shadow:0 12px 24px #0002}
+.paper-card:before{content:"";position:absolute;left:0;top:0;width:2px;height:100%;background:#967447}
+.paper-card h3{font-weight:normal;font-size:19px;color:#d8c39c;margin:0 0 10px}
+.paper-card p{font-size:14px;color:#b8aa90;line-height:1.75;margin:0}
+.paper-card .small-label{font-size:9px;text-transform:uppercase;letter-spacing:.17em;color:#8c7655;margin-bottom:9px}
+.timeline{border-left:1px solid #8a6c3d;padding-left:28px;display:grid;gap:23px}
+.timeline-item{position:relative}
+.timeline-item:before{content:"";position:absolute;left:-34px;top:8px;width:9px;height:9px;background:#b99a63;border:2px solid #20170e;border-radius:50%}
+.timeline-item h3{font-weight:normal;color:#d9c6a2;margin:0 0 4px;font-size:18px}
+.timeline-item .meta{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#988466;margin-bottom:7px}
+.timeline-item p{margin:0;color:#b8aa90;font-size:14px;line-height:1.75;max-width:790px}
+.writing-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.writing-entry{padding:23px;border:1px solid #5d472c;background:#201910}
+.writing-entry h3{font-size:19px;font-weight:normal;color:#dbc79f;margin:0 0 7px}
+.writing-entry p{font-size:14px;color:#b7a88e;margin:0;line-height:1.75}
+.tool-panel{border:1px solid #695333;background:#19140e;padding:25px;box-shadow:0 12px 28px #0003}
+.tool-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:17px}
+.tool-top h3{font-weight:normal;color:#d7c29b;margin:0;font-size:19px}
+.sample-tag{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#a18b64;border:1px solid #59472e;padding:6px 9px}
+.filter-input,textarea{width:100%;background:#100e0b;border:1px solid #5b472e;color:var(--cream);padding:12px 14px;font:15px Georgia,serif;outline:none}
+.filter-input:focus,textarea:focus{border-color:#b99a63}
+.radar-results{display:grid;gap:9px;margin-top:14px}
+.radar-result{border:1px solid #463722;background:#211910;padding:13px 15px;color:#c6b596;font-size:13px}
+.radar-result strong{display:block;color:#dfc797;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.tool-note{font-size:11px;color:#8f8064;margin-top:13px}
+textarea{min-height:190px;resize:vertical;line-height:1.6}
+.tool-button{margin-top:12px;background:#8c6b3e;border:1px solid #b99a63;color:#f1e4cb;padding:12px 17px;font-family:inherit;text-transform:uppercase;letter-spacing:.13em;font-size:10px;cursor:pointer}
+.tool-button:hover{background:#a17c48}
+.output{white-space:pre-wrap;line-height:1.75;color:#c8b99c;border-top:1px solid #55432c;margin-top:20px;padding-top:18px;font-size:14px}
+.contact-panel{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:30px;border:1px solid #6a5332;background:linear-gradient(110deg,#2a2015,#17120d)}
+.contact-panel h3{font-size:23px;font-weight:normal;color:#dfccaa;margin:0 0 8px}
+.contact-panel p{margin:0;color:#b6a68a;font-size:14px}
+footer{max-width:1320px;margin:auto;padding:28px 34px 38px;display:flex;justify-content:space-between;gap:20px;border-top:1px solid #60492c;color:#85765b;font-size:10px;letter-spacing:.08em}
+@media(max-width:900px){.nav{gap:13px}.nav a{font-size:9px}.volumes{grid-template-columns:repeat(3,1fr)}.hero-stage{min-height:560px}.lamp{right:4%;transform:scale(.8);transform-origin:top right}.shelf-row.two{left:7%}.columns{grid-template-columns:1fr 1fr}.section-head{grid-template-columns:140px 1fr}}
+@media(max-width:620px){.header-inner{padding:13px 18px;align-items:flex-start}.brand-name{font-size:22px}.nav{display:none}.hero{padding:20px 15px 14px}.hero-stage{min-height:570px}.shelf-row{padding-left:15px;padding-right:15px;gap:4px;height:140px}.shelf-row.one{top:20px}.shelf-row.two{top:184px;left:0;height:130px}.book-spine span{font-size:6px}.lamp{top:55px;right:0;transform:scale(.58)}.lamp-light{right:-25%;top:100px}.hero-copy{padding:110px 25px 32px}.hero h1{font-size:51px}.hero-lede{font-size:15px}.desk-front{height:90px}.desk-book{right:9%;width:150px}.hero-caption{font-size:8px;letter-spacing:.1em}.library-nav{padding:10px 15px 38px}.volumes{grid-template-columns:repeat(2,1fr);gap:9px}.volume{min-height:130px;padding:18px 14px}.volume-title{font-size:14px}.content{padding:0 18px!important}.section{padding:45px 0}.section-head{display:block;margin-bottom:22px}.section-label{margin-bottom:9px}.columns,.writing-list{grid-template-columns:1fr}.paper-card{min-height:unset}.tool-panel{padding:16px}.tool-top{align-items:flex-start;flex-direction:column;gap:8px}.contact-panel{display:block;padding:23px}.contact-panel .btn{margin-top:18px}footer{padding:23px 18px;display:block}footer span{display:block;margin-top:6px}}
+</style>
+</head>
 <body>
-<header><div class="brand">The Willis Writ<small>Jackson Willis · Legal Portfolio & Research</small></div><nav><a href="#about">About</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#radar">Radar</a><a href="#case">Case Tool</a><a href="#contact">Contact</a></nav></header>
-<main>
-<section class="hero"><div><div class="eyebrow">Law · Investigations · Emerging Technology</div><h1>Jackson <em>Willis</em></h1><p>A legal portfolio and working research library exploring investigations, securities regulation, privacy, and emerging technology.</p></div>
-<div class="hero-visual" aria-label="Interactive bookshelf"><div class="shelf">
-<div class="book" style="--h:125px" data-target="about"><span>About</span></div><div class="book" style="--h:142px" data-target="experience"><span>Experience</span></div><div class="book" style="--h:116px" data-target="writing"><span>Writing</span></div><div class="book" style="--h:138px" data-target="radar"><span>Regulatory Radar</span></div><div class="book" style="--h:128px" data-target="case"><span>Case Analysis</span></div><div class="book" style="--h:115px" data-target="contact"><span>Contact</span></div><div class="book" style="--h:133px" data-target="writing"><span>Research</span></div>
-</div><div class="ornament"></div><div class="desk"></div></div></section>
-<div class="introline">Select a volume to explore · A living legal research workspace</div>
-<section class="section" id="about"><div class="eyebrow">Volume I</div><h2>About</h2><p>I'm a law student interested in federal investigations and enforcement, securities regulation, privacy, and the legal questions surrounding emerging technologies. This site is both a professional portfolio and an evolving collection of research tools.</p><div class="cards"><div class="card"><h3>Investigations & Enforcement</h3><p>Interest in investigative work, enforcement strategy, and protecting fair markets.</p></div><div class="card"><h3>Privacy & Technology</h3><p>Legal questions at the intersection of privacy, health, media, and innovation.</p></div><div class="card"><h3>Space Law</h3><p>Research on international frameworks for space-resource governance.</p></div></div></section>
-<section class="section" id="experience"><div class="eyebrow">Volume II</div><h2>Experience</h2><div class="cards"><div class="card"><h3>SEC · Division of Enforcement</h3><p>Investigative and enforcement-related experience, including work involving enforcement processes and remedies.</p></div><div class="card"><h3>Student Innovations Law Clinic</h3><p>Privacy, Health & Media practice group. Client-facing legal work on technology and privacy issues.</p></div><div class="card"><h3>Legal Experience</h3><p>Prior public-sector and private legal work supporting research, investigation, and case preparation.</p></div></div></section>
-<section class="section" id="writing"><div class="eyebrow">Volume III</div><h2>Writing & Research</h2><p>Research and writing on space-resource governance, regulatory policy, and emerging legal issues. Publication details and writing samples will be added as they are ready for public release.</p><div class="card"><h3>Space Resource Governance</h3><p>Comparative analysis of international governance models and the evolving legal framework for space-resource extraction.</p></div></section>
-<section class="section" id="radar"><div class="eyebrow">Volume IV · Research Tool</div><h2>Regulatory Radar</h2><p>A curated view of agency activity. This prototype currently shows sample entries. Live source feeds and filtering will be connected in a later iteration.</p><div class="cards"><div class="card"><h3>SEC</h3><p>Enforcement, securities markets, disclosure, and investor protection.</p></div><div class="card"><h3>FTC</h3><p>Competition, consumer protection, privacy, and technology.</p></div><div class="card"><h3>DOJ</h3><p>Federal enforcement, investigations, and policy developments.</p></div></div><div class="tool"><label for="radarFilter">Filter sample updates</label><input id="radarFilter" placeholder="Search agency or topic…"><div id="radarItems" class="result">SEC · Enforcement — Sample placeholder: enforcement and remedies update.
-FTC · Privacy — Sample placeholder: consumer protection development.
-DOJ · Investigations — Sample placeholder: public enforcement policy update.</div><small style="color:#978a74">Sample content only. Live feeds are not yet connected.</small></div></section>
-<section class="section" id="case"><div class="eyebrow">Volume V · Research Tool</div><h2>Case Analysis</h2><p>Paste an opinion or excerpt to create a basic structured outline. This browser-only prototype does not provide legal advice or AI analysis.</p><div class="tool"><textarea id="caseText" rows="8" placeholder="Paste case text here…"></textarea><button id="analyze">Create outline</button><div id="caseResult" class="result"></div></div></section>
-<section class="section" id="contact"><div class="eyebrow">Final Volume</div><h2>Contact</h2><p>For professional inquiries, collaboration, or conversation.</p><div class="cards"><div class="card"><h3>Resume</h3><p>Resume link will be added here.</p></div><div class="card"><h3>LinkedIn</h3><p>LinkedIn profile link will be added here.</p></div><div class="card"><h3>Email</h3><p>Email contact link will be added here.</p></div></div></section>
-</main><footer>Jackson Willis · The Willis Writ <span id="year"></span> · Research tools are informational and not legal advice.</footer>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="#top" aria-label="The Willis Writ home">
+      <span class="seal" aria-hidden="true">W</span>
+      <span><span class="brand-name">The Willis Writ</span><span class="brand-sub">Jackson Willis · Legal Portfolio & Research</span></span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#about">About</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#radar">Radar</a><a href="#case">Case Tool</a>
+    </nav>
+  </div>
+</header>
+<main id="top">
+<section class="hero">
+  <div class="hero-stage">
+    <div class="library-wall"></div>
+    <div class="room-glow"></div>
+    <div class="shelf-row one" aria-hidden="true">
+      <div class="book-spine" style="--height:119px"><span>Federal Courts</span></div><div class="book-spine" style="--height:137px"><span>Securities</span></div><div class="book-spine" style="--height:125px"><span>Evidence</span></div><div class="book-spine" style="--height:145px"><span>Regulation</span></div><div class="book-spine" style="--height:114px"><span>Privacy</span></div><div class="book-spine" style="--height:132px"><span>Technology</span></div><div class="book-spine" style="--height:142px"><span>Space Law</span></div><div class="book-spine" style="--height:120px"><span>Equity</span></div><div class="book-spine" style="--height:148px"><span>Enforcement</span></div><div class="book-spine" style="--height:128px"><span>Research</span></div><div class="book-spine" style="--height:116px"><span>Practice</span></div>
+    </div>
+    <div class="shelf-row two" aria-hidden="true">
+      <div class="book-spine" style="--height:111px"><span>Cases</span></div><div class="book-spine" style="--height:132px"><span>Statutes</span></div><div class="book-spine" style="--height:117px"><span>Policy</span></div><div class="book-spine" style="--height:139px"><span>Markets</span></div><div class="book-spine" style="--height:124px"><span>Agency</span></div><div class="book-spine" style="--height:145px"><span>Litigation</span></div><div class="book-spine" style="--height:118px"><span>Articles</span></div><div class="book-spine" style="--height:133px"><span>International</span></div><div class="book-spine" style="--height:121px"><span>Governance</span></div>
+    </div>
+    <div class="lamp" aria-hidden="true"><div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div></div><div class="lamp-light"></div>
+    <div class="hero-copy">
+      <div class="kicker">Law · Investigations · Emerging Technology</div>
+      <h1>Jackson <em>Willis</em></h1>
+      <p class="hero-lede">A portfolio and research workspace at the intersection of federal enforcement, securities regulation, privacy, and emerging technology.</p>
+      <div class="hero-actions"><a class="btn filled" href="#experience">Explore my work</a><a class="btn" href="#writing">Writing & research</a></div>
+    </div>
+    <div class="desk-front" aria-hidden="true"><div class="desk-book"></div><div class="desk-object"></div></div>
+  </div>
+  <div class="hero-caption"><span>A personal legal library</span><span>Est. · Jackson Willis</span></div>
+</section>
+<section class="library-nav" aria-label="Library volumes">
+  <div class="nav-heading"><span>Browse the collection</span><span>Six volumes</span></div>
+  <div class="volumes">
+    <a class="volume" href="#about"><div class="volume-number">Volume I</div><div class="volume-title">About</div><div class="volume-note">The scholar behind the work</div></a>
+    <a class="volume" href="#experience"><div class="volume-number">Volume II</div><div class="volume-title">Experience</div><div class="volume-note">Practice & public service</div></a>
+    <a class="volume" href="#writing"><div class="volume-number">Volume III</div><div class="volume-title">Writing & Research</div><div class="volume-note">Selected scholarship</div></a>
+    <a class="volume" href="#radar"><div class="volume-number">Volume IV</div><div class="volume-title">Regulatory Radar</div><div class="volume-note">Agency developments</div></a>
+    <a class="volume" href="#case"><div class="volume-number">Volume V</div><div class="volume-title">Case Analysis</div><div class="volume-note">A reading aid</div></a>
+    <a class="volume" href="#contact"><div class="volume-number">Volume VI</div><div class="volume-title">Contact</div><div class="volume-note">Professional correspondence</div></a>
+  </div>
+</section>
+<div class="content">
+<section class="section" id="about">
+  <div class="section-head"><div class="section-label">Volume I · Introduction</div><div><h2>About</h2><p class="section-intro">I am a law student focused on federal investigations and enforcement, securities regulation, privacy, and the legal questions raised by emerging technologies. The Willis Writ is both a professional portfolio and an evolving place to explore legal research.</p></div></div>
+  <div class="columns">
+    <article class="paper-card"><div class="small-label">Area of focus</div><h3>Investigations & Enforcement</h3><p>Investigative work, enforcement strategy, securities markets, and protecting investors and fair markets.</p></article>
+    <article class="paper-card"><div class="small-label">Area of focus</div><h3>Privacy & Technology</h3><p>Legal questions at the intersection of privacy, health, media, technology, and innovation.</p></article>
+    <article class="paper-card"><div class="small-label">Area of focus</div><h3>Space Law</h3><p>International frameworks and emerging governance questions surrounding space-resource activities.</p></article>
+  </div>
+</section>
+<section class="section" id="experience">
+  <div class="section-head"><div class="section-label">Volume II · Practice</div><div><h2>Experience</h2><p class="section-intro">Selected experience across government, clinical practice, and legal research.</p></div></div>
+  <div class="timeline">
+    <div class="timeline-item"><h3>U.S. Securities and Exchange Commission · Division of Enforcement</h3><div class="meta">SEC Scholars · Fall 2026</div><p>Experience with enforcement-related work in Washington, D.C., including investigative matters and work involving remedies and distribution processes.</p></div>
+    <div class="timeline-item"><h3>BU/MIT Student Innovations Law Clinic</h3><div class="meta">Privacy, Health & Media · 2025–2026</div><p>Worked with clients on legal issues involving privacy, health, media, and technology, providing client-facing support and legal research.</p></div>
+    <div class="timeline-item"><h3>Public-sector and private legal experience</h3><div class="meta">Earlier legal roles</div><p>Prior legal work involving investigation, case preparation, research, and document review.</p></div>
+  </div>
+</section>
+<section class="section" id="writing">
+  <div class="section-head"><div class="section-label">Volume III · Scholarship</div><div><h2>Writing & Research</h2><p class="section-intro">Selected research interests and scholarship exploring the governance of emerging technologies and regulatory institutions.</p></div></div>
+  <div class="writing-list">
+    <article class="writing-entry"><div class="small-label">Selected for publication · Spring 2027</div><h3>Space Resource Governance</h3><p>Research examining international governance frameworks for space-resource extraction, including treaty regimes, national legislation, and emerging multilateral approaches.</p></article>
+    <article class="writing-entry"><div class="small-label">Continuing research interests</div><h3>Regulation & Emerging Technology</h3><p>Research interests include securities enforcement, privacy and technology, regulatory policy, and the legal institutions shaping new industries.</p></article>
+  </div>
+</section>
+<section class="section" id="radar">
+  <div class="section-head"><div class="section-label">Volume IV · Research desk</div><div><h2>Regulatory Radar</h2><p class="section-intro">A starting point for tracking public developments from federal agencies relevant to enforcement, securities, privacy, and technology.</p></div></div>
+  <div class="tool-panel"><div class="tool-top"><h3>Agency index</h3><span class="sample-tag">Prototype · Sample topics</span></div>
+    <input class="filter-input" id="radarFilter" type="search" placeholder="Filter agency or topic…" aria-label="Filter sample agency topics">
+    <div class="radar-results" id="radarItems">
+      <div class="radar-result"><strong>SEC · Securities & Enforcement</strong>Enforcement, securities markets, disclosure, remedies, and investor protection.</div>
+      <div class="radar-result"><strong>FTC · Privacy & Competition</strong>Consumer protection, privacy, technology, and competition policy.</div>
+      <div class="radar-result"><strong>DOJ · Investigations</strong>Federal enforcement, investigations, corporate compliance, and policy.</div>
+      <div class="radar-result"><strong>Congress · Emerging Technology</strong>Legislation and oversight involving technology, financial markets, and space activities.</div>
+    </div><p class="tool-note">This is a curated-topic prototype, not a live news feed. Real-time agency sources and update dates are not yet connected.</p>
+  </div>
+</section>
+<section class="section" id="case">
+  <div class="section-head"><div class="section-label">Volume V · Reading room</div><div><h2>Case Analysis</h2><p class="section-intro">A lightweight tool to organize pasted judicial text into sections for closer reading. It does not identify legal holdings or provide AI-generated legal analysis.</p></div></div>
+  <div class="tool-panel"><div class="tool-top"><h3>Opinion reading aid</h3><span class="sample-tag">Browser-only prototype</span></div>
+    <textarea id="caseText" placeholder="Paste an opinion or excerpt here…"></textarea><button class="tool-button" id="analyze">Organize excerpt</button><div id="caseResult" class="output" hidden></div><p class="tool-note">Text is processed in your browser by this simple tool. The resulting outline is a reading aid only. Verify the opinion and conduct your own legal analysis.</p>
+  </div>
+</section>
+<section class="section" id="contact">
+  <div class="section-head"><div class="section-label">Volume VI · Correspondence</div><div><h2>Contact</h2><p class="section-intro">For professional inquiries, research conversations, or collaboration.</p></div></div>
+  <div class="contact-panel"><div><h3>Let's connect.</h3><p>Professional contact information and profile links will be added here.</p></div><a class="btn" href="#top">Return to the library</a></div>
+</section>
+</div>
+</main>
+<footer><span>Jackson Willis · The Willis Writ</span><span id="year"></span><span>Research tools are informational, not legal advice.</span></footer>
 <script>
-document.querySelectorAll('.book').forEach(b=>b.addEventListener('click',()=>{const target=document.getElementById(b.dataset.target);target?.scrollIntoView({behavior:'smooth'});b.style.transform='translateY(-18px)';setTimeout(()=>b.style.transform='',400)}));
 document.getElementById('year').textContent=new Date().getFullYear();
-const radar=document.getElementById('radarItems'),radarText=radar.textContent;
-document.getElementById('radarFilter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();radar.textContent=radarText.split('\n').filter(line=>line.toLowerCase().includes(q)).join('\n')||'No sample results.'});
-document.getElementById('analyze').addEventListener('click',()=>{const t=document.getElementById('caseText').value.trim();if(!t){document.getElementById('caseResult').textContent='Paste some text first.';return;}const sentences=t.replace(/\s+/g,' ').split(/(?<=[.!?])\s+/);const out='CASE TEXT OUTLINE\n\nOpening excerpt:\n'+sentences.slice(0,3).join(' ')+'\n\nPotential issue (manual review required):\nIdentify the legal question presented in the text.\n\nFacts / reasoning excerpt:\n'+sentences.slice(3,8).join(' ')+'\n\nHolding / disposition:\nReview the source text and identify the court’s holding and disposition.\n\nNOTE: This is a simple text segmentation prototype, not substantive legal analysis.';document.getElementById('caseResult').textContent=out;});
-</script></body></html>
+const radar=document.getElementById('radarItems');
+const radarEntries=[...radar.children];
+document.getElementById('radarFilter').addEventListener('input',event=>{
+  const query=event.target.value.toLowerCase();
+  radarEntries.forEach(item=>item.hidden=!item.textContent.toLowerCase().includes(query));
+});
+document.getElementById('analyze').addEventListener('click',()=>{
+  const text=document.getElementById('caseText').value.trim();
+  const output=document.getElementById('caseResult');
+  if(!text){output.hidden=false;output.textContent='Paste some text first.';return;}
+  const sentences=text.replace(/\s+/g,' ').split(/(?<=[.!?])\s+/);
+  output.hidden=false;
+  output.textContent='EXCERPT\n\n'+sentences.slice(0,4).join(' ')+'\n\nPOTENTIAL ISSUE\n\nReview the source and identify the legal question presented.\n\nFACTS / REASONING EXCERPT\n\n'+sentences.slice(4,10).join(' ')+'\n\nHOLDING / DISPOSITION\n\nIdentify the court’s holding and disposition from the original text.\n\nThis is a simple text segmentation aid, not substantive legal analysis.';
+});
+</script>
+</body>
+</html>
