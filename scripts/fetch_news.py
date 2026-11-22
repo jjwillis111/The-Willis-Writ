@@ -73,10 +73,12 @@ FEEDS = [
          + '&hl=en-US&gl=US&ceid=US:en'},  # CHECK
 
     # Congress: Congress.gov feeds
-    {'id': 'cg-president', 'section': 'congress', 'source': 'Congress.gov', 'kind': 'rss',
-     'url': 'https://www.congress.gov/rss/presented-to-president.xml'},  # CHECK
-    {'id': 'cg-viewed', 'section': 'congress', 'source': 'Congress.gov', 'kind': 'rss',
-     'url': 'https://www.congress.gov/rss/most-viewed-bills.xml'},  # CHECK
+    {'id': 'cg-president', 'section': 'congress', 'source': 'Congress.gov', 'kind': 'rss', 'desc': True, 'debug': True,
+     'url': 'https://www.congress.gov/rss/presented-to-president.xml'},
+    {'id': 'govtrack-enacted', 'section': 'congress', 'source': 'GovTrack', 'kind': 'rss', 'desc': True, 'debug': True,
+     'url': 'https://www.govtrack.us/events/events.rss?feeds=misc%3Aenactedbills'},  # CHECK
+    {'id': 'govinfo-plaw', 'section': 'congress', 'source': 'GovInfo', 'kind': 'rss', 'desc': True, 'debug': True,
+     'url': 'https://www.govinfo.gov/rss/plaw.xml'},  # CHECK
 
     # Supreme Court (supremecourt.gov RSS returned a web page to the bot, so SCOTUSblog only)
     {'id': 'scotusblog', 'section': 'scotus', 'source': 'SCOTUSblog', 'kind': 'rss',
@@ -145,8 +147,13 @@ def parse_rss(data, feed):
         if feed.get('require') and not re.search(feed['require'], title, re.I):
             continue
         if title and link.startswith('http'):
-            items.append({'section': feed['section'], 'title': title, 'url': link,
-                          'source': source, 'date': date, 'feed': feed['id']})
+            item = {'section': feed['section'], 'title': title, 'url': link,
+                    'source': source, 'date': date, 'feed': feed['id']}
+            if feed.get('desc'):
+                d = clean(fields.get('description') or fields.get('summary') or fields.get('content'))
+                if d and d != title:
+                    item['desc'] = d if len(d) <= 240 else d[:240].rsplit(' ', 1)[0] + '...'
+            items.append(item)
     return items
 
 
@@ -181,6 +188,8 @@ def main():
     items, status = [], {}
     for feed in FEEDS:
         try:
+            if feed.get('debug'):
+                print('RAW', feed['id'], get(feed['url'])[:1800].decode('utf-8', 'replace'))
             got = fetch_fr(feed) if feed['kind'] == 'fr' else parse_rss(get(feed['url']), feed)
             got.sort(key=lambda x: x['date'], reverse=True)
             items += got[:feed.get('limit', PER_FEED)]
