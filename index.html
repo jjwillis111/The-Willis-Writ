@@ -298,6 +298,15 @@ i { font-style: normal; display: block; }
 
 a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 
+/* closed book: only the cover is drawn, so no page edge can show around its rounded corners */
+.book.seal .base, .book.seal .leaf:not(.cover) { visibility: hidden; }
+.book { touch-action: pan-y; }
+
+/* page block sits just inside the cover boards, like a real book */
+.leaf:not(.cover) .face.front, .base .face { clip-path: inset(2px 2px 2px 0); }
+.leaf:not(.cover) .face.back { clip-path: inset(2px 0 2px 2px); }
+.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(2px); }
+
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
    ========================================================================== */
@@ -1036,12 +1045,19 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     hr.addEventListener('click', function () { step(1); });
     book.appendChild(hl); book.appendChild(hr);
 
-    var tx = 0, ty = 0;
-    book.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
-    book.addEventListener('touchend', function (e) {
-      var t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
-      if (Math.abs(dx) > 55 && Math.abs(dy) < 45) step(dx < 0 ? 1 : -1);
-    }, { passive: true });
+    var sx = 0, sy = 0, st = 0, sid = null;
+    book.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') { return; }
+      sx = e.clientX; sy = e.clientY; st = e.timeStamp; sid = e.pointerId;
+    });
+    book.addEventListener('pointerup', function (e) {
+      if (e.pointerId !== sid) { return; }
+      sid = null;
+      var dx = e.clientX - sx, dy = e.clientY - sy, ax = Math.abs(dx), ay = Math.abs(dy);
+      var flick = ax > 26 && ax / Math.max(1, e.timeStamp - st) > 0.35;
+      if ((ax > 44 || flick) && ax > ay * 1.2) { step(dx < 0 ? 1 : -1); }
+    });
+    book.addEventListener('pointercancel', function () { sid = null; });
 
     wrap.appendChild(book); mount.appendChild(wrap);
 
@@ -1058,6 +1074,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       l.style.zIndex = fl ? i : leaves.length - i;
     });
     book.classList.toggle('open', S.spread > 0);
+    book.classList.toggle('seal', S.spread === 0);
+    S.queued = null;
     if (instant) wrap.classList.add('landed');
     void book.offsetWidth;
     requestAnimationFrame(function () { requestAnimationFrame(function () { book.classList.remove('noanim'); }); });
@@ -1118,6 +1136,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -1144,11 +1163,18 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       }, cd * K);
     }
     var total = (n - 1) * stagger + dur;
-    later(total + 60, function () { S.turning = false; if (done) done(); });
+    var sealBook = S.book;
+    later(total + 60, function () {
+      S.turning = false;
+      if (target === 0 && S.book === sealBook && sealBook) { sealBook.classList.add('seal'); }
+      if (done) done();
+      if (S.queued && S.open && !S.busy) { var q = S.queued; S.queued = null; step(q); }
+    });
   }
 
   function step(dir) {
-    if (!S.open || S.busy || S.turning) return;
+    if (!S.open || S.busy) return;
+    if (S.turning) { S.queued = dir; return; }
     var t = S.spread + dir;
     if (t < 1 || t > S.total) return;
     turnTo(t);
@@ -1218,8 +1244,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       stage.classList.add('on', 'dimmed');
       stage.setAttribute('aria-hidden', 'false');
       if (sp) {
-        anim(sp, [{ opacity: 1, transform: tf(L, dm, 0, 1) }, { opacity: 0, transform: tf(L, dm, 0, 1) }], 220, 'ease');
-        later(340, function () { if (sp.parentNode) sp.parentNode.removeChild(sp); if (S.sp === sp) S.sp = null; });
+        if (S.wrap && S.wrap.animate) { S.wrap.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150 * K, easing: 'ease-out' }); }
+        anim(sp, [{ opacity: 1, transform: tf(L, dm, 0, 1) }, { opacity: 1, transform: tf(L, dm, 0, 1), offset: 0.5 }, { opacity: 0, transform: tf(L, dm, 0, 1) }], 300, 'linear');
+        later(380, function () { if (sp.parentNode) sp.parentNode.removeChild(sp); if (S.sp === sp) S.sp = null; });
       } else {
         later(40, function () { if (S.wrap) S.wrap.classList.add('landed'); });
       }
@@ -1538,6 +1565,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   }
 
   function closeVol() {
+    S.queued = null;
     if (!S.open || S.busy || S.turning) return;
     if (S.vol && (S.vol.id === 'news' || S.vol.id === 'jefferson')) { closePaper(); return; }
     S.busy = true;
