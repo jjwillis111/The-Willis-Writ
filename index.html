@@ -114,21 +114,22 @@ i { font-style: normal; display: block; }
 
 /* portrait and small screens: centered title, wrapped tabs on top, the words sit on the chair under a soft scrim */
 .pt #hud::before { height: 190px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .82), rgba(5, 3, 2, .5) 60%, rgba(5, 3, 2, 0)); }
-.pt #top { height: auto; min-height: 0; padding: max(14px, env(safe-area-inset-top)) 14px 12px; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; }
+.pt #top { height: auto; min-height: 0; padding: max(14px, env(safe-area-inset-top)) 14px 12px; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; }
 .pt #top::after { left: 14px; right: 14px; }
-.pt .brandrow { flex-direction: column; align-items: center; text-align: center; }
+.pt .brandrow { flex-direction: column; align-items: flex-start; text-align: left; }
 .pt #brand { font-size: 30px; }
 .pt .brandrow .bar { display: none; }
 .pt #tag { margin-top: 6px; font-size: 14px; white-space: normal; }
-.pt #nav { position: static; flex-wrap: wrap; justify-content: center; gap: 7px 7px; padding: 0 0 4px; overflow: visible; }
+.pt #nav { position: static; flex-wrap: wrap; justify-content: flex-start; gap: 7px 7px; padding: 0 0 4px; overflow: visible; }
 .pt .nv { flex: 0 0 auto; padding: .55em 1.05em; font-size: 15px; border: 1px solid rgba(214, 182, 118, .5); border-radius: 999px; background: rgba(14, 9, 6, .62); }
 .pt .nv + .nv::before, .pt .nv::after { display: none; }
 .pt #nav .nv:last-child { padding-right: 1.05em; }
-.pt #hero { display: block; text-align: center; }
+.pt #hero { display: block; text-align: left; }
+.pt #hero br { display: none; }
 .pt #hero::before { left: -14px; right: -14px; top: -1.5em; bottom: -1.3em;
   background: radial-gradient(ellipse at 50% 50%, rgba(6, 4, 2, .84), rgba(6, 4, 2, .66) 52%, rgba(6, 4, 2, 0) 80%); }
 .pt #hero h2 { white-space: normal; }
-.pt #hero .hr { width: 3.2em; margin: .45em auto .4em; background: rgba(232, 208, 156, .6); }
+.pt #hero .hr { width: 3.2em; margin: .45em 0 .4em; background: rgba(232, 208, 156, .6); }
 .pt #hero p { font-size: .5em; white-space: normal; }
 .nv.on { color: #ffe6ae; }
 
@@ -215,7 +216,8 @@ i { font-style: normal; display: block; }
 .p-lead { padding-bottom: 16px; margin-bottom: 18px; border-bottom: 2px solid #2b2116; text-align: center; }
 .st { break-inside: avoid; }
 .st .sk { margin: 0 0 .3em; font: normal 400 15px/1.2 'JSL Ancient', 'Times New Roman', Times, serif; color: #6e1f1a; letter-spacing: .02em; }
-.st h3 { margin: 0; font: 700 1.38em/1.14 'Times New Roman', Times, serif; letter-spacing: 0; text-transform: none; text-indent: 0; color: #1d160d; }
+@font-face { font-family: 'Old Standard TT'; font-weight: 700; font-style: normal; font-display: swap; src: url('OldStandardTT-Bold.woff2') format('woff2'); }
+.st h3 { margin: 0; font: 700 1.34em/1.14 'Old Standard TT', 'Times New Roman', Times, serif; letter-spacing: 0; text-transform: none; text-indent: 0; color: #1d160d; }
 .st h3 a { color: inherit; text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 260ms ease; }
 .st h3 a:hover, .st h3 a:focus-visible { background-size: 100% 1px; }
 .st h3 a:focus-visible { outline: 2px solid #6e1f1a; outline-offset: 2px; }
@@ -309,9 +311,13 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 
 /* the back board only overhangs the cover once the book is open; a closed book is just its cover */
 .book .bd { transition: top 600ms ease 560ms, bottom 600ms ease 560ms, right 600ms ease 560ms, left 600ms ease 560ms; }
-.book.snug .bd { top: 0; bottom: 0; transition-delay: 0ms; }
+.book.snug .bd { top: 0; bottom: 0; transition-delay: 0ms; transition-duration: 380ms; }
+.book.seal .bd { visibility: hidden; }
 .book.dual.snug .bd.br { right: 0; }
 .book.single.snug .bd.br { left: 0; right: 0; }
+
+/* as the cover lands, the page block pulls in past the transparent margin of the cover art */
+.book.near .leaf:not(.cover) .face, .book.near .base .face { clip-path: inset(9px 9px 9px 34px); transition: clip-path 340ms ease; }
 
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
@@ -490,14 +496,14 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         <div class="brandrow">
           <h1 id="brand">Jackson Willis</h1>
           <span class="bar"></span>
-          <p id="tag">Law Student &nbsp;&middot;&nbsp; Researcher &nbsp;&middot;&nbsp; Future Attorney</p>
+          <p id="tag">J.D. Candidate, Boston University School of Law</p>
         </div>
         <nav id="nav" aria-label="Portfolio volumes"></nav>
       </header>
       <section id="hero">
-        <h2>Understanding the law.<br>Exploring its application.</h2>
+        <h2>Welcome to my library.</h2>
         <div class="hr"></div>
-        <p>Legal research, regulatory developments, and emerging issues<br>at the intersection of law, technology, and public policy.</p>
+        <p>Pick a book from the shelf for my experience, writing and research, <br>or open the globe for today&rsquo;s legal news.</p>
       </section>
     </div>
   </div>
@@ -729,7 +735,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  var K = reduce ? 0.02 : 1;                       // time multiplier for all animations
+  var K = reduce ? 0.02 : (window.__K || 1);                       // time multiplier for all animations
   function later(ms, fn) { return setTimeout(fn, ms * K); }
 
   /* ==================================================================
@@ -1073,7 +1079,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     });
     book.classList.toggle('open', S.spread > 0);
     book.classList.toggle('seal', S.spread === 0);
-    book.classList.toggle('snug', S.spread === 0);
+    book.classList.toggle('snug', S.spread === 0); book.classList.remove('near');
     S.queued = null;
     if (instant) wrap.classList.add('landed');
     void book.offsetWidth;
@@ -1135,7 +1141,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
-    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); }
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.remove('near'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -1147,7 +1153,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     [S.stkL, S.stkR].forEach(function (k, ki) {
       if (!k) { return; }
       if (ki === 0 && target === 0) { k.style.transition = 'width ' + Math.round((cdl + dur * 0.16) * K) + 'ms ease-in'; return; }
-      k.style.transition = edge ? ('width ' + Math.round(dur * 0.4 * K) + 'ms ease ' + Math.round((cdl + dur * (target === 0 ? 0.55 : 0.6)) * K) + 'ms') : '';
+      k.style.transition = edge ? ('width ' + Math.round(dur * (target === 0 ? 0.36 : 0.4) * K) + 'ms ease ' + Math.round((cdl + dur * (target === 0 ? 0.04 : 0.6)) * K) + 'ms') : '';
     });
     updateUI();
     if (cur === 0 || target === 0) {
@@ -1161,7 +1167,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         bk.classList.toggle('open', target > 0);
       }, cd * K);
       if (target === 0) {
-        setTimeout(function () { if (S.book === bk) { bk.classList.add('snug'); } }, (cd + dur * 0.45) * K);
+        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('snug'); } }, (cd + dur * 0.12) * K);
+        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('near'); } }, (cd + dur * 0.38) * K);
+        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('seal'); } }, (cd + dur * 0.82) * K);
       }
     }
     var total = (n - 1) * stagger + dur;
