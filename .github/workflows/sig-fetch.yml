@@ -1,0 +1,26 @@
+name: sig-fetch
+on:
+  push:
+    branches: [sig-fetch]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download the public-domain signature from Wikimedia Commons
+        run: |
+          mkdir -p src/assets
+          curl -fsSL -A "The-Willis-Writ-fetch/1.0 (https://github.com/jjwillis111/The-Willis-Writ)" \
+            -o src/assets/jefferson-signature.svg \
+            "https://commons.wikimedia.org/wiki/Special:FilePath/Thomas_Jefferson_Signature.svg"
+          ls -la src/assets
+          head -c 300 src/assets/jefferson-signature.svg; echo
+      - name: Commit the file back to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/assets/jefferson-signature.svg
+          git commit -m "Fetch Jefferson signature (public domain, Wikimedia Commons)"
+          git push
