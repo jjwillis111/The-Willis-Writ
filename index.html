@@ -1082,6 +1082,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     if (!src) { face.className += ' blank'; return; }
     var c = src.cloneNode(true);
     $$('img[data-src]', c).forEach(function (im) { im.src = im.getAttribute('data-src'); });
+    $$('img[data-art]', c).forEach(function (i) { var k = i.getAttribute('data-art'); (ARTLIVE[k] = ARTLIVE[k] || []).push(i); if (ARTURL[k]) i.src = ARTURL[k]; });
     face.appendChild(c);
     if (c.className.indexOf('title') < 0) face.appendChild(el('div', 'folio', '&middot; ' + (idx + 1) + ' &middot;'));
     $$('a[data-open]', c).forEach(function (a) {
@@ -1471,6 +1472,50 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     return { room: limit - bottom, em: fsz, limit: limit };
   }
 
+  /* The pencil art is drawn with SVG filters (turbulence, displacement, grain). Left live inside a page face that is
+     rotated and clipped on every frame of the cover swing, they make the swing stutter. So each piece is drawn once into
+     a bitmap while the book is being built, and the swing waits for the bitmaps (whenArtReady). The vector version shows
+     at once and is swapped for the bitmap as soon as it is decoded. */
+  var ARTJOBS = [], BLOBS = [], ARTLIVE = {}, ARTURL = {}, ARTKEY = 0;
+  function bakeArt(box, sv, str) {
+    var r = sv.getBoundingClientRect();
+    if (!(r.width > 4 && r.height > 4)) return;
+    var sc = Math.min(3, Math.max(2, (window.devicePixelRatio || 1) * 1.5)),
+      W = Math.round(r.width * sc), Hp = Math.round(r.height * sc), im = new Image(), uri;
+    uri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+      str.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + Hp + '" '));
+    im.className = sv.getAttribute('class'); im.alt = ''; im.draggable = false; im.setAttribute('aria-hidden', 'true');
+    im.style.height = sv.style.height; im.src = uri;
+    var key = ++ARTKEY; im.setAttribute('data-art', key);
+    box.replaceChild(im, sv);
+    ARTJOBS.push(new Promise(function (res) {
+      var raw = new Image();
+      raw.onload = function () {
+        try {
+          var c = document.createElement('canvas');
+          c.width = W; c.height = Hp;
+          c.getContext('2d').drawImage(raw, 0, 0, W, Hp);
+          c.toBlob(function (b) {
+            if (!b) { res(); return; }
+            var u = URL.createObjectURL(b), live = ARTLIVE[key] || [];
+            BLOBS.push(u); ARTURL[key] = u;
+            // the book shows clones of these pages (fillFace), so the bitmap goes to every live copy
+            Promise.all(live.map(function (i) { i.src = u; return i.decode ? i.decode().catch(function () {}) : null; })).then(res, res);
+          }, 'image/png');
+        } catch (e) { res(); }
+      };
+      raw.onerror = function () { res(); };
+      raw.src = uri;
+    }));
+  }
+  function whenArtReady(fn) {
+    var done = false;
+    function go() { if (!done) { done = true; fn(); } }
+    if (!S.artReady) { go(); return; }
+    S.artReady.then(go, go);
+    setTimeout(go, 900 * K);
+  }
+
   function paginate(src, dual, P, Hh, fs) {
     var sh = el('div', 'book ' + (dual ? 'dual' : 'single'));
     sh.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none;width:' + (dual ? 2 * P : P) + 'px;height:' + Hh + 'px;font-size:' + fs + 'px';
@@ -1570,16 +1615,18 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     out.forEach(function (pg) {
       if (!pg || pg.className.indexOf('title') >= 0) return;
       face.innerHTML = ''; face.appendChild(pg);
-      var r = pageRoom(pg, 0), gap = r.room / r.em, box, k, sv, hh;
+      var r = pageRoom(pg, 0), gap = r.room / r.em, box, k, sv, hh, str;
       if (gap < 5) return;
       k = oi++;
-      box = el('div', 'fillr', gap < 10 ? svgBand(k, false) : gap < 17 ? svgBand(k, true) : svgPlate(k));
+      str = gap < 10 ? svgBand(k, false) : gap < 17 ? svgBand(k, true) : svgPlate(k);
+      box = el('div', 'fillr', str);
       box.style.height = Math.floor(r.room - r.em * .7) + 'px';
       box.style.marginTop = (r.em * .35) + 'px';
       pg.appendChild(box);
       sv = box.firstChild;
       hh = gap < 10 ? Math.min(gap - 2.5, 3.4) : gap < 17 ? Math.min(gap - 2.5, 8) : Math.min(gap - 2.2, 17.5);
       sv.style.height = hh + 'em';
+      if (PEN) bakeArt(box, sv, str);
     });
     face.innerHTML = '';
     mount.removeChild(sh);
@@ -1588,9 +1635,12 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 
   function buildBook(v, startSpread, instant) {
     mount.innerHTML = '';
+    BLOBS.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
+    BLOBS = []; ARTJOBS = []; ARTLIVE = {}; ARTURL = {};
     var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh;
     var fs = clamp(P / 28, 13.5, 19);
     var pages = paginate(v.pages, d, P, Hh, fs);
+    S.artReady = ARTJOBS.length ? Promise.all(ARTJOBS) : null;
     if (d && pages.length % 2) pages.push(null);
     var n = pages.length;
     var color = THEMES[v.id] || '#5b2229';
@@ -1887,9 +1937,13 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         later(40, function () { if (S.wrap) S.wrap.classList.add('landed'); });
       }
       later(sp ? 300 : 700, function () {
-        turnTo(1, { dur: 1150 }, function () {
-          S.busy = false;
-          if (S.dirty) { S.dirty = false; rebuildOpen(); }
+        var bk0 = S.book;
+        whenArtReady(function () {
+          if (!S.open || S.book !== bk0) return;
+          turnTo(1, { dur: 1150 }, function () {
+            S.busy = false;
+            if (S.dirty) { S.dirty = false; rebuildOpen(); }
+          });
         });
         later(500, function () { ui.top.classList.add('show'); ui.bot.classList.add('show'); ui.close.focus({ preventScroll: true }); });
       });
