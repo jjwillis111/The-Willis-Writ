@@ -336,7 +336,7 @@
     var d = 'M' + segs[0][0] + ' ' + segs[0][1], g = '', i, k = 0, p, side, sc = o.leaf || 1;
     segs.forEach(function (s) { d += ' C' + s.slice(2).join(' '); });
     segs.forEach(function (s, idx) {
-      [[.22, .8], [.55, 1], [.85, .7]].forEach(function (q) {
+      (o.sparse ? [[.3, .9], [.78, .75]] : [[.22, .8], [.55, 1], [.85, .7]]).forEach(function (q) {
         p = bez(s, q[0]); side = (k++ % 2) ? 1 : -1;
         g += leafG(p[0], p[1], p[2] + side * 62 + 90, q[1] * sc);
       });
@@ -369,10 +369,10 @@
     function gavel() {
       var s = '<ellipse cx="40" cy="100" rx="34" ry="7"/><path d="M6 100 V106 C6 112 74 112 74 106 V100"/><path d="M11 103 C30 109 50 109 69 103 M14 106.5 C32 111 48 111 66 106.5"' + HAT + '/><path d="M20 99 C30 96 50 96 60 99"' + HAT + '/>';
       s += '<g transform="rotate(28 40 76)">';
-      s += '<path d="M37.4 66 C37 52 36 34 35.2 17 C35 9 45 9 44.8 17 C44 34 43 52 42.6 66"/><path d="M36 22 C38 24 42 24 44 22"/><path d="M39 62 V22 M41.5 60 V24"' + HAT + '/>';
+      s += '<path d="M37.4 64.8 C37 52 36 34 35.2 17 C35 9 45 9 44.8 17 C44 34 43 52 42.6 64.8"/><path d="M36 22 C38 24 42 24 44 22"/><path d="M39 62 V22 M41.5 60 V24"' + HAT + '/>';
       s += '<path d="M14 67 C30 63 50 63 66 67 L66 85 C50 89 30 89 14 85 Z"/><path d="M14 67 C9 72 9 80 14 85"/><ellipse cx="66.3" cy="76" rx="4.8" ry="9.2"/>';
       s += '<path d="M24 64.6 C27.5 72 27.5 80 24 87.4 M56 64.6 C59.5 72 59.5 80 56 87.4" stroke-width="2.2"/><path d="M30.5 65 C33 72 33 80 30.5 87 M49.5 65 C52 72 52 80 49.5 87"' + HAT + '/>';
-      s += '<path d="M33 70 H48 M34 74.5 H50 M33 79 H48 M35 83.4 H47"' + HAT + '/><path d="M36.4 66 Q40 69.5 43.6 66"/></g>';
+      s += '<path d="M33 70 H48 M34 74.5 H50 M33 79 H48 M35 83.4 H47"' + HAT + '/></g>';
       return s;
     },
     function courthouse() {
@@ -399,11 +399,17 @@
   function rng(sd) { return function () { sd = (sd * 9301 + 49297) % 233280; return sd / 233280; }; }
   function penDefs(id, w, h) {
     return '<defs>' +
-      '<filter id="wb' + id + '" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="' + (id % 7 + 2) + '" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="' + (PEN > 1 ? 4.8 : 3.4) + '" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<filter id="wb' + id + '" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="' + (id % 7 + 2) + '" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="' + (PEN > 1 ? 3.6 : 2.2) + '" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<filter id="wa' + id + '" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="' + (id % 5 + 11) + '" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<filter id="wc' + id + '" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="' + (id % 6 + 23) + '" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.6" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<linearGradient id="lm' + id + '" gradientUnits="userSpaceOnUse" x1="34" y1="0" x2="82" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>' +
+      '<linearGradient id="ln' + id + '" gradientUnits="userSpaceOnUse" x1="52" y1="0" x2="82" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>' +
+      '<mask id="sm' + id + '" maskUnits="userSpaceOnUse" x="-20" y="-20" width="130" height="160"><rect x="-20" y="-20" width="130" height="160" fill="url(#lm' + id + ')"/></mask>' +
+      '<mask id="sn' + id + '" maskUnits="userSpaceOnUse" x="-20" y="-20" width="130" height="160"><rect x="-20" y="-20" width="130" height="160" fill="url(#ln' + id + ')"/></mask>' +
       '<filter id="gr' + id + '" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="' + (id % 5 + 1) + '" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -' + (PEN > 1 ? 1.0 : 1.5) + ' ' + (PEN > 1 ? 1.9 : 1.75) + '" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>' +
       '<filter id="bl' + id + '" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>' +
-      '<pattern id="ht' + id + '" width="' + (PEN > 1 ? 2.5 : 3.2) + '" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)"><path d="M0 0 V3.2" stroke="' + OL + '" stroke-width="' + (.75 * PW) + '"/></pattern>' +
-      '<pattern id="hx' + id + '" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><path d="M0 0 V3" stroke="' + OL + '" stroke-width=".7"/></pattern>' +
+      '<pattern id="ht' + id + '" width="' + (PEN > 1 ? 2.1 : 2.7) + '" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)"><path d="M0 0 V3.2" stroke="' + OL + '" stroke-width="' + (.55 * PW) + '"/></pattern>' +
+      '<pattern id="hx' + id + '" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><path d="M0 0 V3" stroke="' + OL + '" stroke-width=".5"/></pattern>' +
       '<clipPath id="sd' + id + '"><rect x="' + (PEN > 1 ? 30 : 46) + '" y="-5" width="60" height="125"/></clipPath><clipPath id="sx' + id + '"><rect x="56" y="-5" width="30" height="125"/></clipPath>' +
       '<radialGradient id="rg' + id + '"><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>' +
       '<mask id="mk' + id + '" maskUnits="userSpaceOnUse" x="0" y="0" width="' + w + '" height="' + h + '"><rect width="' + w + '" height="' + h + '" fill="#000"/><ellipse cx="' + (w / 2) + '" cy="' + (h / 2) + '" rx="' + (w / 2 * 1.12) + '" ry="' + (h / 2 * 1.2) + '" fill="url(#rg' + id + ')"/></mask></defs>';
@@ -427,21 +433,71 @@
     }
     return g;
   }
+  function pln(d) { return '<path d="' + d + '" fill="none"/>'; }
+  function pshp(d) { return '<path d="' + d + '"/>'; }
+  function pchain(x1, y1, x2, y2, n) {
+    var s = '', i, t, dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), a = Math.atan2(dy, dx) * 180 / Math.PI, cx, cy;
+    for (i = 0; i < n; i++) {
+      t = (i + .5) / n; cx = x1 + dx * t; cy = y1 + dy * t;
+      s += i % 2 ? pln('M' + f1(cx - dx / n * .3) + ' ' + f1(cy - dy / n * .3) + ' L' + f1(cx + dx / n * .3) + ' ' + f1(cy + dy / n * .3))
+                 : '<ellipse cx="' + f1(cx) + '" cy="' + f1(cy) + '" rx="' + f1(L / n * .58) + '" ry="1.15" transform="rotate(' + f1(a) + ' ' + f1(cx) + ' ' + f1(cy) + ')" fill="none"/>';
+    }
+    return s;
+  }
+  var PENOBJ = [
+    function scales() {
+      var s = '';
+      s += pshp('M13 108 L67 108 L65 103 L15 103 Z') + pshp('M20 103 H60 V98.4 H20 Z') + pshp('M28 98.4 H52 L50 94 H30 Z');
+      s += pshp('M34.6 94 C35.8 70 36.4 50 37 36 L43 36 C43.6 50 44.2 70 45.4 94 Z') + pln('M38 92 C38.4 70 38.8 52 39 38 M40.2 92 V38 M42.2 92 C41.8 70 41.4 52 41.2 38');
+      s += pshp('M35.4 36 C35.6 33.4 44.4 33.4 44.6 36 L43.4 38.6 H36.6 Z');
+      s += pshp('M8 32.6 C22 27 58 27 72 32.6 L72 35.2 C58 30 22 30 8 35.2 Z') + pln('M40 27.6 V25.4');
+      s += '<circle cx="40" cy="30.6" r="4.3"/><circle cx="40" cy="30.6" r="1.4"/><circle cx="40" cy="21.6" r="3.4"/><circle cx="8" cy="34" r="2.5"/><circle cx="72" cy="34" r="2.5"/>';
+      [[8, 1, 14, 27], [8, 14, 14, 14], [72, 53, 66, 79]].forEach(function () {});
+      s += pchain(8, 36, 1.4, 66, 6) + pchain(8, 36, 14, 63.2, 6) + pchain(8, 36, 26.6, 66, 7);
+      s += pchain(72, 36, 53.4, 66, 7) + pchain(72, 36, 66, 63.2, 6) + pchain(72, 36, 78.6, 66, 6);
+      [14, 66].forEach(function (cx) {
+        s += '<ellipse cx="' + cx + '" cy="66" rx="13.2" ry="3.4"/>' + pshp('M' + (cx - 13.2) + ' 66 C' + (cx - 12) + ' 77 ' + (cx + 12) + ' 77 ' + (cx + 13.2) + ' 66 C' + (cx + 9) + ' 69.4 ' + (cx - 9) + ' 69.4 ' + (cx - 13.2) + ' 66 Z');
+        s += pln('M' + (cx - 7) + ' 72 C' + (cx - 2) + ' 74.2 ' + (cx + 2) + ' 74.2 ' + (cx + 7) + ' 72');
+      });
+      return s;
+    },
+    function gavel() { return OBJECTS[1](); },
+    function courthouse() { return OBJECTS[2](); },
+    function book() {
+      var s = '', i, y, S = [64, 5, 59, 28, 54, 50, 50, 66], p, t, r = rng(7), len;
+      s += pshp('M3 99 L1 103.5 C18 95.5 33 97.5 40 105.5 C47 97.5 62 95.5 79 103.5 L77 99 C61 91 47 93 40 101 C33 93 19 91 3 99 Z');
+      s += pshp('M3 74.5 C19 66.5 33 68.5 40 76.5 C47 68.5 61 66.5 77 74.5 L77 99 C61 91 47 93 40 101 C33 93 19 91 3 99 Z') + pln('M40 76.5 V101');
+      s += pln('M5 77.4 C19 70.4 32 72.4 38 79.4 M5 80.4 C19 73.4 32 75.4 38 82.4 M75 77.4 C61 70.4 48 72.4 42 79.4 M75 80.4 C61 73.4 48 75.4 42 82.4');
+      for (i = 0; i < 6; i++) {
+        y = 84 + i * 2.9; len = 20 + r() * 7;
+        s += pln('M' + f1(9) + ' ' + f1(y - 4.2 + i * .15) + ' C16 ' + f1(y - 7 + i * .1) + ' 25 ' + f1(y - 6.6) + ' ' + f1(9 + len) + ' ' + f1(y - 1.8 + r()));
+        s += pln('M' + f1(71) + ' ' + f1(y - 4.2 + i * .15) + ' C64 ' + f1(y - 7 + i * .1) + ' 55 ' + f1(y - 6.6) + ' ' + f1(71 - len * .9) + ' ' + f1(y - 1.8 + r()));
+      }
+      s += pshp('M42.6 100.5 L44 110 L46.4 107.6 L48.8 110 L49 99 Z');
+      s += pshp('M64 5 C79 18 75 44 50 66.5 C55 48 60 28 64 5 Z') + pln('M64 5 C59 28 54 50 50 66.5 M50 66.5 L48.6 71.5');
+      for (t = .1; t < .9; t += .055) {
+        p = bez(S, t); var a = (p[2] - 70) * Math.PI / 180, L = 13 * Math.pow(Math.sin(Math.PI * Math.min(t * 1.05, 1)), .6) * (.8 + r() * .35);
+        s += pln('M' + f1(p[0]) + ' ' + f1(p[1]) + ' l' + f1(Math.cos(a) * L) + ' ' + f1(Math.sin(a) * L));
+      }
+      return s;
+    }
+  ];
   function penObject(k, tx, ty, sc, id) {
-    var o = OBJECTS[k % OBJECTS.length](), T = 'translate(' + tx + ' ' + ty + ') scale(' + sc + ')';
+    var o = (PENOBJ[k % PENOBJ.length]()).replace(/ stroke-width="[^"]*"/g, ''), T = 'translate(' + tx + ' ' + ty + ') scale(' + sc + ')';
     return '<g transform="' + T + '" stroke-linejoin="round" stroke-linecap="round">' +
       '<g fill="' + WASH + '" stroke="none">' + o + '</g>' +
-      '<g clip-path="url(#sd' + id + ')" fill="url(#ht' + id + ')" stroke="none" opacity="' + (PEN > 1 ? .8 : .55) + '">' + o + '</g>' +
-      (PEN > 1 ? '<g clip-path="url(#sx' + id + ')" fill="url(#hx' + id + ')" stroke="none" opacity=".7">' + o + '</g>' : '') +
-      '<g fill="none" stroke="' + OL + '" stroke-width="' + (1.5 * PW) + '" opacity=".95">' + o + '</g>' +
-      '<g transform="translate(.8 .6)" fill="none" stroke="' + OL + '" stroke-width="' + (.7 * PW) + '" opacity=".55">' + o + '</g></g>';
+      '<g mask="url(#sm' + id + ')" fill="url(#ht' + id + ')" stroke="none" opacity="' + (PEN > 1 ? .95 : .7) + '">' + o + '</g>' +
+      '<g mask="url(#sn' + id + ')" fill="url(#hx' + id + ')" stroke="none" opacity="' + (PEN > 1 ? .8 : .55) + '">' + o + '</g>' +
+      '<g filter="url(#wa' + id + ')" fill="none" stroke="' + OL + '" stroke-width="' + (1.1 * PW) + '" opacity=".95">' + o + '</g>' +
+      '<g filter="url(#wb' + id + ')" transform="translate(-.5 .5)" fill="none" stroke="' + OL + '" stroke-width="' + (.65 * PW) + '" opacity=".55">' + o + '</g>' +
+      '<g filter="url(#wc' + id + ')" transform="translate(.7 -.3)" fill="none" stroke="' + OL + '" stroke-width="' + (.45 * PW) + '" opacity=".4">' + o + '</g></g>';
   }
   function penWrap(id, w, h, inner) {
     return penDefs(id, w, h) + '<g mask="url(#mk' + id + ')"><g filter="url(#gr' + id + ')"><g filter="url(#wb' + id + ')">' + inner + '</g></g></g>';
   }
   function penPlate(k) {
     var id = ++ARTN, inner = '<ellipse cx="100" cy="92" rx="66" ry="64" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' + ghostSketch(31 + k * 7, 200, 160, 9) +
-      vine(VL, { fruit: 2, leaf: .9 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .9 }) + '</g>' +
+      '<g opacity=".72">' + vine(VL, { fruit: 2, leaf: .85, sparse: 1 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .85, sparse: 1 }) + '</g></g>' +
       scribbleGround(100, 143, 52, 17 + k * 3, PEN > 1 ? 44 : 26) + penObject(k, 59, 30, 1.05, id);
     return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + penWrap(id, 200, 170, inner) + '</svg>';
   }
@@ -449,7 +505,7 @@
     var id = ++ARTN, vb = medal ? '0 0 302 100' : '0 12 302 56', inner = '';
     inner += (medal ? '<ellipse cx="151" cy="52" rx="48" ry="38" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' : '') + ghostSketch(5 + k * 3, 302, medal ? 90 : 56, 6);
     inner += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8 });
-    if (medal) inner += scribbleGround(151, 84, 30, 9 + k * 5, 14) + penObject(k, 151 - 40 * .5, 52 - 55 * .5 - 2, .5, id);
+    if (medal) inner += scribbleGround(151, 85, 36, 9 + k * 5, 16) + penObject(k, 151 - 40 * .66, 50 - 55 * .66, .66, id);
     return '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="' + vb + '" aria-hidden="true">' + penWrap(id, 302, medal ? 100 : 68, inner) + '</svg>';
   }
   var VL = [[50,166, 22,160, 24,136, 44,128],[44,128, 68,120, 36,100, 44,84],[44,84, 52,66, 30,52, 40,36],[40,36, 46,22, 60,14, 80,8]];
