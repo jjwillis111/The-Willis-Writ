@@ -671,7 +671,7 @@
   function bakeArt(box, sv, str) {
     var r = sv.getBoundingClientRect();
     if (!(r.width > 4 && r.height > 4)) return;
-    var sc = Math.min(3, Math.max(2, (window.devicePixelRatio || 1) * 1.5)),
+    var sc = Math.min(2, Math.max(1.5, window.devicePixelRatio || 1)),
       W = Math.round(r.width * sc), Hp = Math.round(r.height * sc), im = new Image(), uri;
     uri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
       str.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + Hp + '" '));
@@ -698,6 +698,20 @@
       raw.onerror = function () { res(); };
       raw.src = uri;
     }));
+  }
+  // Paginating and baking take a while, so they start as soon as a book is picked, while it is still flying off the shelf
+  // (that flight runs on the compositor and does not mind a busy main thread). buildBook picks the result up if the
+  // book size has not changed in the meantime.
+  var PRE = null;
+  function resetArt() {
+    BLOBS.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
+    BLOBS = []; ARTJOBS = []; ARTLIVE = {}; ARTURL = {};
+  }
+  function prepBook(v) {
+    var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh, fs = clamp(P / 28, 13.5, 19);
+    resetArt();
+    var pages = paginate(v.pages, d, P, Hh, fs);
+    PRE = { id: v.id, d: d, P: P, Hh: Hh, pages: pages, ready: ARTJOBS.length ? Promise.all(ARTJOBS) : null };
   }
   function whenArtReady(fn) {
     var done = false;
@@ -826,12 +840,16 @@
 
   function buildBook(v, startSpread, instant) {
     mount.innerHTML = '';
-    BLOBS.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
-    BLOBS = []; ARTJOBS = []; ARTLIVE = {}; ARTURL = {};
-    var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh;
+    var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh, pages;
     var fs = clamp(P / 28, 13.5, 19);
-    var pages = paginate(v.pages, d, P, Hh, fs);
-    S.artReady = ARTJOBS.length ? Promise.all(ARTJOBS) : null;
+    if (PRE && PRE.id === v.id && PRE.d === d && PRE.P === P && PRE.Hh === Hh) {
+      pages = PRE.pages; S.artReady = PRE.ready;
+    } else {
+      resetArt();
+      pages = paginate(v.pages, d, P, Hh, fs);
+      S.artReady = ARTJOBS.length ? Promise.all(ARTJOBS) : null;
+    }
+    PRE = null;
     if (d && pages.length % 2) pages.push(null);
     var n = pages.length;
     var color = THEMES[v.id] || '#5b2229';
@@ -1093,6 +1111,7 @@
     viewport.classList.add('opening');
 
     var dm = bookDims(), L = landRect(), sp = null, tLand, isNews = (id === 'news'), isLetter = (id === 'jefferson');
+    if (!isNews && !isLetter) { later(60, function () { if (S.open && S.id === id && !S.book) { try { prepBook(v); } catch (e) { PRE = null; } } }); }
     if (v.hs) {
       var from = shelfRect(v);
       sp = makeSprite(v, from, false);
