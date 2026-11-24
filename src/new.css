@@ -293,10 +293,9 @@ i { font-style: normal; display: block; }
    PAGE CONTENT
    ========================================================================== */
 .pg {
-  position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow-y: auto; overflow-x: hidden;
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden;
   padding: 2.4em 2.2em 3.2em; color: #2b231a; line-height: 1.42; font-size: 1.12em;
   font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
-  scrollbar-width: thin; scrollbar-color: rgba(120, 90, 40, .4) transparent;
 }
 .book.dual .face.r .pg { padding-left: 2.7em; }
 .book.dual .face.l .pg { padding-right: 2.7em; }
@@ -314,6 +313,8 @@ i { font-style: normal; display: block; }
 .pg .contact { list-style: none; padding: 0; }
 .pg .contact li { padding: .6em 0; border-bottom: 1px solid rgba(120, 90, 40, .25); }
 .pg .contact span { display: inline-block; min-width: 5.6em; font: 700 .85em 'Cormorant Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #6b5a43; }
+.pg .fillr { display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
+.pg .ornsvg { display: block; flex: none; width: auto; max-width: 100%; mix-blend-mode: multiply; opacity: .93; }
 .pg.title { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2em; }
 .pg.title .mono {
   width: 3.3em; height: 3.3em; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(120, 90, 40, .7); border-radius: 50%;

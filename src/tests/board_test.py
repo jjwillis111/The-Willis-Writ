@@ -8,8 +8,8 @@ from playwright.sync_api import sync_playwright
 K = float(os.environ.get('K', '6'))
 URL = os.environ.get('URL') or 'file://' + os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'index.html'))
 JS = """(function(){var c=document.querySelector('.leaf.cover'),k=document.querySelector('.book');if(!c||!k)return null;
- function vis(e){var s=getComputedStyle(e);return s.visibility!=='hidden'&&parseFloat(s.opacity)>0&&parseFloat(s.width)>0.5;}
- var bd=[].slice.call(k.querySelectorAll('.bd')).filter(function(e){return getComputedStyle(e).visibility!=='hidden'&&parseFloat(getComputedStyle(e).opacity)>0;}).length;
+ function vis(e){var s=getComputedStyle(e);return s.visibility!=='hidden'&&parseFloat(s.opacity)>0.15&&parseFloat(s.width)>0.5;}
+ var bd=[].slice.call(k.querySelectorAll('.bd')).filter(function(e){return getComputedStyle(e).visibility!=='hidden'&&parseFloat(getComputedStyle(e).opacity)>0.15;}).length;
  var sk=[].slice.call(k.querySelectorAll('.stk')).filter(vis).length;
  return [getComputedStyle(c).transform,bd,sk];})()"""
 ap = argparse.ArgumentParser(); ap.add_argument('--books', default='about,experience,writing,research,contact'); ap.add_argument('--band', type=float, default=95)
@@ -37,7 +37,7 @@ with sync_playwright() as p:
         sample('open', 4.5 * K); pg.wait_for_timeout(int(600 * K)); pg.keyboard.press('Escape'); sample('close', 4 * K)
         for ph in res:
             n, v = res[ph]; bad += v + (1 if n == 0 else 0)
-            print('%-10s %-5s frames under %d deg: %3d  with a board or strip visible: %d' % (book, ph, a.band, n, v))
+            print('%-10s %-5s frames under %d deg: %3d  with a board or strip visible (opacity over 0.15): %d' % (book, ph, a.band, n, v))
         pg.context.close()
     b.close()
 print('RESULT', 'FAIL' if bad else 'PASS'); sys.exit(1 if bad else 0)

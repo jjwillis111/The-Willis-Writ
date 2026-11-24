@@ -176,7 +176,7 @@ i { font-style: normal; display: block; }
 .pt .globe-cap, .pt .bust-cap { transform: translate(-50%, -85%); font-size: 11px; padding: .15em .7em .25em; }
 
 /* ==========================================================================
-   The Legal Wire broadsheet
+   Legal Wire broadsheet
    ========================================================================== */
 .paperwrap { position: absolute; left: 50%; top: calc(50% + 18px); width: min(1060px, calc(100vw - 28px)); pointer-events: auto;
   transform: translate(-50%, -47%) scale(.965); opacity: 0; transition: transform 900ms cubic-bezier(.2, .8, .2, 1), opacity 420ms ease; }
@@ -315,13 +315,18 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .leaf:not(.cover) .face.back { clip-path: inset(calc(2px + 7px * var(--tk)) 0 calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk))); }
 .book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
 
-/* the back board only overhangs the cover once the book is open; a closed book is just its cover */
-.book .bd { transition: top calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), bottom calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), right calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), left calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)); }
-.book.snug .bd { top: 0; bottom: 0; transition-delay: 0ms; transition-duration: calc(380ms * var(--K, 1)); }
+/* the back board only overhangs the cover once the book is open; a closed book is just its cover.
+   Boards and page-edge strips are out of the picture while the cover is in the first half of its swing (class "bare",
+   set and cleared by turnTo), so beside a swinging cover there is only the page block it uncovers. The board fades in
+   once the cover is past about 100 degrees and goes quickly on the way back. A sealed book is already at opacity 0, so
+   unsealing and baring in the same frame cannot flash. */
+.book .bd { opacity: 1; transition: top calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), bottom calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), right calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), left calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), opacity calc(240ms * var(--K, 1)) ease-out 0ms; }
+.book.snug .bd { top: 0; bottom: 0; transition-delay: 0ms; transition-duration: calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(240ms * var(--K, 1)); }
+.book.seal .bd, .book.bare .bd { opacity: 0; }
 .book.seal .bd { visibility: hidden; }
-/* boards and page-edge strips are hidden while the cover is in the first half of its swing (see turnTo), so the only things
-   beside a swinging cover are the page block it uncovers, never a band of board or stacked page edges */
-.book.bare .bd, .book.bare .stk { visibility: hidden; }
+.book.bare .bd { transition-duration: calc(600ms * var(--K, 1)), calc(600ms * var(--K, 1)), calc(600ms * var(--K, 1)), calc(600ms * var(--K, 1)), calc(70ms * var(--K, 1)); }
+.book.snug.bare .bd { transition-duration: calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(380ms * var(--K, 1)), calc(70ms * var(--K, 1)); }
+.book.bare .stk { visibility: hidden; }
 .book.dual.snug .bd.br { right: 0; }
 .book.single.snug .bd.br { left: 0; right: 0; }
 
@@ -430,10 +435,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
    PAGE CONTENT
    ========================================================================== */
 .pg {
-  position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow-y: auto; overflow-x: hidden;
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden;
   padding: 2.4em 2.2em 3.2em; color: #2b231a; line-height: 1.42; font-size: 1.12em;
   font-family: 'Times New Roman', Times, serif;
-  scrollbar-width: thin; scrollbar-color: rgba(120, 90, 40, .4) transparent;
 }
 .book.dual .face.r .pg { padding-left: 2.7em; }
 .book.dual .face.l .pg { padding-right: 2.7em; }
@@ -451,6 +455,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .pg .contact { list-style: none; padding: 0; }
 .pg .contact li { padding: .6em 0; border-bottom: 1px solid rgba(120, 90, 40, .25); }
 .pg .contact span { display: inline-block; min-width: 5.6em; font: 700 .85em 'Times New Roman', Times, serif; letter-spacing: .2em; text-transform: uppercase; color: #6b5a43; }
+.pg .fillr { display: flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
+.pg .ornsvg { display: block; flex: none; width: auto; max-width: 100%; mix-blend-mode: multiply; opacity: .93; }
 .pg.title { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2em; }
 .pg.title .mono {
   width: 3.3em; height: 3.3em; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(120, 90, 40, .7); border-radius: 50%;
@@ -556,7 +562,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         <ol>
           <li><strong>The shelf.</strong> Click a book to take it down.</li>
           <li><strong>Turning pages.</strong> Use the corners, arrows, arrow keys, or swipe. Escape puts the book back.</li>
-          <li><strong>The globe</strong> opens <em>The Legal Wire</em>, a daily paper on the SEC, privacy, Congress and the Court, with links to sources.</li>
+          <li><strong>The globe</strong> opens <em>Legal Wire</em>, a daily paper on the SEC, privacy, Congress and the Court, with links to sources.</li>
           <li><strong>The Jefferson bust</strong> hands you a passage from his letters.</li>
         </ol>
         <p class="meta">Views are my own, not my employer's, school's, or any agency's.</p>
@@ -747,8 +753,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     </article>
     <article class="pg">
       <h3>Following developments</h3>
-      <p>Alongside this project I keep up with regulatory and policy developments at the intersection of law, technology and public policy. <em>The Legal Wire</em>, the newspaper behind the globe on the shelf, collects the headlines I follow.</p>
-      <p><a data-open="news">Open The Legal Wire</a></p>
+      <p>Alongside this project I keep up with regulatory and policy developments at the intersection of law, technology and public policy. <em>Legal Wire</em>, the newspaper behind the globe on the shelf, collects the headlines I follow.</p>
+      <p><a data-open="news">Open Legal Wire</a></p>
     </article>
     <article class="pg">
       <h3>What it taught me</h3>
@@ -839,6 +845,13 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     var v = { id: s.getAttribute('data-id'), label: s.getAttribute('data-label'),
               sub: s.getAttribute('data-sub') || '', pages: $$('.pg', s) };
     VOLS.push(v); BY[v.id] = v;
+  });
+
+  // Which logo files exist. Learned at load so pagination can leave out a logo that will not show.
+  var IMGOK = {};
+  $$('#library-data .orgmark img').forEach(function (im) {
+    var u = im.getAttribute('src'); if (!u || u in IMGOK) return;
+    var t = new Image(); t.onload = function () { IMGOK[u] = true; }; t.onerror = function () { IMGOK[u] = false; }; t.src = u;
   });
 
   var NEWS = { id: 'news', label: 'Legal Wire', sub: 'Law, regulation and the courts', pages: [] };
@@ -1042,6 +1055,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   function fillFace(face, src, idx) {
     if (!src) { face.className += ' blank'; return; }
     var c = src.cloneNode(true);
+    $$('img[data-src]', c).forEach(function (im) { im.src = im.getAttribute('data-src'); });
     face.appendChild(c);
     if (c.className.indexOf('title') < 0) face.appendChild(el('div', 'folio', '&middot; ' + (idx + 1) + ' &middot;'));
     $$('a[data-open]', c).forEach(function (a) {
@@ -1049,11 +1063,243 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     });
   }
 
+  /* ==================================================================
+     Pagination. Books never scroll: a page whose text is too long for the
+     leaf is split (headings stay with the text that follows them) and the
+     rest carries over onto the next page. Pages with room to spare are
+     then dressed with a vine band or an illustrated panel (no text).
+     ================================================================== */
+  /* ------------------------------------------------------------------
+     Page fillers: flat-colour wood-engraving style plates (olive vines,
+     teal lattice, vermilion linework), original art drawn in code.
+     ------------------------------------------------------------------ */
+  var OL = '#76853a', OLD = '#5d6b2b', TL = '#5e9b96', TLD = '#3f7f7b', VM = '#c4563a', CR = '#f1e7cf', PK = '#e8aa9c', PKD = '#d68474';
+  var LEAF = 'M0 0 C-2 -3 -7 -3 -10 -6 C-8 -8 -9 -11 -12 -12 C-9 -14 -7 -15 -6 -18 C-4 -17 -2 -19 0 -23 C2 -19 4 -17 6 -18 C7 -15 9 -14 12 -12 C9 -11 8 -8 10 -6 C7 -3 2 -3 0 0 Z';
+  function f1(n) { return Math.round(n * 10) / 10; }
+  function bez(s, t) {
+    var u = 1 - t, x = u*u*u*s[0] + 3*u*u*t*s[2] + 3*u*t*t*s[4] + t*t*t*s[6], y = u*u*u*s[1] + 3*u*u*t*s[3] + 3*u*t*t*s[5] + t*t*t*s[7];
+    var dx = 3*u*u*(s[2]-s[0]) + 6*u*t*(s[4]-s[2]) + 3*t*t*(s[6]-s[4]), dy = 3*u*u*(s[3]-s[1]) + 6*u*t*(s[5]-s[3]) + 3*t*t*(s[7]-s[5]);
+    return [x, y, Math.atan2(dy, dx) * 180 / Math.PI];
+  }
+  function leafG(x, y, rot, sc) {
+    return '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + f1(rot) + ') scale(' + sc + ')"><path d="' + LEAF + '" fill="' + OL + '"/>' +
+      '<path d="M0 -1 V-19 M0 -6 L-6 -10 M0 -6 L6 -10 M0 -11 L-5 -15 M0 -11 L5 -15" fill="none" stroke="' + CR + '" stroke-width=".7" stroke-linecap="round" opacity=".75"/></g>';
+  }
+  function grapes(x, y, sc) {
+    var pts = [[-5,0],[0,0],[5,0],[-2.5,4.5],[2.5,4.5],[0,9]], s = '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') scale(' + sc + ')"><path d="M0 -6 L0 0" stroke="' + OLD + '" stroke-width="1" fill="none"/>', i;
+    for (i = 0; i < pts.length; i++) s += '<circle cx="' + pts[i][0] + '" cy="' + (pts[i][1] + 2) + '" r="2.8" fill="' + PK + '" stroke="' + PKD + '" stroke-width=".6"/>';
+    return s + '</g>';
+  }
+  function tendril(x, y, rot, sc) {
+    return '<path transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + f1(rot) + ') scale(' + sc + ')" d="M0 0 C6 -4 12 0 10 6 C8 11 1 9 3 4 C4 2 6 3 5.5 4.5" fill="none" stroke="' + OLD + '" stroke-width="1" stroke-linecap="round"/>';
+  }
+  // segs: list of cubic segments [x0,y0,c1x,c1y,c2x,c2y,x1,y1]; fruit: 0/1 to hang grapes
+  function vine(segs, o) {
+    o = o || {};
+    var d = 'M' + segs[0][0] + ' ' + segs[0][1], g = '', i, k = 0, p, side, sc = o.leaf || 1;
+    segs.forEach(function (s) { d += ' C' + s.slice(2).join(' '); });
+    segs.forEach(function (s, idx) {
+      [[.22, .8], [.55, 1], [.85, .7]].forEach(function (q) {
+        p = bez(s, q[0]); side = (k++ % 2) ? 1 : -1;
+        g += leafG(p[0], p[1], p[2] + side * 62 + 90, q[1] * sc);
+      });
+      p = bez(s, .4); g += tendril(p[0], p[1], p[2] + (idx % 2 ? 150 : -30), .9 * sc);
+      if (o.fruit && idx % 2 === o.fruit - 1) { p = bez(s, .68); g += grapes(p[0] + 2, p[1] + 3, .9 * sc); }
+    });
+    return '<path d="' + d + '" fill="none" stroke="' + OL + '" stroke-width="' + (o.w || 2) + '" stroke-linecap="round"/>' + g;
+  }
+  function latticePanel(x, y, w, h, step, seed) {
+    var s = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + TL + '"/>', i, j, r = seed || 7;
+    for (i = 0; i < Math.floor(w / step); i++) for (j = 0; j < Math.floor(h / step); j++) {
+      r = (r * 9301 + 49297) % 233280;
+      if (r / 233280 > .72) s += '<rect x="' + (x + i * step + .8) + '" y="' + (y + j * step + .8) + '" width="' + (step - 1.6) + '" height="' + (step - 1.6) + '" fill="' + TLD + '" opacity=".85"/>';
+    }
+    s += '<path fill="none" stroke="' + CR + '" stroke-width=".8" opacity=".7" d="';
+    for (i = 1; i < w / step; i++) s += 'M' + (x + i * step) + ' ' + y + ' V' + (y + h);
+    for (j = 1; j < h / step; j++) s += 'M' + x + ' ' + (y + j * step) + ' H' + (x + w);
+    return s + '"/><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="none" stroke="' + TLD + '" stroke-width="2.2"/>';
+  }
+  var HAT = ' stroke="' + VM + '" stroke-width=".8" fill="none" stroke-linecap="round"';
+  // Legal subjects, drawn in an 80 x 110 box.
+  var OBJECTS = [
+    function scales() {
+      var s = '<path d="M40 20 V96" stroke-width="3.2"/><circle cx="40" cy="14" r="4.4"/><path d="M33 22 H47"/><path d="M12 31 Q40 22 68 31" stroke-width="2.6" fill="none"/><circle cx="12" cy="31" r="2.6"/><circle cx="68" cy="31" r="2.6"/>';
+      s += '<path d="M12 31 L2 63 M12 31 L22 63 M68 31 L58 63 M68 31 L78 63" stroke-width=".9" fill="none"/>';
+      s += '<path d="M0 63 Q12 79 24 63 Z"/><path d="M56 63 Q68 79 80 63 Z"/><path d="M30 96 H50 L54 104 H26 Z"/><path d="M22 104 H58 V109 H22 Z"/>';
+      s += '<path d="M5 67 Q12 73 19 67 M9 70 Q12 74 15 70 M61 67 Q68 73 75 67 M65 70 Q68 74 71 70 M32 40 V92 M48 40 V92"' + HAT.replace('fill="none"', 'fill="none" opacity=".0"') + '/>';
+      return s + '<path d="M36 36 V90 M44 36 V90" stroke-width=".7" opacity=".7"/>';
+    },
+    function gavel() {
+      var s = '<g transform="rotate(-32 38 44)"><rect x="14" y="24" width="48" height="22" rx="4.5"/><path d="M25 24 V46 M51 24 V46" stroke-width="1.4"/><rect x="34" y="46" width="8" height="54" rx="3"/>';
+      s += '<path d="M18 29 H22 M18 34 H22 M18 39 H22 M54 29 H58 M54 34 H58 M54 39 H58 M37 56 V94 M39.5 56 V94"' + HAT + '/></g>';
+      return s + '<ellipse cx="40" cy="98" rx="34" ry="6.5"/><path d="M8 98 V104 Q40 114 72 104 V98" fill="' + CR + '"/><path d="M14 102 Q40 109 66 102"' + HAT + '/>';
+    },
+    function courthouse() {
+      var s = '<path d="M5 41 L40 15 L75 41 Z"/><circle cx="40" cy="31" r="4.6"/><path d="M14 38 L40 20 L66 38"' + HAT + '/><rect x="5" y="41" width="70" height="7"/>', i, cx;
+      for (i = 0; i < 5; i++) {
+        cx = 14 + i * 13;
+        s += '<rect x="' + (cx - 3.4) + '" y="52" width="6.8" height="35"/><rect x="' + (cx - 5.2) + '" y="48" width="10.4" height="4.4"/><rect x="' + (cx - 5.2) + '" y="87" width="10.4" height="3.6"/>';
+        s += '<path d="M' + (cx - 1.1) + ' 53 V86 M' + (cx + 1.3) + ' 53 V86"' + HAT + '/>';
+      }
+      return s + '<rect x="3" y="91" width="74" height="5"/><rect x="0" y="96" width="80" height="5"/><rect x="0" y="101" width="80" height="7"/><path d="M6 44 H74"' + HAT + '/>';
+    },
+    function book() {
+      var s = '<path d="M5 68 C22 60 34 62 40 70 C46 62 58 60 75 68 V98 C58 90 46 92 40 100 C34 92 22 90 5 98 Z"/><path d="M40 70 V100" stroke-width="1.6"/>';
+      s += '<path d="M11 75 Q24 71 34 76 M11 81 Q24 77 34 82 M11 87 Q24 83 34 88 M46 76 Q56 71 69 75 M46 82 Q56 77 69 81 M46 88 Q56 83 69 87"' + HAT + '/>';
+      s += '<path d="M64 6 C78 14 80 36 58 60 C56 42 52 24 64 6 Z"/><path d="M64 6 C58 28 54 46 46 68" stroke-width="1.4" fill="none"/>';
+      return s + '<path d="M62 16 L70 21 M60 23 L71 29 M58 31 L70 38 M56 40 L66 48 M54 48 L61 55 M58 22 L52 26 M56 32 L51 36"' + HAT + '/>';
+    }
+  ];
+  function objectG(k, tx, ty, sc) {
+    return '<g transform="translate(' + tx + ' ' + ty + ') scale(' + sc + ')" fill="' + CR + '" stroke="' + VM + '" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">' + OBJECTS[k % OBJECTS.length]() + '</g>';
+  }
+  var VL = [[50,166, 22,160, 24,136, 44,128],[44,128, 68,120, 36,100, 44,84],[44,84, 52,66, 30,52, 40,36],[40,36, 46,22, 60,14, 80,8]];
+  function svgPlate(k) {
+    var v = vine(VL, { fruit: 2, leaf: 1 });
+    return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + latticePanel(64, 16, 72, 140, 9, 11 + k * 5) + objectG(k, 66.4, 40, .84) +
+      '<rect x="64" y="16" width="72" height="140" fill="none" stroke="' + TLD + '" stroke-width="2.2"/>' +
+      v + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: 1 }) + '</g></svg>';
+  }
+  var BL = [[4,40, 30,10, 54,68, 92,40],[92,40, 120,16, 138,64, 168,40],[168,40, 198,14, 216,62, 252,38],[252,38, 270,26, 286,40, 298,34]];
+  function svgBand(k, medal) {
+    var h = medal ? 100 : 56, y0 = medal ? 50 : 28, sy = 1;
+    var s = '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="0 ' + (medal ? 0 : 12) + ' 302 ' + (medal ? 100 : 56) + '" aria-hidden="true">';
+    s += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .9, w: 1.8 });
+    if (medal) {
+      s += '<circle cx="151" cy="50" r="30" fill="' + TL + '"/><circle cx="151" cy="50" r="30" fill="none" stroke="' + TLD + '" stroke-width="2.4"/><circle cx="151" cy="50" r="25" fill="none" stroke="' + CR + '" stroke-width=".8" opacity=".7"/>' + objectG(k, 151 - 40 * .34, 50 - 55 * .34, .34);
+    }
+    return s + '</svg>';
+  }
+
+  // Free height, in px, under the last element of a page that sits in the measuring leaf.
+  function pageRoom(pg, slack) {
+    var cs = getComputedStyle(pg), fsz = parseFloat(cs.fontSize) || 16;
+    var limit = pg.clientHeight - parseFloat(cs.paddingBottom) - (slack || 0) * fsz;
+    var last = pg.lastElementChild, bottom = parseFloat(cs.paddingTop) || 0;
+    if (last) bottom = last.offsetTop + last.offsetHeight + (parseFloat(getComputedStyle(last).marginBottom) || 0);
+    return { room: limit - bottom, em: fsz, limit: limit };
+  }
+
+  function paginate(src, dual, P, Hh, fs) {
+    var sh = el('div', 'book ' + (dual ? 'dual' : 'single'));
+    sh.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none;width:' + (dual ? 2 * P : P) + 'px;height:' + Hh + 'px;font-size:' + fs + 'px';
+    var base = el('div', 'base'), face = el('div', 'face sheet r');
+    base.appendChild(face); sh.appendChild(base); mount.appendChild(sh);
+
+    function fits(pg) { return pageRoom(pg, .6).room >= -0.5; }
+    function fresh(model, more) {
+      var p = model.cloneNode(false);
+      if (more) p.className += ' more';
+      face.innerHTML = ''; face.appendChild(p); return p;
+    }
+    function textsOf(n) {
+      var w = document.createTreeWalker(n, NodeFilter.SHOW_TEXT), t, a = [];
+      while ((t = w.nextNode())) a.push(t);
+      return a;
+    }
+    function boundaries(n) {
+      var ts = textsOf(n), out = [], i, re, m, s, e;
+      for (i = 0; i < ts.length; i++) {
+        s = ts[i].nodeValue; re = /\s+/g;
+        while ((m = re.exec(s))) { e = m.index + m[0].length; if (e < s.length || i < ts.length - 1) out.push([i, e]); }
+      }
+      return out;
+    }
+    function cutAt(n, b) {
+      var c = n.cloneNode(true), t = textsOf(c)[b[0]], r = document.createRange();
+      r.setStart(t, b[1]); r.setEnd(c, c.childNodes.length);
+      var frag = r.extractContents(), tail = n.cloneNode(false);
+      tail.removeAttribute('id'); tail.appendChild(frag); tail.className += ' cont';
+      return { head: c, tail: tail };
+    }
+    // Split a paragraph at a word boundary so the head just fills the page. Returns the tail, or null.
+    function splitPara(cur, node) {
+      var bs = boundaries(node), lo = -1, hi = bs.length - 1, mid, cut, lh;
+      if (bs.length < 6) return null;
+      while (lo < hi) {
+        mid = Math.ceil((lo + hi + 1) / 2); cut = cutAt(node, bs[mid]);
+        cur.appendChild(cut.head); var ok = fits(cur); cur.removeChild(cut.head);
+        if (ok) lo = mid; else hi = mid - 1;
+      }
+      while (lo > 0 && bs.length - lo < 5) lo--;           // keep a few words for the next page
+      if (lo < 0) return null;
+      cut = cutAt(node, bs[lo]); cur.appendChild(cut.head);
+      lh = parseFloat(getComputedStyle(cut.head).lineHeight) || (parseFloat(getComputedStyle(cut.head).fontSize) * 1.42);
+      if (cut.head.offsetHeight < lh * 1.9 || !fits(cur)) { cur.removeChild(cut.head); return null; }   // no orphan lines
+      return cut.tail;
+    }
+    // Split a list between items. Returns the remainder list, or null.
+    function splitList(cur, node) {
+      var shell = node.cloneNode(false), k = 0, li;
+      shell.removeAttribute('id'); cur.appendChild(shell);
+      while ((li = node.firstElementChild)) {
+        shell.appendChild(li);
+        if (!fits(cur)) { shell.removeChild(li); node.insertBefore(li, node.firstChild); break; }
+        k++;
+      }
+      if (!k) { cur.removeChild(shell); return null; }
+      if (!node.firstElementChild) return 'done';
+      if (node.tagName === 'OL') node.setAttribute('start', (parseInt(node.getAttribute('start') || '1', 10) + k));
+      return node;
+    }
+    function keepNext(e) {
+      return e.tagName === 'H3' || e.tagName === 'H4' || (e.classList.contains('orgmark')) ||
+        (e.classList.contains('meta') && e.previousElementSibling && e.previousElementSibling.tagName === 'H4');
+    }
+
+    var out = [];
+    src.forEach(function (page) {
+      if (!page) { out.push(page); return; }
+      var model = page.cloneNode(true);
+      $$('.orgmark', model).forEach(function (f) { var im = f.querySelector('img'); if (!im || IMGOK[im.getAttribute('src')] === false) f.parentNode.removeChild(f); });
+      $$('img', model).forEach(function (im) { im.setAttribute('data-src', im.getAttribute('src') || ''); im.removeAttribute('src'); });
+      if (model.className.indexOf('title') >= 0) { out.push(model); return; }
+      var queue = [].slice.call(model.children), cur = fresh(model, false), node, tail, held, guard = 0;
+      queue.forEach(function (c) { model.removeChild(c); });
+      while (queue.length && guard++ < 400) {
+        node = queue.shift(); cur.appendChild(node);
+        if (fits(cur)) continue;
+        cur.removeChild(node);
+        tail = node.tagName === 'P' ? splitPara(cur, node) : (node.tagName === 'OL' || node.tagName === 'UL') ? splitList(cur, node) : null;
+        if (tail === 'done') continue;
+        held = [];
+        if (!tail) {
+          if (!cur.children.length) { cur.appendChild(node); out.push(cur); cur = fresh(model, true); continue; }   // taller than a leaf: let it be
+          while (cur.children.length > 1 && keepNext(cur.lastElementChild)) held.unshift(cur.removeChild(cur.lastElementChild));
+          tail = node;
+        }
+        out.push(cur); cur = fresh(model, true);
+        queue.unshift.apply(queue, held.concat([tail]));
+      }
+      if (cur.children.length) out.push(cur);
+    });
+
+    // Dress leftover room with a period plate: a vine band, or a lattice panel for the big gaps.
+    var oi = 0;
+    out.forEach(function (pg) {
+      if (!pg || pg.className.indexOf('title') >= 0) return;
+      face.innerHTML = ''; face.appendChild(pg);
+      var r = pageRoom(pg, 0), gap = r.room / r.em, box, k, sv, hh;
+      if (gap < 5) return;
+      k = oi++;
+      box = el('div', 'fillr', gap < 10 ? svgBand(k, false) : gap < 17 ? svgBand(k, true) : svgPlate(k));
+      box.style.height = Math.floor(r.room - r.em * .7) + 'px';
+      box.style.marginTop = (r.em * .35) + 'px';
+      pg.appendChild(box);
+      sv = box.firstChild;
+      hh = gap < 10 ? Math.min(gap - 2.5, 3.4) : gap < 17 ? Math.min(gap - 2.5, 8) : Math.min(gap - 2.2, 17.5);
+      sv.style.height = hh + 'em';
+    });
+    face.innerHTML = '';
+    mount.removeChild(sh);
+    return out;
+  }
+
   function buildBook(v, startSpread, instant) {
     mount.innerHTML = '';
     var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh;
     var fs = clamp(P / 28, 13.5, 19);
-    var pages = v.pages.slice();
+    var pages = paginate(v.pages, d, P, Hh, fs);
     if (d && pages.length % 2) pages.push(null);
     var n = pages.length;
     var color = THEMES[v.id] || '#5b2229';
@@ -1183,7 +1429,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   // The page block is tucked inside the cover while the cover is nearly flat. --tk (edges) fades out over the first
   // few degrees of the turn, --tl (spine side) over the first quarter turn. Both follow the cover's own angle, so
   // opening and closing are mirror images and no frame can show paper outside the cover's silhouette.
-  var BARE_OPEN = 0.40, BARE_CLOSE = 0.35;   // fractions of the turn at which the cover is about 100 degrees open
+  var BARE_OPEN = 0.43, BARE_CLOSE = 0.30;   // fractions of the turn: cover is about 105 degrees open at 0.43 opening, about 125 at 0.30 closing
   var TK_DEG = 8, TL_DEG = 90;
   function tuckAt(deg) { return [Math.max(0, 1 - deg / TK_DEG), Math.max(0, 1 - deg / TL_DEG)]; }
   function tuckSet(bk, tk, tl) { bk.style.setProperty('--tk', tk); bk.style.setProperty('--tl', tl); }
@@ -1459,11 +1705,11 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     var ds = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     var pw = el('div', 'paperwrap');
     var paper = el('article', 'paper');
-    paper.setAttribute('aria-label', 'The Willis Writ, The Legal Wire');
+    paper.setAttribute('aria-label', 'The Willis Writ, Legal Wire');
     paper.innerHTML =
       '<div class="p-head"><header class="mast">' +
         '<h2 class="mast-name" aria-label="The Willis Writ">The <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">illis</span> <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">rit</span></h2>' +
-        '<div class="mast-date"><span>' + esc(ds) + '</span><span>The Legal Wire</span></div>' +
+        '<div class="mast-date"><span>' + esc(ds) + '</span><span>Legal Wire</span></div>' +
       '</header>' +
       '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav></div>' +
       '<div class="p-scroll">' +

@@ -58,7 +58,7 @@ site_pg = '''<article class="pg">
         <li><strong>Research</strong> describes my empirical and policy research.</li>
         <li><strong>Contact</strong> is the best way to reach me.</li>
       </ol>
-      <p>The globe opens <em>The Legal Wire</em>, a newspaper of headlines from public sources on securities enforcement, privacy, regulation, Congress and the Supreme Court. It updates daily, and every story links to its source.</p>
+      <p>The globe opens <em>Legal Wire</em>, a newspaper of headlines from public sources on securities enforcement, privacy, regulation, Congress and the Supreme Court. It updates daily, and every story links to its source.</p>
       <p>The bust of Thomas Jefferson hands you a random passage from his letters and writings, in his own hand.</p>
       <p class="meta">The views on this site are my own. They do not represent my employer, my school, or any government agency.</p>
     </article>
@@ -93,8 +93,8 @@ assert 'samples/your-file.pdf' in wri
 # ---- Research: add a page on following developments
 res = res.replace('    <article class="pg">\n      <h3>What it taught me</h3>', '''    <article class="pg">
       <h3>Following developments</h3>
-      <p>Alongside this project I keep up with regulatory and policy developments at the intersection of law, technology and public policy. <em>The Legal Wire</em>, the newspaper behind the globe on the shelf, collects the headlines I follow.</p>
-      <p><a data-open="news">Open The Legal Wire</a></p>
+      <p>Alongside this project I keep up with regulatory and policy developments at the intersection of law, technology and public policy. <em>Legal Wire</em>, the newspaper behind the globe on the shelf, collects the headlines I follow.</p>
+      <p><a data-open="news">Open Legal Wire</a></p>
     </article>
     <article class="pg">
       <h3>What it taught me</h3>''', 1)
