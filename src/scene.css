@@ -79,7 +79,7 @@ i { font-style: normal; display: block; }
 .brandrow { display: flex; align-items: center; min-width: 0; }
 #brand { margin: 0; font: 400 clamp(24px, 2.7vw, 52px)/1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #f0e3c6; letter-spacing: .005em; white-space: nowrap; text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
 .brandrow .bar { width: 1px; height: 1.9vw; min-height: 22px; margin: 0 1.9vw 0 1.9vw; background: rgba(222, 190, 128, .5); }
-#tag { margin: 0; font: 400 clamp(14px, 1.4vw, 26px)/1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
+#tag { margin: 0; font: 400 clamp(13px, 1.25vw, 23px)/1 'Times New Roman', Times, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
 
 #nav { display: flex; align-items: center; }
 .nv { position: relative; border: 0; background: transparent; cursor: pointer; padding: .5em 1.15vw; white-space: nowrap;
@@ -97,9 +97,9 @@ i { font-style: normal; display: block; }
 #hero::before { content: ""; position: absolute; z-index: -1; left: -9em; right: -5em; top: -3.2em; bottom: -2.4em; pointer-events: none;
   background: radial-gradient(ellipse at 42% 52%, rgba(6, 4, 2, .8), rgba(6, 4, 2, .58) 52%, rgba(6, 4, 2, 0) 76%); }
 #hero.compact p { display: none; }
-#hero h2 { margin: 0; font: 400 1em/1.12 'Cormorant Garamond', Georgia, serif; letter-spacing: -.003em; white-space: nowrap; color: #f1e4c8; }
+#hero h2 { margin: 0; font: 400 1.16em/1.1 'JSL Ancient', 'Times New Roman', Times, serif; letter-spacing: 0; white-space: nowrap; color: #f1e4c8; }
 #hero .hr { height: 1px; margin: .38em 0 .34em; background: linear-gradient(90deg, rgba(232, 208, 156, .7), rgba(232, 208, 156, .45)); }
-#hero p { margin: 0; font: 400 .44em/1.5 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #e4d5b4; white-space: nowrap; }
+#hero p { margin: 0; font: 400 .42em/1.5 'Times New Roman', Times, serif; color: #e4d5b4; white-space: nowrap; }
 
 /* portrait and small screens: centered title, wrapped tabs on top, the words sit on the chair under a soft scrim */
 .pt #hud::before { height: 190px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .82), rgba(5, 3, 2, .5) 60%, rgba(5, 3, 2, 0)); }
@@ -293,10 +293,16 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.seal .base, .book.seal .leaf:not(.cover) { visibility: hidden; }
 .book { touch-action: pan-y; }
 
-/* page block sits just inside the cover boards, like a real book */
-.leaf:not(.cover) .face.front, .base .face { clip-path: inset(2px 2px 2px 0); }
-.leaf:not(.cover) .face.back { clip-path: inset(2px 0 2px 2px); }
-.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(2px); }
+/* Page block sits just inside the cover boards, like a real book.
+   --tk (top, right, bottom) and --tl (spine side) tuck the page block inside the cover's silhouette. Script sets them
+   from the cover's actual angle (see trackTuck), so the pages are fully tucked while the cover is flat and grow out
+   only as the cover swings away. Nothing here depends on a timer, so no frame can show paper beyond the cover. */
+@property --tk { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --tl { syntax: '<number>'; inherits: true; initial-value: 0; }
+.book { --tk: 0; --tl: 0; }
+.leaf:not(.cover) .face.front, .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(34px * var(--tl))); }
+.leaf:not(.cover) .face.back { clip-path: inset(calc(2px + 7px * var(--tk)) 0 calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk))); }
+.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
 
 /* the back board only overhangs the cover once the book is open; a closed book is just its cover */
 .book .bd { transition: top 600ms ease 560ms, bottom 600ms ease 560ms, right 600ms ease 560ms, left 600ms ease 560ms; }
@@ -305,5 +311,6 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.dual.snug .bd.br { right: 0; }
 .book.single.snug .bd.br { left: 0; right: 0; }
 
-/* as the cover lands, the page block pulls in past the transparent margin of the cover art */
-.book.near .leaf:not(.cover) .face, .book.near .base .face { clip-path: inset(9px 9px 9px 34px); transition: clip-path 340ms ease; }
+/* organization mark on experience pages (images live in img/; the figure removes itself if a file is missing) */
+.pg .orgmark { display: flex; align-items: center; justify-content: center; height: 6.4em; margin: 0 0 1em; padding: 0; }
+.pg .orgmark img { display: block; max-width: 62%; max-height: 100%; width: auto; height: auto; object-fit: contain; }

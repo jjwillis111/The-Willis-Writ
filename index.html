@@ -90,7 +90,7 @@ i { font-style: normal; display: block; }
 .brandrow { display: flex; align-items: center; min-width: 0; }
 #brand { margin: 0; font: 400 clamp(24px, 2.7vw, 52px)/1 'JSL Ancient', 'Times New Roman', Times, serif; color: #f0e3c6; letter-spacing: .005em; white-space: nowrap; text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
 .brandrow .bar { width: 1px; height: 1.9vw; min-height: 22px; margin: 0 1.9vw 0 1.9vw; background: rgba(222, 190, 128, .5); }
-#tag { margin: 0; font: 400 clamp(14px, 1.4vw, 26px)/1 'JSL Ancient', 'Times New Roman', Times, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
+#tag { margin: 0; font: 400 clamp(13px, 1.25vw, 23px)/1 'Times New Roman', Times, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
 
 #nav { display: flex; align-items: center; }
 .nv { position: relative; border: 0; background: transparent; cursor: pointer; padding: .5em 1.15vw; white-space: nowrap;
@@ -108,9 +108,9 @@ i { font-style: normal; display: block; }
 #hero::before { content: ""; position: absolute; z-index: -1; left: -9em; right: -5em; top: -3.2em; bottom: -2.4em; pointer-events: none;
   background: radial-gradient(ellipse at 42% 52%, rgba(6, 4, 2, .8), rgba(6, 4, 2, .58) 52%, rgba(6, 4, 2, 0) 76%); }
 #hero.compact p { display: none; }
-#hero h2 { margin: 0; font: 400 1em/1.12 'Times New Roman', Times, serif; letter-spacing: -.003em; white-space: nowrap; color: #f1e4c8; }
+#hero h2 { margin: 0; font: 400 1.16em/1.1 'JSL Ancient', 'Times New Roman', Times, serif; letter-spacing: 0; white-space: nowrap; color: #f1e4c8; }
 #hero .hr { height: 1px; margin: .38em 0 .34em; background: linear-gradient(90deg, rgba(232, 208, 156, .7), rgba(232, 208, 156, .45)); }
-#hero p { margin: 0; font: 400 .44em/1.5 'JSL Ancient', 'Times New Roman', Times, serif; color: #e4d5b4; white-space: nowrap; }
+#hero p { margin: 0; font: 400 .42em/1.5 'Times New Roman', Times, serif; color: #e4d5b4; white-space: nowrap; }
 
 /* portrait and small screens: centered title, wrapped tabs on top, the words sit on the chair under a soft scrim */
 .pt #hud::before { height: 190px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .82), rgba(5, 3, 2, .5) 60%, rgba(5, 3, 2, 0)); }
@@ -304,10 +304,16 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.seal .base, .book.seal .leaf:not(.cover) { visibility: hidden; }
 .book { touch-action: pan-y; }
 
-/* page block sits just inside the cover boards, like a real book */
-.leaf:not(.cover) .face.front, .base .face { clip-path: inset(2px 2px 2px 0); }
-.leaf:not(.cover) .face.back { clip-path: inset(2px 0 2px 2px); }
-.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(2px); }
+/* Page block sits just inside the cover boards, like a real book.
+   --tk (top, right, bottom) and --tl (spine side) tuck the page block inside the cover's silhouette. Script sets them
+   from the cover's actual angle (see trackTuck), so the pages are fully tucked while the cover is flat and grow out
+   only as the cover swings away. Nothing here depends on a timer, so no frame can show paper beyond the cover. */
+@property --tk { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --tl { syntax: '<number>'; inherits: true; initial-value: 0; }
+.book { --tk: 0; --tl: 0; }
+.leaf:not(.cover) .face.front, .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(34px * var(--tl))); }
+.leaf:not(.cover) .face.back { clip-path: inset(calc(2px + 7px * var(--tk)) 0 calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk))); }
+.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
 
 /* the back board only overhangs the cover once the book is open; a closed book is just its cover */
 .book .bd { transition: top 600ms ease 560ms, bottom 600ms ease 560ms, right 600ms ease 560ms, left 600ms ease 560ms; }
@@ -316,8 +322,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.dual.snug .bd.br { right: 0; }
 .book.single.snug .bd.br { left: 0; right: 0; }
 
-/* as the cover lands, the page block pulls in past the transparent margin of the cover art */
-.book.near .leaf:not(.cover) .face, .book.near .base .face { clip-path: inset(9px 9px 9px 34px); transition: clip-path 340ms ease; }
+/* organization mark on experience pages (images live in img/; the figure removes itself if a file is missing) */
+.pg .orgmark { display: flex; align-items: center; justify-content: center; height: 6.4em; margin: 0 0 1em; padding: 0; }
+.pg .orgmark img { display: block; max-width: 62%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
 
 /* ==========================================================================
    STAGE (the open book, shown over the desk)
@@ -541,7 +548,18 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       <p class="sub2">Boston University School of Law</p>
     </article>
     <article class="pg">
-      <h3>About</h3>
+      <h3>About this site</h3>
+      <p>This site is a law library, and everything in it opens.</p>
+        <ol>
+          <li><strong>The shelf.</strong> Click a book to take it down.</li>
+          <li><strong>Turning pages.</strong> Use the corners, arrows, arrow keys, or swipe. Escape puts the book back.</li>
+          <li><strong>The globe</strong> opens <em>The Legal Wire</em>, a daily paper on the SEC, privacy, Congress and the Court, with links to sources.</li>
+          <li><strong>The Jefferson bust</strong> hands you a passage from his letters.</li>
+        </ol>
+        <p class="meta">Views are my own, not my employer's, school's, or any agency's.</p>
+      </article>
+    <article class="pg">
+      <h3>About me</h3>
       <p>I am a law student at Boston University School of Law, originally from Tonganoxie, Kansas, with roots in the Kansas City area.</p>
       <p>My interest in the law began on a freshman-year trip to Germany. The bullet holes still visible on the Reichstag building were a vivid reminder that the rule of law is something people build, and something that has to be defended.</p>
       <p>Since then I have worked in a prosecutor's office, on a U.S. Senate investigative subcommittee, in the legal and business affairs group of a Major League Soccer club, and this fall in the Division of Enforcement at the U.S. Securities and Exchange Commission.</p>
@@ -551,36 +569,28 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       <p>My work so far falls into three areas.</p>
       <ol>
         <li><strong>Investigations and enforcement.</strong> A district attorney's office, the Senate's Permanent Subcommittee on Investigations, and the SEC's Division of Enforcement.</li>
-        <li><strong>Privacy, health, and media law.</strong> Transactional clinic work for clients in each of these fields.</li>
+        <li><strong>Privacy, health, and media law.</strong> Client work in the BU/MIT Student Innovations Law Clinic.</li>
         <li><strong>Commercial and international matters.</strong> Discovery and contract review in-house, and empirical research on investor-state dispute settlement reform.</li>
       </ol>
     </article>
     <article class="pg">
       <h3>Education</h3>
       <h4>Boston University School of Law</h4>
-      <p class="meta">Juris Doctor candidate</p>
-      <p>Externship with the SEC's Division of Enforcement, transactional law clinic, and a law journal note in progress. <span class="todo">[Add honors, journal, and activities.]</span></p>
-      <h4>Kansas State University</h4>
-      <p class="meta">Political science and strategic communications</p>
-      <p>Helped start a fraternity chapter on campus and later served as caucus leader in student government.</p>
+      <p class="meta">Juris Doctor candidate &middot; expected May 2027</p>
+      <p>GPA 3.42, and 3.79 in my second year. Dean's Award for the top student in Introduction to Risk Management and Compliance (Fall 2025).</p>
+      <p>BU/MIT Student Innovations Law Clinic (Privacy, Health, and Media Practice Group), International Law Journal, First Generation Professionals, Business Law Society, and International Law Society.</p>
     </article>
     <article class="pg">
-      <h3>About this site</h3>
-      <p>This site is built as a law library, and each book on the shelf is one part of my portfolio.</p>
-      <ol>
-        <li><strong>Experience</strong> opens with my r&eacute;sum&eacute; and then walks through each position.</li>
-        <li><strong>Writing</strong> holds my writing samples and current scholarship.</li>
-        <li><strong>Research</strong> describes my empirical and policy research.</li>
-        <li><strong>Contact</strong> is the best way to reach me.</li>
-      </ol>
-      <p>The globe opens <em>The Legal Wire</em>, a newspaper of headlines from public sources on securities enforcement, privacy, regulation, Congress and the Supreme Court. It updates daily, and every story links to its source.</p>
-      <p>The bust of Thomas Jefferson hands you a random passage from his letters and writings, in his own hand.</p>
-      <p class="meta">The views on this site are my own. They do not represent my employer, my school, or any government agency.</p>
+      <h4>Kansas State University</h4>
+      <p class="meta">Dual B.S. in Political Science and Strategic Communications &middot; May 2022</p>
+      <p>Magna cum laude, GPA 3.91. Foundation Plus, Bieker, Salgo, McCoy Jr., Hollinger, and Tietze Scholarships.</p>
+      <p>Co-founder and president of the Alpha Sigma Phi chapter, caucus leader in the Student Governing Association, Cats' Cupboard ambassador, Chimes Junior Honorary, Legislative Advocates, and the Catalyst Program.</p>
     </article>
     <article class="pg">
       <h3>Looking ahead</h3>
       <p>I am looking for full-time work in Washington, D.C. after graduation, with a focus on privacy or investigative work.</p>
       <p>If you would like to talk, the <a data-open="contact">Contact volume</a> has everything you need. The <a data-open="experience">Experience volume</a> is the best place to see what I have actually done.</p>
+      <p class="meta">Away from the desk: small engine repair, restoring antique electronics, motorcycling, photography, and Kansas politics.</p>
     </article>
   </section>
 
@@ -596,41 +606,72 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       <h3>R&eacute;sum&eacute;</h3>
       <p>My full r&eacute;sum&eacute; is available as a PDF.</p>
       <p><a href="resume.pdf" target="_blank" rel="noopener">Download r&eacute;sum&eacute; (PDF)</a></p>
-      <p>The pages that follow give a closer look at each position.</p>
+      <p>The pages that follow give a closer look at each position, most recent first.</p>
     </article>
-    <article class="pg">
-      <h3>Experience</h3>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/sec.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
       <h4>U.S. Securities and Exchange Commission</h4>
-      <p class="meta">Division of Enforcement, SEC Scholars Program &middot; Fall 2026</p>
-      <p>Full-time, in-person externship supporting the Division's investigative and distribution work. It is paired with a companion seminar at BU Law that includes reflective writing on the placement.</p>
+      <p class="meta">Division of Enforcement &middot; Legal Extern, SEC Scholars Program &middot; Washington, DC &middot; September 2026 to present</p>
+      <p>I conduct legal research and analyze evidence and records for Division of Enforcement attorneys on securities investigations, and in the Distribution Section, which returns recovered funds to harmed investors.</p>
     </article>
-    <article class="pg">
-      <h4>U.S. Senate, Permanent Subcommittee on Investigations</h4>
-      <p class="meta">Law Clerk &middot; <span class="todo">[add dates]</span></p>
-      <p>Clerkship with the Senate's investigative subcommittee. <span class="todo">[Add one or two sentences on what you worked on.]</span></p>
-    </article>
-    <article class="pg">
-      <h4>District Attorney's Office</h4>
-      <p class="meta">Law Clerk &middot; <span class="todo">[add office and dates]</span></p>
-      <p>Clerkship in a prosecutor's office. <span class="todo">[Add one or two sentences on what you worked on.]</span></p>
-    </article>
-    <article class="pg">
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/sporting-kc.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
       <h4>OnGoal LLC (Sporting Kansas City)</h4>
-      <p class="meta">Legal Intern, Legal and Business Affairs &middot; Summer 2026</p>
-      <p>Worked across the legal and business affairs group of a Major League Soccer club. My work included supporting discovery in civil litigation, reviewing management and vendor agreements, researching Kansas contract and employment law, drafting legal memoranda and internal policy, and preparing a business case for contract-management software.</p>
+      <p class="meta">Legal Intern &middot; Kansas City, KS &middot; June 2026 to August 2026</p>
+      <p>I drafted memoranda on promissory estoppel and detrimental reliance, built discovery materials, and reviewed vendor, facilities, and sponsorship contracts. I also took charge of organizing files in a new file management system and drafted an AI use policy.</p>
     </article>
-    <article class="pg">
-      <h4>Transactional Law Clinic</h4>
-      <p class="meta">Law school clinic</p>
-      <p>Client work on privacy, health, and media law matters. <span class="todo">[Add one or two sentences on a representative matter.]</span></p>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/bu-law.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Boston University School of Law</h4>
+      <p class="meta">Research Assistant to Professor Weijia Rao &middot; Boston, MA &middot; June 2026 to August 2026</p>
+      <p>I coded UNCITRAL Working Group III proceedings on investor-state dispute settlement reform for an empirical study by Professor Rao and Niccol&ograve; Ridi, matching state positions to reform proposals with verbatim quotations as support.</p>
+      <p>More on this project is in the <a data-open="research">Research volume</a>.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/scrimsher-law.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Scrimsher Law</h4>
+      <p class="meta">Legal Intern &middot; Tonganoxie, KS &middot; May 2026 to August 2026</p>
+      <p>I assisted a solo practitioner in launching a new law practice, conducting legal research, drafting legal memoranda, and evaluating practice management software (Clio, MyCase, Smokeball) and workflow automation tools (Zapier).</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/wyandotte-da.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Wyandotte County District Attorney's Office</h4>
+      <p class="meta">Legal Intern &middot; Kansas City, KS &middot; July 2025 to August 2025</p>
+      <p>I assisted prosecutors by drafting motions and replies, conducting legal research, and reviewing case files for statutory and procedural compliance, including statute of limitations analyses. I also observed courtroom proceedings.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/senate-psi.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>U.S. Senate, Permanent Subcommittee on Investigations</h4>
+      <p class="meta">Law Clerk &middot; Washington, DC &middot; June 2024 to September 2024</p>
+      <p>I conducted legal research and drafted memoranda, reports, and official correspondence. I assisted in deposition preparation and execution, attended proceedings, took part in document review, and supported Subcommittee staff on investigations.</p>
     </article>
     <article class="pg">
       <h3>Before law school</h3>
-      <h4>Blue Cross Blue Shield of Kansas</h4>
-      <p class="meta">Marketing Intern</p>
-      <p>Pioneered the company's first marketing internship program and helped rename its small group product line.</p>
-      <h4>Property management</h4>
-      <p>Hands-on property management experience, which taught me a great deal about contracts and tenants long before I studied either.</p>
+      <p>The pages that follow cover the work I did as an undergraduate and in the years around it. It taught me a good deal about contracts, tenants, customers, and constituents long before I studied the law.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/viper.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Viper Rental &amp; Construction</h4>
+      <p class="meta">General Laborer &middot; Tonganoxie, KS &middot; May 2022 to August 2023, October 2024 to December 2024</p>
+      <p>I managed lease drafting, property showings, tenant relations, and office communications, and did rental home maintenance, construction, and rehabilitation for a family-owned business with a portfolio of more than 100 homes.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/bcbs-kansas.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Blue Cross and Blue Shield of Kansas</h4>
+      <p class="meta">Product Marketing Intern &middot; Topeka, KS &middot; July 2021 to December 2021</p>
+      <p>I pioneered the company's first marketing internship program, including content creation, competitor research, and event coordination. I also introduced and implemented a new naming and marketing structure for the Small-Group product line.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/alms-group.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>The Alms Group</h4>
+      <p class="meta">Marketing Assistant &middot; Manhattan, KS &middot; June 2020 to August 2020</p>
+      <p>I improved website traffic and increased engagement for property listings and philanthropic initiatives by 31%.</p>
+    </article>
+    <article class="pg org">
+      <figure class="orgmark"><img src="img/kansas-house.png" alt="" loading="lazy" onerror="this.parentNode.remove()"></figure>
+      <h4>Kansas House of Representatives</h4>
+      <p class="meta">Legislative Intern for Rep. Jan Kessinger &middot; Topeka, KS &middot; January 2020 to May 2020</p>
+      <p>I managed office operations and constituent correspondence, attended committee meetings, and wrote memoranda.</p>
     </article>
   </section>
 
@@ -644,22 +685,36 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     </article>
     <article class="pg">
       <h3>Law journal note</h3>
-      <p class="meta">In progress</p>
-      <p><span class="todo">[Add your note's working title and a two-sentence abstract.]</span></p>
+      <h4>From the Seas to the Stars</h4>
+      <p class="meta">Adapting UNCLOS as a Model for Equitable Space Resource Governance &middot; International Law Journal, tentatively slated for spring 2027</p>
+      <p>The 1967 Outer Space Treaty prohibits national appropriation of outer space but says little about private extraction of space resources, and national laws in the United States, Luxembourg, and Japan now permit it.</p>
+      <p>My Note argues that the 1982 Convention on the Law of the Sea, and the licensing, environmental review, and dispute resolution system of the International Seabed Authority it created, offer a model for an International Space Resources Authority. I researched and drafted it independently.</p>
+    </article>
+    <article class="pg">
+      <h3>The proposed authority</h3>
+      <ol>
+        <li><strong>Structure.</strong> An Assembly of all member States, a thirty-six member Council elected from five groups, an independent Secretariat, and an Independent Environmental and Technical Commission that reviews every license application in a public process.</li>
+        <li><strong>Licensing.</strong> Three tiers scaled to risk: survey and prospecting, extraction, and large-scale commercial operations. Royalties are exempt at Tier 1, three percent of gross revenue at Tier 2, and five to eight percent at Tier 3.</li>
+        <li><strong>Environment.</strong> Impact assessments before any extraction, and Space Resource Conservation Zones where extraction is prohibited.</li>
+      </ol>
+    </article>
+    <article class="pg">
+      <h3>Disputes and enforcement</h3>
+      <ol>
+        <li><strong>Disputes.</strong> Negotiation and conciliation first, then a permanent Tribunal of eleven jurists, with a Technical Panel for licensing and environmental questions.</li>
+        <li><strong>Enforcement.</strong> Financial assurance bonds forfeited on material non-compliance, sponsoring State responsibility, and continuous data sharing that allows remote monitoring.</li>
+        <li><strong>Certainty.</strong> I argue that a single licensing regime recognized by all member States gives operators more legal certainty than a patchwork of national laws.</li>
+      </ol>
+    </article>
+    <article class="pg">
+      <h3>Writing sample</h3>
+      <p>The sample is a ten-page excerpt of the Note: the thesis from the Introduction, Part VI, Sections B through E, and part of Section G, with full Bluebook citations.</p>
+      <p><a href="writing-sample.pdf" target="_blank" rel="noopener">Read the writing sample (PDF)</a></p>
     </article>
     <article class="pg">
       <h3>Legal memoranda</h3>
-      <p>In-house research memoranda on Kansas contract and employment law, and reflective memoranda written alongside my SEC externship.</p>
+      <p>I have also written research memoranda on promissory estoppel and detrimental reliance, and reflective memoranda alongside my SEC externship.</p>
       <p>Most of this work product is confidential, so it is not published here.</p>
-    </article>
-    <article class="pg">
-      <h3>Writing samples</h3>
-      <p>Non-confidential samples, available to read or download as PDFs.</p>
-      <ol>
-        <li><span class="todo">[Sample title, a one-line description, and a link such as samples/your-file.pdf]</span></li>
-        <li><span class="todo">[Sample title, a one-line description, and a link such as samples/your-file.pdf]</span></li>
-      </ol>
-      <p>For anything else, please reach out through the <a data-open="contact">Contact volume</a>.</p>
     </article>
   </section>
 
@@ -711,9 +766,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       <h3>Contact</h3>
       <p>I am glad to talk about opportunities, research, or anything in this portfolio.</p>
       <ol class="contact">
-        <li><span>Email</span> <a class="todo" href="mailto:your.email@example.com">your.email@example.com</a></li>
-        <li><span>LinkedIn</span> <a class="todo" href="https://www.linkedin.com/in/your-profile">linkedin.com/in/your-profile</a></li>
-        <li><span>R&eacute;sum&eacute;</span> <a href="resume.pdf">Download (PDF)</a></li>
+        <li><span>Email</span> <a href="mailto:jjwillis@bu.edu">jjwillis@bu.edu</a></li>
+        <li><span>LinkedIn</span> <a href="https://www.linkedin.com/in/jjwillis111" target="_blank" rel="noopener">linkedin.com/in/jjwillis111</a></li>
+        <li><span>R&eacute;sum&eacute;</span> <a href="resume.pdf" target="_blank" rel="noopener">Download (PDF)</a></li>
       </ol>
     </article>
   </section>
@@ -1079,7 +1134,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     });
     book.classList.toggle('open', S.spread > 0);
     book.classList.toggle('seal', S.spread === 0);
-    book.classList.toggle('snug', S.spread === 0); book.classList.remove('near');
+    book.classList.toggle('snug', S.spread === 0); tuckSet(book, S.spread === 0 ? 1 : 0, S.spread === 0 ? 1 : 0);
     S.queued = null;
     if (instant) wrap.classList.add('landed');
     void book.offsetWidth;
@@ -1121,6 +1176,28 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     an.onfinish = function () { an.cancel(); };
   }
 
+  // The page block is tucked inside the cover while the cover is nearly flat. --tk (edges) fades out over the first
+  // few degrees of the turn, --tl (spine side) over the first quarter turn. Both follow the cover's own angle, so
+  // opening and closing are mirror images and no frame can show paper outside the cover's silhouette.
+  var TK_DEG = 8, TL_DEG = 90;
+  function tuckAt(deg) { return [Math.max(0, 1 - deg / TK_DEG), Math.max(0, 1 - deg / TL_DEG)]; }
+  function tuckSet(bk, tk, tl) { bk.style.setProperty('--tk', tk); bk.style.setProperty('--tl', tl); }
+  function trackTuck(bk, opening, ms) {
+    var end = tuckAt(opening ? 180 : 0), kf = [], n = 48, i;
+    if (bk.getAnimations) { bk.getAnimations().forEach(function (x) { if (x.__tuck) { x.cancel(); } }); }
+    tuckSet(bk, end[0], end[1]);
+    if (!bk.animate) { return; }
+    for (i = 0; i <= n; i += 1) {
+      var t = i / n, a = leafCurve(t), v;
+      if (!opening) { a = 1 - a; }
+      v = tuckAt(a * 180);
+      kf.push({ offset: t, '--tk': v[0].toFixed(4), '--tl': v[1].toFixed(4) });
+    }
+    var an = bk.animate(kf, { duration: Math.max(1, ms), easing: 'linear', fill: 'forwards' });
+    an.__tuck = true;
+    an.onfinish = function () { an.cancel(); };
+  }
+
   function flipEl(j, fwd, dur, delay) {
     var l = S.leaves[j], N = S.leaves.length;
     setTimeout(function () {
@@ -1141,7 +1218,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
-    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.remove('near'); }
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -1164,11 +1241,11 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         bk.style.transitionDuration = (dur * K) + 'ms';
         bk.style.transitionTimingFunction = LEAF_EASE;
         $$('.bd.bl', bk).forEach(function (x) { trackBoard(x, target > 0, dur * K); });
+        trackTuck(bk, target > 0, dur * K);
         bk.classList.toggle('open', target > 0);
       }, cd * K);
       if (target === 0) {
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('snug'); } }, (cd + dur * 0.12) * K);
-        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('near'); } }, (cd + dur * 0.38) * K);
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('seal'); } }, (cd + dur * 0.82) * K);
       }
     }

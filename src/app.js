@@ -356,7 +356,7 @@
     });
     book.classList.toggle('open', S.spread > 0);
     book.classList.toggle('seal', S.spread === 0);
-    book.classList.toggle('snug', S.spread === 0); book.classList.remove('near');
+    book.classList.toggle('snug', S.spread === 0); tuckSet(book, S.spread === 0 ? 1 : 0, S.spread === 0 ? 1 : 0);
     S.queued = null;
     if (instant) wrap.classList.add('landed');
     void book.offsetWidth;
@@ -398,6 +398,28 @@
     an.onfinish = function () { an.cancel(); };
   }
 
+  // The page block is tucked inside the cover while the cover is nearly flat. --tk (edges) fades out over the first
+  // few degrees of the turn, --tl (spine side) over the first quarter turn. Both follow the cover's own angle, so
+  // opening and closing are mirror images and no frame can show paper outside the cover's silhouette.
+  var TK_DEG = 8, TL_DEG = 90;
+  function tuckAt(deg) { return [Math.max(0, 1 - deg / TK_DEG), Math.max(0, 1 - deg / TL_DEG)]; }
+  function tuckSet(bk, tk, tl) { bk.style.setProperty('--tk', tk); bk.style.setProperty('--tl', tl); }
+  function trackTuck(bk, opening, ms) {
+    var end = tuckAt(opening ? 180 : 0), kf = [], n = 48, i;
+    if (bk.getAnimations) { bk.getAnimations().forEach(function (x) { if (x.__tuck) { x.cancel(); } }); }
+    tuckSet(bk, end[0], end[1]);
+    if (!bk.animate) { return; }
+    for (i = 0; i <= n; i += 1) {
+      var t = i / n, a = leafCurve(t), v;
+      if (!opening) { a = 1 - a; }
+      v = tuckAt(a * 180);
+      kf.push({ offset: t, '--tk': v[0].toFixed(4), '--tl': v[1].toFixed(4) });
+    }
+    var an = bk.animate(kf, { duration: Math.max(1, ms), easing: 'linear', fill: 'forwards' });
+    an.__tuck = true;
+    an.onfinish = function () { an.cancel(); };
+  }
+
   function flipEl(j, fwd, dur, delay) {
     var l = S.leaves[j], N = S.leaves.length;
     setTimeout(function () {
@@ -418,7 +440,7 @@
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
-    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.remove('near'); }
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -441,11 +463,11 @@
         bk.style.transitionDuration = (dur * K) + 'ms';
         bk.style.transitionTimingFunction = LEAF_EASE;
         $$('.bd.bl', bk).forEach(function (x) { trackBoard(x, target > 0, dur * K); });
+        trackTuck(bk, target > 0, dur * K);
         bk.classList.toggle('open', target > 0);
       }, cd * K);
       if (target === 0) {
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('snug'); } }, (cd + dur * 0.12) * K);
-        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('near'); } }, (cd + dur * 0.38) * K);
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('seal'); } }, (cd + dur * 0.82) * K);
       }
     }

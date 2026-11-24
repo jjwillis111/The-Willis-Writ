@@ -103,7 +103,9 @@ assert 'Following developments' in res
 order = [about, exp, wri, res, con]
 newdata = '\n\n  '.join(order)
 newdata = newdata.replace('sub plain', 'sub').replace('meta plain', 'meta')
-newdata = re.sub(r'data-theme="[a-z]+"', lambda mm: mm.group(0), newdata)
+# content.html is the source of truth for the books; the assembly above only remains as a fallback
+if os.path.exists(HERE + '/content.html'):
+    newdata = open(HERE + '/content.html', encoding='utf-8').read().rstrip('\n')
 
 body = open(HERE+'/body.html', encoding='utf-8').read()
 js = open(HERE+'/app.js', encoding='utf-8').read()
