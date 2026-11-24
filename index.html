@@ -1117,9 +1117,50 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   function tendril(x, y, rot, sc) {
     return '<path transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + f1(rot) + ') scale(' + sc + ')" d="M0 0 C6 -4 12 0 10 6 C8 11 1 9 3 4 C4 2 6 3 5.5 4.5" fill="none" stroke="' + OLD + '" stroke-width="1" stroke-linecap="round"/>';
   }
+
+  var LEAFV = [
+    { d: LEAF, v: 'M0 -1 V-19 M0 -6 L-6 -10 M0 -6 L6 -10 M0 -11 L-5 -15 M0 -11 L5 -15' },
+    { d: 'M0 0 C-3 -2 -9 -3 -12 -8 C-8 -9 -6 -11 -5 -15 C-3 -14 -1 -17 0 -22 C1 -17 3 -14 5 -15 C6 -11 8 -9 12 -8 C9 -3 3 -2 0 0 Z', v: 'M0 -1 V-19 M0 -5 L-8 -8 M0 -5 L8 -8 M0 -12 L-3.5 -14.5 M0 -12 L3.5 -14.5' },
+    { d: 'M0 0 C-4 -3 -8 -8 -6 -13 L-9 -14 L-6 -17 L-8 -20 L-3 -20 L0 -25 L3 -20 L8 -20 L6 -17 L9 -14 L6 -13 C8 -8 4 -3 0 0 Z', v: 'M0 -1 V-23 M0 -7 L-5 -11 M0 -7 L5 -11 M0 -13 L-5 -16.5 M0 -13 L5 -16.5' }
+  ];
+  // Vine drawn like the objects: tinted wash, hatching on one half of each leaf, then three thin wobbling pencil passes.
+  function penVine(segs, o) {
+    var id = o.id, r = rng(o.seed || 5), d = 'M' + segs[0][0] + ' ' + segs[0][1], lines = '', shapes = '', hatch = '', k = 0, sc = o.leaf || 1, p, side, v, T, scl, q, qs, i, gx, gy;
+    segs.forEach(function (s) { d += ' C' + s.slice(2).join(' '); });
+    lines += '<path d="' + d + '" fill="none"/>';
+    segs.forEach(function (s, idx) {
+      qs = o.sparse ? [[.3, .9], [.78, .75]] : [[.22, .8], [.55, 1], [.85, .7]];
+      qs.forEach(function (qq) {
+        p = bez(s, qq[0]); side = (k % 2) ? 1 : -1; v = LEAFV[Math.floor(r() * 3)];
+        scl = qq[1] * sc * (.8 + r() * .4);
+        T = 'translate(' + f1(p[0]) + ' ' + f1(p[1]) + ') rotate(' + f1(p[2] + side * (52 + r() * 26) + 90) + ') scale(' + f1(scl) + ')';
+        shapes += '<path transform="' + T + '" d="' + v.d + '"/>';
+        hatch += '<g transform="' + T + '" clip-path="url(#lh' + id + ')"><path d="' + v.d + '"/></g>';
+        lines += '<g transform="' + T + '" fill="none"><path d="' + v.d + '"/><path d="' + v.v + '" stroke-width=".6"/></g>';
+        k++;
+      });
+      p = bez(s, .4);
+      lines += '<path transform="translate(' + f1(p[0]) + ' ' + f1(p[1]) + ') rotate(' + f1(p[2] + (idx % 2 ? 150 : -30)) + ') scale(.9)" d="M0 0 C6 -4 12 0 10 6 C8 11 1 9 3 4 C4 2 6 3 5.5 4.5" fill="none"/>';
+      if (o.fruit && idx % 2 === o.fruit - 1) {
+        p = bez(s, .68); gx = p[0] + 2; gy = p[1] + 3;
+        [[-5, 0], [0, 0], [5, 0], [-2.5, 4.5], [2.5, 4.5], [0, 9]].forEach(function (c) {
+          shapes += '<circle cx="' + f1(gx + c[0] * .9) + '" cy="' + f1(gy + (c[1] + 2) * .9) + '" r="2.5"/>';
+          lines += '<circle cx="' + f1(gx + c[0] * .9) + '" cy="' + f1(gy + (c[1] + 2) * .9) + '" r="2.5" fill="none"/><path d="M' + f1(gx + c[0] * .9 - .6) + ' ' + f1(gy + (c[1] + 2) * .9 + 1) + ' q1.4 1.2 2.4 -.6" fill="none" stroke-width=".45"/>';
+        });
+        lines += '<path d="M' + f1(gx) + ' ' + f1(gy - 5) + ' L' + f1(gx) + ' ' + f1(gy + 1) + '" fill="none"/>';
+      }
+    });
+    var cap = ' stroke="' + OL + '" stroke-linecap="round" stroke-linejoin="round"';
+    return '<g fill="' + WASH + '" stroke="none">' + shapes + '</g>' +
+      '<g fill="url(#ht' + id + ')" stroke="none" opacity="' + (PEN > 1 ? .85 : .65) + '">' + hatch + '</g>' +
+      '<g filter="url(#wa' + id + ')"' + cap + ' stroke-width="' + (1.05 * PW) + '" opacity=".92">' + lines + '</g>' +
+      '<g filter="url(#wb' + id + ')" transform="translate(-.5 .5)"' + cap + ' stroke-width="' + (.62 * PW) + '" opacity=".5">' + lines + '</g>' +
+      '<g filter="url(#wc' + id + ')" transform="translate(.7 -.3)"' + cap + ' stroke-width="' + (.45 * PW) + '" opacity=".4">' + lines + '</g>';
+  }
   // segs: list of cubic segments [x0,y0,c1x,c1y,c2x,c2y,x1,y1]; fruit: 0/1 to hang grapes
   function vine(segs, o) {
     o = o || {};
+    if (PEN && o.id) return penVine(segs, o);
     var d = 'M' + segs[0][0] + ' ' + segs[0][1], g = '', i, k = 0, p, side, sc = o.leaf || 1;
     segs.forEach(function (s) { d += ' C' + s.slice(2).join(' '); });
     segs.forEach(function (s, idx) {
@@ -1154,13 +1195,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       return s + '<path d="M36 36 V90 M44 36 V90" stroke-width=".7" opacity=".7"/>';
     },
     function gavel() {
-      var s = '<ellipse cx="40" cy="100" rx="34" ry="7"/><path d="M6 100 V106 C6 112 74 112 74 106 V100"/><path d="M11 103 C30 109 50 109 69 103 M14 106.5 C32 111 48 111 66 106.5"' + HAT + '/><path d="M20 99 C30 96 50 96 60 99"' + HAT + '/>';
-      s += '<g transform="rotate(28 40 76)">';
-      s += '<path d="M37.4 64.8 C37 52 36 34 35.2 17 C35 9 45 9 44.8 17 C44 34 43 52 42.6 64.8"/><path d="M36 22 C38 24 42 24 44 22"/><path d="M39 62 V22 M41.5 60 V24"' + HAT + '/>';
-      s += '<path d="M14 67 C30 63 50 63 66 67 L66 85 C50 89 30 89 14 85 Z"/><path d="M14 67 C9 72 9 80 14 85"/><ellipse cx="66.3" cy="76" rx="4.8" ry="9.2"/>';
-      s += '<path d="M24 64.6 C27.5 72 27.5 80 24 87.4 M56 64.6 C59.5 72 59.5 80 56 87.4" stroke-width="2.2"/><path d="M30.5 65 C33 72 33 80 30.5 87 M49.5 65 C52 72 52 80 49.5 87"' + HAT + '/>';
-      s += '<path d="M33 70 H48 M34 74.5 H50 M33 79 H48 M35 83.4 H47"' + HAT + '/></g>';
-      return s;
+      var s = '<g transform="rotate(-32 38 44)"><rect x="14" y="24" width="48" height="22" rx="4.5"/><path d="M25 24 V46 M51 24 V46" stroke-width="1.4"/><rect x="34" y="46" width="8" height="54" rx="3"/>';
+      s += '<path d="M18 29 H22 M18 34 H22 M18 39 H22 M54 29 H58 M54 34 H58 M54 39 H58 M37 56 V94 M39.5 56 V94"' + HAT + '/></g>';
+      return s + '<ellipse cx="40" cy="98" rx="34" ry="6.5"/><path d="M8 98 V104 Q40 114 72 104 V98" fill="' + CR + '"/><path d="M14 102 Q40 109 66 102"' + HAT + '/>';
     },
     function courthouse() {
       var s = '<path d="M5 41 L40 15 L75 41 Z"/><circle cx="40" cy="31" r="4.6"/><path d="M14 38 L40 20 L66 38"' + HAT + '/><rect x="5" y="41" width="70" height="7"/>', i, cx;
@@ -1197,6 +1234,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       '<filter id="bl' + id + '" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>' +
       '<pattern id="ht' + id + '" width="' + (PEN > 1 ? 2.1 : 2.7) + '" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)"><path d="M0 0 V3.2" stroke="' + OL + '" stroke-width="' + (.55 * PW) + '"/></pattern>' +
       '<pattern id="hx' + id + '" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><path d="M0 0 V3" stroke="' + OL + '" stroke-width=".5"/></pattern>' +
+      '<clipPath id="lh' + id + '"><rect x="0" y="-30" width="14" height="32"/></clipPath>' +
       '<clipPath id="sd' + id + '"><rect x="' + (PEN > 1 ? 30 : 46) + '" y="-5" width="60" height="125"/></clipPath><clipPath id="sx' + id + '"><rect x="56" y="-5" width="30" height="125"/></clipPath>' +
       '<radialGradient id="rg' + id + '"><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>' +
       '<mask id="mk' + id + '" maskUnits="userSpaceOnUse" x="0" y="0" width="' + w + '" height="' + h + '"><rect width="' + w + '" height="' + h + '" fill="#000"/><ellipse cx="' + (w / 2) + '" cy="' + (h / 2) + '" rx="' + (w / 2 * 1.12) + '" ry="' + (h / 2 * 1.2) + '" fill="url(#rg' + id + ')"/></mask></defs>';
@@ -1284,14 +1322,14 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
   }
   function penPlate(k) {
     var id = ++ARTN, inner = '<ellipse cx="100" cy="92" rx="66" ry="64" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' + ghostSketch(31 + k * 7, 200, 160, 9) +
-      '<g opacity=".72">' + vine(VL, { fruit: 2, leaf: .85, sparse: 1 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .85, sparse: 1 }) + '</g></g>' +
+      '<g opacity=".72">' + vine(VL, { fruit: 2, leaf: .9, sparse: 1, id: id, seed: 3 + k * 5 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .9, sparse: 1, id: id, seed: 11 + k * 7 }) + '</g></g>' +
       scribbleGround(100, 143, 52, 17 + k * 3, PEN > 1 ? 44 : 26) + penObject(k, 59, 30, 1.05, id);
     return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + penWrap(id, 200, 170, inner) + '</svg>';
   }
   function penBand(k, medal) {
     var id = ++ARTN, vb = medal ? '0 0 302 100' : '0 12 302 56', inner = '';
     inner += (medal ? '<ellipse cx="151" cy="52" rx="48" ry="38" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' : '') + ghostSketch(5 + k * 3, 302, medal ? 90 : 56, 6);
-    inner += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8 });
+    inner += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8, id: id, seed: 19 + k * 3 });
     if (medal) inner += scribbleGround(151, 85, 36, 9 + k * 5, 16) + penObject(k, 151 - 40 * .66, 50 - 55 * .66, .66, id);
     return '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="' + vb + '" aria-hidden="true">' + penWrap(id, 302, medal ? 100 : 68, inner) + '</svg>';
   }
