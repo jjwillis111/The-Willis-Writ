@@ -350,7 +350,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.single.snug .bd.br { left: 0; right: 0; }
 
 /* organization mark on experience pages (images live in img/; the figure removes itself if a file is missing) */
-.pg .orgmark { display: flex; align-items: center; justify-content: center; height: 6.4em; margin: 0 0 1em; padding: 0; }
+.pg .orgmark { display: flex; align-items: center; justify-content: center; height: 6.4em; margin: 0 0 .6em; padding: 0; }
 .pg .orgmark img { display: block; max-width: 90%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
 .pg .orgmark img[src$="/sec.png"], .pg .orgmark img[src$="img/sec.png"] { height: 5.6em; width: auto; }
 .pg .orgmark img[src$="/senate-psi.png"], .pg .orgmark img[src$="img/senate-psi.png"] { height: 5.6em; width: auto; }

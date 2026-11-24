@@ -784,7 +784,7 @@
       return node;
     }
     function keepNext(e) {
-      return e.tagName === 'H3' || e.tagName === 'H4' || (e.classList.contains('orgmark')) ||
+      return e.tagName === 'H3' || e.tagName === 'H4' || e.classList.contains('orgmark') || e.classList.contains('orgline') || e.classList.contains('roleline') ||
         (e.classList.contains('meta') && e.previousElementSibling && e.previousElementSibling.tagName === 'H4');
     }
 
