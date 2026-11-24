@@ -8,20 +8,18 @@ def commons(name):
     return 'https://upload.wikimedia.org/wikipedia/commons/%s/%s/%s' % (h[0], h[:2], name)
 
 DIRECT = {
-    'sec.svg': commons('Seal_of_the_United_States_Securities_and_Exchange_Commission.svg'),
-    'senate-seal.svg': commons('Seal_of_the_United_States_Senate.svg'),
-    'kansas-seal.svg': commons('Seal_of_Kansas.svg'),
-    'sporting-kc.svg': 'https://logotyp.us/file/sporting-kc.svg',
-    'bu.svg': 'https://logotyp.us/file/bu.svg',
+    'kansas-house.webp': 'https://www.kslegislature.gov/static/images/kansas_house_seal.85bb545e0298.webp',
+    'bcbsks.svg': 'https://bcbsks.com/sites/default/files/2023-08/BCBSKS_logo_KS_Blue_blk_RGB.svg',
+    'bcbsks-big.png': 'https://bcbsks.com/sites/default/files/2021-06/BCBSKS_logo_big.png',
+    'alms-tag.png': 'https://static1.squarespace.com/static/61777a2bef59ef2c8f5c912b/t/6998bf37a874267c840dc50f/1771618103202/TAG+Main+Logo.png',
+    'alms-light.png': 'https://images.squarespace-cdn.com/content/v1/61777a2bef59ef2c8f5c912b/c86e3a3e-2999-48e7-98e9-0f1f35d89e04/light+background+logo.png',
+    'wyco-touch.png': 'https://www.wycokck.org/files/ocfavicon/Public/apple-touch-icon.png',
+    'wyco-da-hero.png': 'https://www.wycokck.org/files/assets/public/v/2/district-attorney/images/daherotransnew.png',
+    'scrimsher-1.jpeg': 'https://scrimsherlaw.com/wp-content/uploads/2025/11/Scrimsher-Law-Logo-2.jpeg',
+    'scrimsher-crop.png': 'https://scrimsherlaw.com/wp-content/uploads/2025/11/Scrimsher-Law-Crop.png',
+    'tongie.png': 'https://www.tonganoxie.org/sites/all/themes/custom/sites/tonganoxieks/tonganoxieks_theme/logo.png',
 }
-PAGES = {
-    'wyandotte-da.html': 'https://www.wycokck.org/Government/Courts/District-Attorney',
-    'bcbsks-logo-library.html': 'https://bcbsks.com/logo-library',
-    'alms.html': 'https://thealmsgroup.squarespace.com/',
-    'bu-law.html': 'https://www.bu.edu/law/',
-    'kslegislature.html': 'https://www.kslegislature.gov/',
-    'kslegislature-house.html': 'https://www.kslegislature.gov/li/b2025_26/chamber/house/',
-}
+PAGES = {}
 
 def get(url):
     req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': '*/*'})
@@ -38,5 +36,4 @@ def run(group, items, out):
         except (urllib.error.URLError, TimeoutError, OSError) as e:
             print('FAIL', name, url, e, flush=True)
 
-run('direct', DIRECT, 'fetched')
-run('pages', PAGES, 'recon')
+run('direct', DIRECT, 'fetched2')
