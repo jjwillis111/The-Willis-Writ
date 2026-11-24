@@ -289,12 +289,13 @@
   var ARTS = {
     crane: { OL: '#76853a', OLD: '#5d6b2b', TL: '#5e9b96', TLD: '#3f7f7b', VM: '#c4563a', CR: '#f1e7cf', PK: '#e8aa9c', PKD: '#d68474', LL: '#f1e7cf', vig: 0 },
     sepia: { OL: '#6d5736', OLD: '#4b3a22', TL: '#9a8159', TLD: '#5e4930', VM: '#3f2d1b', CR: '#ead9b1', PK: '#c3a47c', PKD: '#7e6141', LL: '#ead9b1', vig: .5 },
+    sketch: { OL: '#3a2e1d', OLD: '#2d2417', TL: '#9a8159', TLD: '#5e4930', VM: '#2d2417', CR: 'none', PK: '#c3a47c', PKD: '#7e6141', LL: '#ead9b1', vig: 0, pen: 1 },
     dark:  { OL: '#4d5a2a', OLD: '#2f391b', TL: '#1f3a3a', TLD: '#0f2222', VM: '#2a1a0c', CR: '#d4b46a', PK: '#a8624f', PKD: '#5d2f24', LL: '#c9a85a', vig: .35 }
   };
-  var OL, OLD, TL, TLD, VM, CR, PK, PKD, LL, ARTV, HAT, ARTN = 0;
+  var OL, OLD, TL, TLD, VM, CR, PK, PKD, LL, ARTV, HAT, PEN, ARTN = 0;
   function setArt(n) {
     var a = ARTS[n] || ARTS.crane;
-    OL = a.OL; OLD = a.OLD; TL = a.TL; TLD = a.TLD; VM = a.VM; CR = a.CR; PK = a.PK; PKD = a.PKD; LL = a.LL; ARTV = a.vig;
+    OL = a.OL; OLD = a.OLD; TL = a.TL; TLD = a.TLD; VM = a.VM; CR = a.CR; PK = a.PK; PKD = a.PKD; LL = a.LL; ARTV = a.vig; PEN = !!a.pen;
     HAT = ' stroke="' + VM + '" stroke-width=".8" fill="none" stroke-linecap="round"';
   }
   // Preview other looks with ?art=sepia or ?art=dark on the page address.
@@ -313,13 +314,17 @@
     var dx = 3*u*u*(s[2]-s[0]) + 6*u*t*(s[4]-s[2]) + 3*t*t*(s[6]-s[4]), dy = 3*u*u*(s[3]-s[1]) + 6*u*t*(s[5]-s[3]) + 3*t*t*(s[7]-s[5]);
     return [x, y, Math.atan2(dy, dx) * 180 / Math.PI];
   }
+  var WASH = 'rgba(150,118,72,.2)';
   function leafG(x, y, rot, sc) {
+    if (PEN) return '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + f1(rot) + ') scale(' + sc + ')"><path d="' + LEAF + '" fill="' + WASH + '" stroke="' + OL + '" stroke-width=".95" stroke-linejoin="round"/>' +
+      '<path d="M0 -1 V-19 M0 -6 L-6 -10 M0 -6 L6 -10 M0 -11 L-5 -15 M0 -11 L5 -15" fill="none" stroke="' + OL + '" stroke-width=".55" opacity=".85"/>' +
+      '<path d="M2 -3 L8 -7 M2 -6 L9.5 -11 M2.5 -12 L6.5 -15 M3 -16 L5 -17.5" fill="none" stroke="' + OL + '" stroke-width=".5" opacity=".6"/></g>';
     return '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + f1(rot) + ') scale(' + sc + ')"><path d="' + LEAF + '" fill="' + OL + '"/>' +
       '<path d="M0 -1 V-19 M0 -6 L-6 -10 M0 -6 L6 -10 M0 -11 L-5 -15 M0 -11 L5 -15" fill="none" stroke="' + CR + '" stroke-width=".7" stroke-linecap="round" opacity=".75"/></g>';
   }
   function grapes(x, y, sc) {
     var pts = [[-5,0],[0,0],[5,0],[-2.5,4.5],[2.5,4.5],[0,9]], s = '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') scale(' + sc + ')"><path d="M0 -6 L0 0" stroke="' + OLD + '" stroke-width="1" fill="none"/>', i;
-    for (i = 0; i < pts.length; i++) s += '<circle cx="' + pts[i][0] + '" cy="' + (pts[i][1] + 2) + '" r="2.8" fill="' + PK + '" stroke="' + PKD + '" stroke-width=".6"/>';
+    for (i = 0; i < pts.length; i++) s += '<circle cx="' + pts[i][0] + '" cy="' + (pts[i][1] + 2) + '" r="2.8" fill="' + (PEN ? WASH : PK) + '" stroke="' + (PEN ? OL : PKD) + '" stroke-width="' + (PEN ? .7 : .6) + '"/>' + (PEN ? '<path d="M' + (pts[i][0] - 1) + ' ' + (pts[i][1] + 3) + ' q1.5 1.4 2.8 -.4" fill="none" stroke="' + OL + '" stroke-width=".45"/>' : '');
     return s + '</g>';
   }
   function tendril(x, y, rot, sc) {
@@ -338,6 +343,7 @@
       p = bez(s, .4); g += tendril(p[0], p[1], p[2] + (idx % 2 ? 150 : -30), .9 * sc);
       if (o.fruit && idx % 2 === o.fruit - 1) { p = bez(s, .68); g += grapes(p[0] + 2, p[1] + 3, .9 * sc); }
     });
+    if (PEN) return '<path d="' + d + '" fill="none" stroke="' + OL + '" stroke-width="' + ((o.w || 2) * .62) + '" stroke-linecap="round"/><path transform="translate(.9 .6)" d="' + d + '" fill="none" stroke="' + OL + '" stroke-width=".5" opacity=".55" stroke-linecap="round"/>' + g;
     return '<path d="' + d + '" fill="none" stroke="' + OL + '" stroke-width="' + (o.w || 2) + '" stroke-linecap="round"/>' + g;
   }
   function latticePanel(x, y, w, h, step, seed) {
@@ -384,8 +390,65 @@
   function objectG(k, tx, ty, sc) {
     return '<g transform="translate(' + tx + ' ' + ty + ') scale(' + sc + ')" fill="' + CR + '" stroke="' + VM + '" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">' + OBJECTS[k % OBJECTS.length]() + '</g>';
   }
+
+  /* ---- Hand-drawn (graphite and wash) rendering ---- */
+  function rng(sd) { return function () { sd = (sd * 9301 + 49297) % 233280; return sd / 233280; }; }
+  function penDefs(id, w, h) {
+    return '<defs>' +
+      '<filter id="wb' + id + '" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="' + (id % 7 + 2) + '" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.4" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<filter id="gr' + id + '" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="' + (id % 5 + 1) + '" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 1.75" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>' +
+      '<filter id="bl' + id + '" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>' +
+      '<pattern id="ht' + id + '" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)"><path d="M0 0 V3.2" stroke="' + OL + '" stroke-width=".75"/></pattern>' +
+      '<clipPath id="sd' + id + '"><rect x="46" y="-5" width="40" height="125"/></clipPath>' +
+      '<radialGradient id="rg' + id + '"><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>' +
+      '<mask id="mk' + id + '" maskUnits="userSpaceOnUse" x="0" y="0" width="' + w + '" height="' + h + '"><rect width="' + w + '" height="' + h + '" fill="#000"/><ellipse cx="' + (w / 2) + '" cy="' + (h / 2) + '" rx="' + (w / 2 * 1.12) + '" ry="' + (h / 2 * 1.2) + '" fill="url(#rg' + id + ')"/></mask></defs>';
+  }
+  // Charcoal ground strokes under an object, dense in the middle like a cast shadow.
+  function scribbleGround(cx, y, hw, seed, n) {
+    var r = rng(seed), g = '', i, x, len, yy, wd;
+    for (i = 0; i < n; i++) {
+      len = hw * (.35 + r() * .9); x = cx - hw + r() * (2 * hw - len); yy = y + (r() - .5) * 9 * (1 - Math.abs((x + len / 2 - cx) / hw) * .5);
+      wd = .6 + r() * 1.3;
+      g += '<path d="M' + f1(x) + ' ' + f1(yy) + ' q' + f1(len / 2) + ' ' + f1((r() - .5) * 2.4) + ' ' + f1(len) + ' ' + f1((r() - .5) * 1.4) + '" fill="none" stroke="' + OL + '" stroke-width="' + f1(wd) + '" stroke-linecap="round" opacity="' + f1(.35 + r() * .45) + '"/>';
+    }
+    return g;
+  }
+  // Faint blue-grey underdrawing, like the pencil sketches that show through the page.
+  function ghostSketch(seed, w, h, n) {
+    var r = rng(seed), g = '', i, x, y;
+    for (i = 0; i < n; i++) {
+      x = r() * w; y = r() * h;
+      g += '<path d="M' + f1(x) + ' ' + f1(y) + ' c' + f1(r() * 30 - 8) + ' ' + f1(r() * 22 - 14) + ' ' + f1(r() * 40) + ' ' + f1(r() * 26 - 6) + ' ' + f1(r() * 50 + 10) + ' ' + f1(r() * 14 - 4) + '" fill="none" stroke="#7d8aa6" stroke-width="' + f1(.6 + r() * .9) + '" stroke-linecap="round" opacity="' + f1(.18 + r() * .22) + '"/>';
+    }
+    return g;
+  }
+  function penObject(k, tx, ty, sc, id) {
+    var o = OBJECTS[k % OBJECTS.length](), T = 'translate(' + tx + ' ' + ty + ') scale(' + sc + ')';
+    return '<g transform="' + T + '" stroke-linejoin="round" stroke-linecap="round">' +
+      '<g fill="' + WASH + '" stroke="none">' + o + '</g>' +
+      '<g clip-path="url(#sd' + id + ')" fill="url(#ht' + id + ')" stroke="none" opacity=".55">' + o + '</g>' +
+      '<g fill="none" stroke="' + OL + '" stroke-width="1.5" opacity=".92">' + o + '</g>' +
+      '<g transform="translate(.7 .5)" fill="none" stroke="' + OL + '" stroke-width=".7" opacity=".5">' + o + '</g></g>';
+  }
+  function penWrap(id, w, h, inner) {
+    return penDefs(id, w, h) + '<g mask="url(#mk' + id + ')"><g filter="url(#gr' + id + ')"><g filter="url(#wb' + id + ')">' + inner + '</g></g></g>';
+  }
+  function penPlate(k) {
+    var id = ++ARTN, inner = '<ellipse cx="100" cy="92" rx="66" ry="64" fill="rgba(176,140,86,.22)" filter="url(#bl' + id + ')"/>' + ghostSketch(31 + k * 7, 200, 160, 9) +
+      vine(VL, { fruit: 2, leaf: .9 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .9 }) + '</g>' +
+      scribbleGround(100, 143, 52, 17 + k * 3, 26) + penObject(k, 59, 30, 1.05, id);
+    return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + penWrap(id, 200, 170, inner) + '</svg>';
+  }
+  function penBand(k, medal) {
+    var id = ++ARTN, vb = medal ? '0 0 302 100' : '0 12 302 56', inner = '';
+    inner += (medal ? '<ellipse cx="151" cy="52" rx="48" ry="38" fill="rgba(176,140,86,.22)" filter="url(#bl' + id + ')"/>' : '') + ghostSketch(5 + k * 3, 302, medal ? 90 : 56, 6);
+    inner += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8 });
+    if (medal) inner += scribbleGround(151, 84, 30, 9 + k * 5, 14) + penObject(k, 151 - 40 * .5, 52 - 55 * .5 - 2, .5, id);
+    return '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="' + vb + '" aria-hidden="true">' + penWrap(id, 302, medal ? 100 : 68, inner) + '</svg>';
+  }
   var VL = [[50,166, 22,160, 24,136, 44,128],[44,128, 68,120, 36,100, 44,84],[44,84, 52,66, 30,52, 40,36],[40,36, 46,22, 60,14, 80,8]];
   function svgPlate(k) {
+    if (PEN) return penPlate(k);
     var v = vine(VL, { fruit: 2, leaf: 1 });
     return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + latticePanel(64, 16, 72, 140, 9, 11 + k * 5) + objectG(k, 66.4, 40, .84) + vignette(64, 16, 72, 140) +
       '<rect x="64" y="16" width="72" height="140" fill="none" stroke="' + TLD + '" stroke-width="2.2"/>' +
@@ -393,6 +456,7 @@
   }
   var BL = [[4,40, 30,10, 54,68, 92,40],[92,40, 120,16, 138,64, 168,40],[168,40, 198,14, 216,62, 252,38],[252,38, 270,26, 286,40, 298,34]];
   function svgBand(k, medal) {
+    if (PEN) return penBand(k, medal);
     var h = medal ? 100 : 56, y0 = medal ? 50 : 28, sy = 1;
     var s = '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="0 ' + (medal ? 0 : 12) + ' 302 ' + (medal ? 100 : 56) + '" aria-hidden="true">';
     s += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .9, w: 1.8 });
