@@ -26,14 +26,14 @@
       writing:    [866, 313, 169, 209],
       research:   [1055, 313, 174, 209],
       contact:    [1250, 313, 172, 209]
-    }, globe: [1234, 105, 156, 184], bust: [548, 112, 126, 178] },
+    }, globe: [1234, 105, 156, 184], bust: [548, 112, 126, 178], desk: [711, 850, 302, 70] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
       experience: [265, 539, 144, 241],
       writing:    [426, 539, 146, 241],
       research:   [586, 539, 144, 241],
       contact:    [746, 539, 146, 241]
-    }, globe: [718, 320, 162, 190], bust: [250, 332, 126, 178] }
+    }, globe: [718, 320, 162, 190], bust: [250, 332, 126, 178], desk: [281, 1348, 385, 80] }
   };
   var IW = 1672, IH = 941;
   // Colors of the board edges around the pages, matched to each cover.
@@ -136,6 +136,8 @@
     jb.addEventListener('click', function () { openVol('jefferson', jb); });
     world.appendChild(jb); world.appendChild(jc);
     S.bust = jb; S.bcap = jc; JEFF.hot = jb;
+    var dp = el('div', 'desk-plate', '<div class="dp-face"><b>Jackson Willis</b><i>Candidate for Juris Doctor</i></div>');
+    dp.setAttribute('aria-hidden', 'true'); world.appendChild(dp); S.desk = dp;
   }
   var bgblur = $('#bgblur');
   function applyPlate(key) {
@@ -156,6 +158,7 @@
       S.cap.style.left = ((g[0] + g[2] / 2) / IW * 100) + '%';
       S.cap.style.top = ((g[1] + g[3]) / IH * 100) + '%';
     }
+    if (S.desk && p.desk) pos(S.desk, p.desk);
     if (S.bust && p.bust) {
       var bb = p.bust;
       pos(S.bust, bb);
@@ -211,6 +214,7 @@
     world.style.left = Math.round(ox) + 'px'; world.style.top = Math.round(oy) + 'px';
     world.style.width = Math.round(IW * s) + 'px'; world.style.height = Math.round(IH * s) + 'px';
     world.style.transformOrigin = Math.round(org[0]) + 'px ' + Math.round(org[1]) + 'px';
+    if (S.desk) S.desk.style.fontSize = (PLATES[S.plateKey].desk[2] * s / 15.5) + 'px';
     VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s / 28) + 'px'; });
 
     if (S.open && !S.busy) rebuildOpen();
@@ -560,6 +564,25 @@
       return s;
     }
   ];
+  // Real drawn extent of each design (in its own 80x110 box), so the art can be centered and the ground and cream wash can follow it.
+  var OBOX = {};
+  function objBox(k) {
+    k = k % PENOBJ.length;
+    if (OBOX[k]) return OBOX[k];
+    var ns = 'http://www.w3.org/2000/svg', sv = document.createElementNS(ns, 'svg'), g = document.createElementNS(ns, 'g'), b;
+    sv.setAttribute('width', 300); sv.setAttribute('height', 300); sv.setAttribute('viewBox', '-60 -60 200 220');
+    sv.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden';
+    g.innerHTML = PENOBJ[k]();
+    sv.appendChild(g); document.body.appendChild(sv);
+    try { b = g.getBBox(); b = { x: b.x, y: b.y, w: b.width, h: b.height }; } catch (e) { b = { x: 0, y: 0, w: 80, h: 110 }; }
+    document.body.removeChild(sv);
+    if (!(b.w > 4 && b.h > 4)) b = { x: 0, y: 0, w: 80, h: 110 };
+    return (OBOX[k] = b);
+  }
+  function placeObj(k, cx, cy, maxW, maxH, sc0) {
+    var b = objBox(k), sc = Math.min(maxW / b.w, maxH / b.h, sc0);
+    return { tx: cx - (b.x + b.w / 2) * sc, ty: cy - (b.y + b.h / 2) * sc, sc: sc, w: b.w * sc, h: b.h * sc };
+  }
   function penObject(k, tx, ty, sc, id) {
     var o = (PENOBJ[k % PENOBJ.length]()).replace(/ stroke-width="[^"]*"/g, ''), T = 'translate(' + tx + ' ' + ty + ') scale(' + sc + ')';
     return '<g transform="' + T + '" stroke-linejoin="round" stroke-linecap="round">' +
@@ -574,16 +597,26 @@
     return penDefs(id, w, h) + '<g mask="url(#mk' + id + ')"><g filter="url(#gr' + id + ')"><g filter="url(#wb' + id + ')">' + inner + '</g></g></g>';
   }
   function penPlate(k) {
-    var id = ++ARTN, inner = '<ellipse cx="100" cy="92" rx="66" ry="64" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' + ghostSketch(31 + k * 7, 200, 160, 9) +
+    var id = ++ARTN, o = placeObj(k, 100, 84, 88, 104, 1.1), gy = 84 + o.h / 2 + 5,
+      inner = '<ellipse cx="100" cy="90" rx="66" ry="64" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' + ghostSketch(31 + k * 7, 200, 160, 9) +
       '<g opacity=".72">' + vine(VL, { fruit: 2, leaf: .9, sparse: 1, id: id, seed: 3 + k * 5 }) + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: .9, sparse: 1, id: id, seed: 11 + k * 7 }) + '</g></g>' +
-      scribbleGround(100, 143, 52, 17 + k * 3, PEN > 1 ? 44 : 26) + penObject(k, 59, 30, 1.05, id);
+      scribbleGround(100, gy, Math.max(40, o.w * .55), 17 + k * 3, PEN > 1 ? 44 : 26) + penObject(k, o.tx, o.ty, o.sc, id);
     return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + penWrap(id, 200, 170, inner) + '</svg>';
   }
   function penBand(k, medal) {
-    var id = ++ARTN, vb = medal ? '0 0 302 100' : '0 12 302 56', inner = '';
-    inner += (medal ? '<ellipse cx="151" cy="52" rx="48" ry="38" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' : '') + ghostSketch(5 + k * 3, 302, medal ? 90 : 56, 6);
-    inner += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8, id: id, seed: 19 + k * 3 });
-    if (medal) inner += scribbleGround(151, 85, 36, 9 + k * 5, 16) + penObject(k, 151 - 40 * .66, 50 - 55 * .66, .66, id);
+    var id = ++ARTN, vb = medal ? '0 0 302 100' : '0 12 302 56', inner = '', o, cy = 47, vineSvg;
+    vineSvg = vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .85, w: 1.8, id: id, seed: 19 + k * 3 });
+    if (medal) {
+      o = placeObj(k, 151, cy, 62, 52, .8);
+      inner += '<ellipse cx="151" cy="' + (cy + 3) + '" rx="48" ry="38" fill="' + BLOB + '" filter="url(#bl' + id + ')"/>' + ghostSketch(5 + k * 3, 302, 90, 6);
+      // the vine tucks behind the drawing: an oval cut-out where the object sits
+      inner += '<mask id="vc' + id + '" maskUnits="userSpaceOnUse" x="0" y="0" width="302" height="100"><rect width="302" height="100" fill="#fff"/>' +
+        '<ellipse cx="151" cy="' + (cy + 2) + '" rx="' + f1(o.w / 2 + 9) + '" ry="' + f1(o.h / 2 + 8) + '" fill="#000" filter="url(#bl' + id + ')"/></mask>' +
+        '<g mask="url(#vc' + id + ')">' + vineSvg + '</g>' +
+        scribbleGround(151, cy + o.h / 2 + 3, Math.max(30, o.w * .6), 9 + k * 5, 16) + penObject(k, o.tx, o.ty, o.sc, id);
+    } else {
+      inner += ghostSketch(5 + k * 3, 302, 56, 6) + vineSvg;
+    }
     return '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="' + vb + '" aria-hidden="true">' + penWrap(id, 302, medal ? 100 : 68, inner) + '</svg>';
   }
   var VL = [[50,166, 22,160, 24,136, 44,128],[44,128, 68,120, 36,100, 44,84],[44,84, 52,66, 30,52, 40,36],[40,36, 46,22, 60,14, 80,8]];
