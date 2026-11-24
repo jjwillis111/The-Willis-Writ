@@ -286,7 +286,26 @@
      Page fillers: flat-colour wood-engraving style plates (olive vines,
      teal lattice, vermilion linework), original art drawn in code.
      ------------------------------------------------------------------ */
-  var OL = '#76853a', OLD = '#5d6b2b', TL = '#5e9b96', TLD = '#3f7f7b', VM = '#c4563a', CR = '#f1e7cf', PK = '#e8aa9c', PKD = '#d68474';
+  var ARTS = {
+    crane: { OL: '#76853a', OLD: '#5d6b2b', TL: '#5e9b96', TLD: '#3f7f7b', VM: '#c4563a', CR: '#f1e7cf', PK: '#e8aa9c', PKD: '#d68474', LL: '#f1e7cf', vig: 0 },
+    sepia: { OL: '#6d5736', OLD: '#4b3a22', TL: '#9a8159', TLD: '#5e4930', VM: '#3f2d1b', CR: '#ead9b1', PK: '#c3a47c', PKD: '#7e6141', LL: '#ead9b1', vig: .5 },
+    dark:  { OL: '#4d5a2a', OLD: '#2f391b', TL: '#1f3a3a', TLD: '#0f2222', VM: '#2a1a0c', CR: '#d4b46a', PK: '#a8624f', PKD: '#5d2f24', LL: '#c9a85a', vig: .35 }
+  };
+  var OL, OLD, TL, TLD, VM, CR, PK, PKD, LL, ARTV, HAT, ARTN = 0;
+  function setArt(n) {
+    var a = ARTS[n] || ARTS.crane;
+    OL = a.OL; OLD = a.OLD; TL = a.TL; TLD = a.TLD; VM = a.VM; CR = a.CR; PK = a.PK; PKD = a.PKD; LL = a.LL; ARTV = a.vig;
+    HAT = ' stroke="' + VM + '" stroke-width=".8" fill="none" stroke-linecap="round"';
+  }
+  // Preview other looks with ?art=sepia or ?art=dark on the page address.
+  setArt((/[?&]art=(\w+)/.exec(location.search) || [])[1]);
+  // Soft dark edge, like an aged print.
+  function vignette(x, y, w, h, shape) {
+    if (!ARTV) return '';
+    var id = 'vg' + (++ARTN);
+    return '<defs><radialGradient id="' + id + '" cx=".5" cy=".5" r=".72"><stop offset=".55" stop-color="#2a1a08" stop-opacity="0"/><stop offset="1" stop-color="#2a1a08" stop-opacity="' + ARTV + '"/></radialGradient></defs>' +
+      (shape === 'c' ? '<circle cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + (w / 2) + '"' : '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '"') + ' fill="url(#' + id + ')"/>';
+  }
   var LEAF = 'M0 0 C-2 -3 -7 -3 -10 -6 C-8 -8 -9 -11 -12 -12 C-9 -14 -7 -15 -6 -18 C-4 -17 -2 -19 0 -23 C2 -19 4 -17 6 -18 C7 -15 9 -14 12 -12 C9 -11 8 -8 10 -6 C7 -3 2 -3 0 0 Z';
   function f1(n) { return Math.round(n * 10) / 10; }
   function bez(s, t) {
@@ -327,12 +346,11 @@
       r = (r * 9301 + 49297) % 233280;
       if (r / 233280 > .72) s += '<rect x="' + (x + i * step + .8) + '" y="' + (y + j * step + .8) + '" width="' + (step - 1.6) + '" height="' + (step - 1.6) + '" fill="' + TLD + '" opacity=".85"/>';
     }
-    s += '<path fill="none" stroke="' + CR + '" stroke-width=".8" opacity=".7" d="';
+    s += '<path fill="none" stroke="' + LL + '" stroke-width=".8" opacity=".7" d="';
     for (i = 1; i < w / step; i++) s += 'M' + (x + i * step) + ' ' + y + ' V' + (y + h);
     for (j = 1; j < h / step; j++) s += 'M' + x + ' ' + (y + j * step) + ' H' + (x + w);
     return s + '"/><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="none" stroke="' + TLD + '" stroke-width="2.2"/>';
   }
-  var HAT = ' stroke="' + VM + '" stroke-width=".8" fill="none" stroke-linecap="round"';
   // Legal subjects, drawn in an 80 x 110 box.
   var OBJECTS = [
     function scales() {
@@ -369,7 +387,7 @@
   var VL = [[50,166, 22,160, 24,136, 44,128],[44,128, 68,120, 36,100, 44,84],[44,84, 52,66, 30,52, 40,36],[40,36, 46,22, 60,14, 80,8]];
   function svgPlate(k) {
     var v = vine(VL, { fruit: 2, leaf: 1 });
-    return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + latticePanel(64, 16, 72, 140, 9, 11 + k * 5) + objectG(k, 66.4, 40, .84) +
+    return '<svg class="ornsvg plate" viewBox="0 0 200 170" aria-hidden="true">' + latticePanel(64, 16, 72, 140, 9, 11 + k * 5) + objectG(k, 66.4, 40, .84) + vignette(64, 16, 72, 140) +
       '<rect x="64" y="16" width="72" height="140" fill="none" stroke="' + TLD + '" stroke-width="2.2"/>' +
       v + '<g transform="translate(200 0) scale(-1 1)">' + vine(VL, { fruit: 1, leaf: 1 }) + '</g></svg>';
   }
@@ -379,7 +397,7 @@
     var s = '<svg class="ornsvg band' + (medal ? ' med' : '') + '" viewBox="0 ' + (medal ? 0 : 12) + ' 302 ' + (medal ? 100 : 56) + '" aria-hidden="true">';
     s += vine(BL.map(function (a) { return a.map(function (n, i) { return i % 2 ? n + (medal ? 10 : 0) : n; }); }), { fruit: 1, leaf: .9, w: 1.8 });
     if (medal) {
-      s += '<circle cx="151" cy="50" r="30" fill="' + TL + '"/><circle cx="151" cy="50" r="30" fill="none" stroke="' + TLD + '" stroke-width="2.4"/><circle cx="151" cy="50" r="25" fill="none" stroke="' + CR + '" stroke-width=".8" opacity=".7"/>' + objectG(k, 151 - 40 * .34, 50 - 55 * .34, .34);
+      s += '<circle cx="151" cy="50" r="30" fill="' + TL + '"/><circle cx="151" cy="50" r="30" fill="none" stroke="' + TLD + '" stroke-width="2.4"/><circle cx="151" cy="50" r="25" fill="none" stroke="' + LL + '" stroke-width=".8" opacity=".7"/>' + objectG(k, 151 - 40 * .34, 50 - 55 * .34, .34) + vignette(121, 20, 60, 60, 'c');
     }
     return s + '</svg>';
   }
