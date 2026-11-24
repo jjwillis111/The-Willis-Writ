@@ -179,8 +179,8 @@ i { font-style: normal; display: block; }
    Legal Wire broadsheet
    ========================================================================== */
 .paperwrap { position: absolute; left: 50%; top: calc(50% + 18px); width: min(1060px, calc(100vw - 28px)); pointer-events: auto;
-  transform: translate(-50%, -47%) scale(.965); opacity: 0; transition: transform 900ms cubic-bezier(.2, .8, .2, 1), opacity 420ms ease; }
-.paperwrap.on { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  transform: translate(-50%, calc(-50% + 34px)) rotate(-.9deg) scale(.972); opacity: 0; transition: transform 1000ms cubic-bezier(.18, .8, .22, 1), opacity 380ms ease; }
+.paperwrap.on { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 1; }
 .paper-shadow { position: absolute; left: 1%; right: 1%; top: 3%; bottom: -1%; box-shadow: 0 34px 80px 10px rgba(0, 0, 0, .7); opacity: 0; transition: opacity 700ms ease 200ms; pointer-events: none; }
 .paperwrap.on .paper-shadow { opacity: 1; }
 .paper { position: relative; box-sizing: border-box; font-size: 17px; font-family: 'Times New Roman', Times, serif; color: #221b12;
@@ -188,8 +188,31 @@ i { font-style: normal; display: block; }
   height: min(calc(100vh - 128px), 900px); height: min(calc(100dvh - 128px), 900px);
   padding: clamp(14px, 2.2vw, 28px) clamp(16px, 3vw, 40px) 16px; border-radius: 2px;
   background-color: #e8dec4; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='f' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='.55 .9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .12  0 0 0 .20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>"), linear-gradient(180deg, #ece3cb, #ddd1b2);
-  clip-path: inset(0 50% 0 50%); transition: clip-path 900ms cubic-bezier(.25, .75, .2, 1); }
+  clip-path: inset(0 50% 0 50%); transition: clip-path 950ms cubic-bezier(.3, .7, .2, 1) 120ms; }
 .paperwrap.on .paper { clip-path: inset(0 0 0 0); }
+/* the creases of a folded broadsheet: one down the middle, a fainter one across */
+.paper { isolation: isolate; }
+.paper::after { content: ""; position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0) calc(50% - 26px), rgba(70, 48, 20, .06) calc(50% - 2px), rgba(70, 48, 20, .10) calc(50% - 1px), rgba(255, 250, 232, .32) 50%, rgba(70, 48, 20, .05) calc(50% + 2px), rgba(0, 0, 0, 0) calc(50% + 28px)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) calc(50% - 18px), rgba(70, 48, 20, .05) calc(50% - 1px), rgba(255, 250, 232, .22) 50%, rgba(0, 0, 0, 0) calc(50% + 18px)); }
+
+/* the press run: masthead pressed in, rules drawn out from the fold, then the type set story by story */
+@keyframes setType { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes inkIn { from { opacity: 0; transform: scale(1.045); } 55% { opacity: 1; } to { opacity: 1; transform: none; } }
+@keyframes ruleOut { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }
+.paperwrap.on .mast-name { animation: inkIn 640ms cubic-bezier(.2, .7, .2, 1) 420ms backwards; }
+.paperwrap.on .mast-date { animation: ruleOut 760ms cubic-bezier(.3, .7, .2, 1) 560ms backwards; }
+.paperwrap.on .p-tabs { animation: setType 460ms ease 760ms backwards; }
+.paperwrap.on .p-body .st { animation: setType 480ms cubic-bezier(.2, .7, .2, 1) calc(820ms + min(var(--i, 0), 14) * 46ms) backwards; }
+.paperwrap.on.settled .p-body .st { animation-delay: calc(min(var(--i, 0), 14) * 34ms); }
+.paperwrap.on .p-foot { animation: setType 460ms ease 1100ms backwards; }
+.paperwrap.on.settled .p-foot { animation-delay: 200ms; }
+@media (prefers-reduced-motion: reduce) {
+  .paperwrap, .paperwrap.on { transform: translate(-50%, -50%); transition: opacity 300ms ease; }
+  .paper { clip-path: none; transition: none; }
+  .paperwrap.on .mast-name, .paperwrap.on .mast-date, .paperwrap.on .p-tabs, .paperwrap.on .p-body .st, .paperwrap.on .p-foot { animation: none; }
+}
 
 .p-head { flex: none; }
 .p-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
@@ -2029,9 +2052,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     return S.newsP;
   }
 
-  function storyHtml(it, lead) {
+  function storyHtml(it, lead, i) {
     var when = fmtDay(it.date), sec = SECLABEL[it.section] || '';
-    return '<article class="st' + (lead ? ' lead' : '') + '">' +
+    return '<article class="st' + (lead ? ' lead' : '') + '" style="--i:' + (i || 0) + '">' +
       '<p class="sk">' + esc(sec) + (when ? ' &middot; ' + esc(when) : '') + '</p>' +
       '<h3><a href="' + escA(safeUrl(it.url)) + '" target="_blank" rel="noopener noreferrer">' + esc(it.title) + '</a></h3>' +
       '<p class="ss">' + esc(it.source || '') + '</p></article>';
@@ -2060,8 +2083,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     }
     if (!list.length) { body.innerHTML = emptyHtml(!data); if (S.scroller) { S.scroller.scrollTop = 0; } return; }
     var rest = list.slice(1);
-    body.innerHTML = '<div class="p-lead">' + storyHtml(list[0], true) + '</div>' +
-      (rest.length ? '<div class="p-cols">' + rest.map(function (it) { return storyHtml(it, false); }).join('') + '</div>' : '');
+    body.innerHTML = '<div class="p-lead">' + storyHtml(list[0], true, 0) + '</div>' +
+      (rest.length ? '<div class="p-cols">' + rest.map(function (it, n) { return storyHtml(it, false, n + 1); }).join('') + '</div>' : '');
     if (S.scroller) { S.scroller.scrollTop = 0; }
   }
 
@@ -2131,6 +2154,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     stage.classList.add('on', 'dimmed');
     stage.setAttribute('aria-hidden', 'false');
     requestAnimationFrame(function () { requestAnimationFrame(function () { pw.classList.add('on'); }); });
+    later(1700, function () { if (S.pw === pw) { pw.classList.add('settled'); } });
     later(700, function () {
       S.busy = false;
       ui.top.classList.add('show');
