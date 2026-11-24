@@ -109,6 +109,8 @@ def run(books, vps, save):
                     if s and abs(cover_angle(s[0])) > 179.5 and s[1]: break
                     pg.wait_for_timeout(150)
                 pg.wait_for_timeout(int(900 * K))
+                for _ in range(DEEP):
+                    pg.keyboard.press('ArrowRight'); pg.wait_for_timeout(int(1100 * K))
                 pg.keyboard.press('Escape')
                 sealed = 0; t0 = time.time()
                 while time.time() - t0 < 4000 * K / 1000.0:
@@ -135,6 +137,7 @@ def run(books, vps, save):
         b.close()
     return out
 
+DEEP = int(os.environ.get('DEEP', '0'))
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--books', default='about,experience,writing,research,contact')

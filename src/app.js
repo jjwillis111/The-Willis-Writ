@@ -13,6 +13,7 @@
 
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var K = reduce ? 0.02 : (window.__K || 1);                       // time multiplier for all animations
+  document.documentElement.style.setProperty('--K', K);                 // CSS transitions that must follow K read this
   function later(ms, fn) { return setTimeout(fn, ms * K); }
 
   /* ==================================================================
@@ -401,6 +402,7 @@
   // The page block is tucked inside the cover while the cover is nearly flat. --tk (edges) fades out over the first
   // few degrees of the turn, --tl (spine side) over the first quarter turn. Both follow the cover's own angle, so
   // opening and closing are mirror images and no frame can show paper outside the cover's silhouette.
+  var BARE_OPEN = 0.40, BARE_CLOSE = 0.35;   // fractions of the turn at which the cover is about 100 degrees open
   var TK_DEG = 8, TL_DEG = 90;
   function tuckAt(deg) { return [Math.max(0, 1 - deg / TK_DEG), Math.max(0, 1 - deg / TL_DEG)]; }
   function tuckSet(bk, tk, tl) { bk.style.setProperty('--tk', tk); bk.style.setProperty('--tl', tl); }
@@ -440,7 +442,7 @@
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
-    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); }
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.add('bare'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -466,6 +468,13 @@
         trackTuck(bk, target > 0, dur * K);
         bk.classList.toggle('open', target > 0);
       }, cd * K);
+      // boards and page edges stay out of sight until the cover has swung past vertical (opening), and go again before it
+      // comes back through vertical (closing)
+      if (target > 0) {
+        setTimeout(function () { if (S.book === bk && S.spread > 0) { bk.classList.remove('bare'); } }, (cd + dur * BARE_OPEN) * K);
+      } else {
+        setTimeout(function () { if (S.book === bk) { bk.classList.add('bare'); } }, (cd + dur * BARE_CLOSE) * K);
+      }
       if (target === 0) {
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('snug'); } }, (cd + dur * 0.12) * K);
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('seal'); } }, (cd + dur * 0.82) * K);
