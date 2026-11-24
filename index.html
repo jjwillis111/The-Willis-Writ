@@ -220,10 +220,14 @@ i { font-style: normal; display: block; }
 .mast { text-align: center; padding-top: 2px; }
 .mast-name { margin: .1em 0 .04em; font: normal 400 clamp(42px, 7.4vw, 100px)/1.04 'JSL Ancient', 'Times New Roman', Times, serif; letter-spacing: 0; text-transform: none; color: #17110a; }
 .mast-name .kw { margin-right: -.1em; }
-.mast-date { display: flex; justify-content: space-between; gap: 12px; padding: 7px 2px; border-top: 3px double #2b2116; border-bottom: 1px solid #2b2116;
+.mast-date { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 7px 2px; border-top: 3px double #2b2116; border-bottom: 1px solid #2b2116;
   max-height: 40px; overflow: hidden;
   font: normal 400 clamp(13px, 1.3vw, 17px)/1.2 'JSL Ancient', 'Times New Roman', Times, serif; color: #3a2d1a; }
 
+.mast-date > span:first-child { justify-self: start; text-align: left; }
+.mast-r { justify-self: end; text-align: right; }
+.mast-loc { display: inline-flex; align-items: baseline; gap: .55em; white-space: nowrap; letter-spacing: .03em; color: #2b2116; }
+.mast-loc i { font-style: normal; color: #6e1f1a; }
 .p-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px clamp(12px, 2.2vw, 30px); padding: 9px 0 8px;
   background-color: transparent; border-top: 0 double #2b2116; border-bottom: 1px solid rgba(40, 28, 14, .55); }
 .p-tab { position: relative; border: 0; background: transparent; cursor: pointer; padding: .2em .1em; color: #4a3a20;
@@ -261,6 +265,9 @@ i { font-style: normal; display: block; }
 @media (max-width: 900px) { .p-cols { column-count: 2; } }
 @media (max-width: 640px) {
   .paperwrap { width: calc(100vw - 20px); top: calc(50% + 24px); }
+  .mast-date { grid-template-columns: auto 1fr; gap: 8px; }
+  .mast-r, .mast-loc i, .mast-loc .loc-kc { display: none; }
+  .mast-loc { justify-self: end; }
   .paper { font-size: 16px; height: calc(100vh - 150px); height: calc(100dvh - 150px); }
   .p-cols { column-count: 1; column-rule: 0; }
   .st.lead h3 { font-size: 30px; }
@@ -607,7 +614,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         <ol>
           <li><strong>The shelf.</strong> Click a book to take it down.</li>
           <li><strong>Turning pages.</strong> Use the corners, arrows, arrow keys, or swipe. Escape puts the book back.</li>
-          <li><strong>The globe</strong> opens <em>Legal Wire</em>, a daily paper on the SEC, privacy, Congress and the Court, with links to sources.</li>
+          <li><strong>The globe</strong> opens <em>The Willis Writ</em>, a daily paper on the SEC, privacy, Congress and the Court, with links to sources.</li>
           <li><strong>The Jefferson bust</strong> hands you a passage from his letters.</li>
         </ol>
         <p class="meta">Views are my own, not my employer's, school's, or any agency's.</p>
@@ -797,14 +804,35 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       </ol>
     </article>
     <article class="pg">
-      <h3>Following developments</h3>
-      <p>Alongside this project I keep up with regulatory and policy developments at the intersection of law, technology and public policy. <em>Legal Wire</em>, the newspaper behind the globe on the shelf, collects the headlines I follow.</p>
-      <p><a data-open="news">Open Legal Wire</a></p>
-    </article>
-    <article class="pg">
       <h3>What it taught me</h3>
       <p>Working with Professor Rao, I helped develop a strict coding protocol: quote the source verbatim, re-audit line by line, and never trust a partial read of a transcript.</p>
       <p>That habit of disciplined source work carries directly into legal research and into any investigation where the record has to hold up.</p>
+    </article>
+    <article class="pg">
+      <h3>The Willis Writ</h3>
+      <p class="meta">A daily legal newspaper, behind the globe on the shelf</p>
+      <p>Alongside the UNCITRAL project, I keep up with regulatory and policy developments where law, technology and public policy meet. <em>The Willis Writ</em> is how I do it: one paper that gathers the headlines I would otherwise chase across a dozen sites and sorts them by subject.</p>
+      <p>It reads the way a paper reads. The most recent story leads the front page, shorter stories run in columns beneath it, and each beat has its own section.</p>
+      <p><a data-open="news">Open The Willis Writ</a></p>
+    </article>
+    <article class="pg">
+      <h3>The five sections</h3>
+      <ol>
+        <li><strong>SEC.</strong> Press releases and speeches from the Commission.</li>
+        <li><strong>Privacy.</strong> FTC notices, California's privacy agency, and law-firm alerts.</li>
+        <li><strong>Regulations.</strong> Proposed and final rules from the Federal Register, beginning with the SEC and the FTC.</li>
+        <li><strong>Congress.</strong> Bills sent to the President or signed into law, from Congress.gov and GovTrack.</li>
+        <li><strong>Supreme Court.</strong> Coverage of the Court from SCOTUSblog.</li>
+      </ol>
+    </article>
+    <article class="pg">
+      <h3>How it works</h3>
+      <ol>
+        <li>Each morning an automated job collects the latest items from every source.</li>
+        <li>Each source is fetched on its own. If one fails, its last good stories stay in the paper, so a single broken feed never leaves a section empty.</li>
+        <li>The paper carries headlines and links only. Nothing is rewritten or summarized, and every story opens at its source.</li>
+        <li>The site stays a single static page. The paper reads one small data file, and the daily job is what updates it.</li>
+      </ol>
     </article>
   </section>
 
@@ -953,9 +981,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     rl.href = 'resume.pdf'; rl.target = '_blank'; rl.rel = 'noopener';
     nav.appendChild(rl);
 
-    var gb = el('button', 'hot-globe', '<span class="vh">Open the Legal Wire newspaper</span>');
+    var gb = el('button', 'hot-globe', '<span class="vh">Open The Willis Writ newspaper</span>');
     gb.type = 'button'; gb.setAttribute('data-id', 'news');
-    var gc = el('div', 'globe-cap', '<span>Legal Wire</span>');
+    var gc = el('div', 'globe-cap', '<span>The Willis Writ</span>');
     gb.addEventListener('click', function () { openVol('news', gb); });
     NEWS.nav.addEventListener('mouseenter', function () { if (!S.open) gb.classList.add('hov'); });
     NEWS.nav.addEventListener('mouseleave', function () { gb.classList.remove('hov'); });
@@ -2096,7 +2124,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     paper.innerHTML =
       '<div class="p-head"><header class="mast">' +
         '<h2 class="mast-name" aria-label="The Willis Writ">The <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">illis</span> <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">rit</span></h2>' +
-        '<div class="mast-date"><span>' + esc(ds) + '</span><span>Legal Wire</span></div>' +
+        '<div class="mast-date"><span>' + esc(ds) + '</span><span class="mast-loc"><span>Washington, D.C.</span><i aria-hidden="true">&middot;</i><span class="loc-kc">Kansas City</span></span><span class="mast-r">Legal Wire</span></div>' +
       '</header>' +
       '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav></div>' +
       '<div class="p-scroll">' +

@@ -121,9 +121,9 @@
     rl.href = 'resume.pdf'; rl.target = '_blank'; rl.rel = 'noopener';
     nav.appendChild(rl);
 
-    var gb = el('button', 'hot-globe', '<span class="vh">Open the Legal Wire newspaper</span>');
+    var gb = el('button', 'hot-globe', '<span class="vh">Open The Willis Writ newspaper</span>');
     gb.type = 'button'; gb.setAttribute('data-id', 'news');
-    var gc = el('div', 'globe-cap', '<span>Legal Wire</span>');
+    var gc = el('div', 'globe-cap', '<span>The Willis Writ</span>');
     gb.addEventListener('click', function () { openVol('news', gb); });
     NEWS.nav.addEventListener('mouseenter', function () { if (!S.open) gb.classList.add('hov'); });
     NEWS.nav.addEventListener('mouseleave', function () { gb.classList.remove('hov'); });
@@ -1264,7 +1264,7 @@
     paper.innerHTML =
       '<div class="p-head"><header class="mast">' +
         '<h2 class="mast-name" aria-label="The Willis Writ">The <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">illis</span> <span class="kw" aria-hidden="true">W</span><span aria-hidden="true">rit</span></h2>' +
-        '<div class="mast-date"><span>' + esc(ds) + '</span><span>Legal Wire</span></div>' +
+        '<div class="mast-date"><span>' + esc(ds) + '</span><span class="mast-loc"><span>Washington, D.C.</span><i aria-hidden="true">&middot;</i><span class="loc-kc">Kansas City</span></span><span class="mast-r">Legal Wire</span></div>' +
       '</header>' +
       '<nav class="p-tabs" role="tablist" aria-label="Sections"></nav></div>' +
       '<div class="p-scroll">' +
