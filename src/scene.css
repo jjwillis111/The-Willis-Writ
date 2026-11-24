@@ -305,14 +305,12 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
 
 /* the back board only overhangs the cover once the book is open; a closed book is just its cover */
-.book .bd { transition: top calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), bottom calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), right calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), left calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), opacity calc(180ms * var(--K, 1)) linear 0ms; }
+.book .bd { transition: top calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), bottom calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), right calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)), left calc(600ms * var(--K, 1)) ease calc(560ms * var(--K, 1)); }
 .book.snug .bd { top: 0; bottom: 0; transition-delay: 0ms; transition-duration: calc(380ms * var(--K, 1)); }
 .book.seal .bd { visibility: hidden; }
 /* boards and page-edge strips are hidden while the cover is in the first half of its swing (see turnTo), so the only things
    beside a swinging cover are the page block it uncovers, never a band of board or stacked page edges */
-.book .bd { opacity: 1; }
-.book.bare .bd { opacity: 0; }
-.book.bare .stk { visibility: hidden; }
+.book.bare .bd, .book.bare .stk { visibility: hidden; }
 .book.dual.snug .bd.br { right: 0; }
 .book.single.snug .bd.br { left: 0; right: 0; }
 
