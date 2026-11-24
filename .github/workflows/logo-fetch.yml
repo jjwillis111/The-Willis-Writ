@@ -1,0 +1,31 @@
+name: Logo fetch
+
+# Throwaway branch. Downloads public logos and seals and a few pages (to find image URLs), commits them back to this branch.
+on:
+  push:
+    branches: [logo-fetch]
+    paths:
+      - scripts/fetch_logos.py
+      - .github/workflows/logo-fetch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch
+        run: python scripts/fetch_logos.py | tee fetch.log
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f fetched recon fetch.log
+          git commit -m "Logo fetch results"
+          git push origin HEAD:logo-fetch
