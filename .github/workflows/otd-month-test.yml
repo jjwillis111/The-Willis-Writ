@@ -1,0 +1,31 @@
+name: This Day month test
+
+# Throwaway test branch. Runs the This Day script over every day of December, plus a legal-entry count for every
+# day of the year, and commits the report back to this branch so it can be reviewed.
+on:
+  push:
+    branches: [otd-month-test]
+    paths:
+      - scripts/this_day.py
+      - .github/workflows/otd-month-test.yml
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run the month
+        run: python scripts/this_day.py --month 12 --survey --report reports/otd-december.json
+      - name: Commit the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/otd-december.json
+          git commit -m "This Day month test report"
+          git push origin HEAD:otd-month-test
