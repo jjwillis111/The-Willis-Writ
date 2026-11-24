@@ -26,7 +26,7 @@ from calendar import monthrange
 from datetime import datetime, timezone
 
 UA = 'The-Willis-Writ-this-day/1.0 (+https://github.com/jjwillis111/The-Willis-Writ)'
-FEED = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/{mm:02d}/{dd:02d}'
+FEED = 'https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/{mm:02d}/{dd:02d}'
 KEEP = 3                      # entries written per day
 LEAP_YEAR = 2024              # lets --month 2 include Feb 29
 
