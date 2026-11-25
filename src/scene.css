@@ -21,7 +21,7 @@ i { font-style: normal; display: block; }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 
 #bgblur {
-  display: none; position: absolute; left: -8%; top: -8%; right: -8%; bottom: -8%;
+  display: block; position: absolute; left: -8%; top: -8%; right: -8%; bottom: -8%;
   background-position: center; background-size: cover; background-repeat: no-repeat; filter: blur(18px) brightness(.5) saturate(1.1);
 }
 .pt #bgblur { display: block; }
