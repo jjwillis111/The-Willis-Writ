@@ -1126,7 +1126,10 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     world.style.width = Math.round(IW * s) + 'px'; world.style.height = Math.round(IH * s) + 'px';
     world.style.transformOrigin = Math.round(org[0]) + 'px ' + Math.round(org[1]) + 'px';
     if (S.desk) S.desk.style.fontSize = (PLATES[S.plateKey].desk[2] * s / 15.5) + 'px';
-    VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s / 28) + 'px'; });
+    // The label on a shelf cover is the flying cover's label at its shelf size (font F at book width P, scaled by shelf width / P),
+    // so the cover and the real one on the shelf match exactly when the flight ends.
+    var bd = bookDims(), lf = clamp(bd.P / 28, 13.5, 19);
+    VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s * lf / bd.P) + 'px'; });
 
     if (S.open && !S.busy) rebuildOpen();
     else if (S.open) S.dirty = true;
@@ -1164,14 +1167,28 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
     sp.style.fontSize = clamp(d.P / 28, 13.5, 19) + 'px';
     fly.appendChild(sp);
     sp.style.transform = tf(from, d, 0, 1);
+    var cin = sp.firstChild;
+    if (cin) cin.style.transform = counter(sp.style.transform);
     return sp;
+  }
+  // The flying cover is stretched from the shape of the open book to the shape of its shelf slot. Its label gets the inverse
+  // vertical stretch (about its own center), so the text and icon keep their proportions all the way and match the shelf at the end.
+  function counter(t) {
+    var m = /scale\(([-\d.e]+),\s*([-\d.e]+)\)/.exec(t);
+    return m ? 'scale(1,' + (parseFloat(m[1]) / parseFloat(m[2])) + ')' : '';
   }
   function tf(r, d, rot, mul) {
     return 'translate(' + Math.round(r.cx - d.P / 2) + 'px,' + Math.round(r.cy - d.Hh / 2) + 'px) rotate(' + rot + 'deg) scale(' + ((r.w / d.P) * mul) + ',' + ((r.h / d.Hh) * mul) + ')';
   }
   function anim(sp, frames, dur, easing) {
-    if (!sp.animate) { sp.style.transform = frames[frames.length - 1].transform; return { onfinish: null, finished: null }; }
-    return sp.animate(frames, { duration: Math.max(1, dur * K), easing: easing || 'ease', fill: 'forwards' });
+    var cin = sp.firstChild, cf = null;
+    if (cin && frames.every(function (f) { return f.transform; })) {
+      cf = frames.map(function (f) { var o = { transform: counter(f.transform) }; if (f.offset != null) o.offset = f.offset; return o; });
+    }
+    if (!sp.animate) { sp.style.transform = frames[frames.length - 1].transform; if (cf) cin.style.transform = cf[cf.length - 1].transform; return { onfinish: null, finished: null }; }
+    var opt = { duration: Math.max(1, dur * K), easing: easing || 'ease', fill: 'forwards' };
+    if (cf && cin.animate) cin.animate(cf, opt);
+    return sp.animate(frames, opt);
   }
 
   /* ==================================================================
@@ -2495,12 +2512,17 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
           later(1200, function () {
             sp.classList.remove('lit');
             var lifted = { cx: from.cx, cy: from.cy - 14, w: from.w, h: from.h };
-            anim(sp, [{ transform: tf(lifted, dm, -1.5, 1.07) }, { transform: tf(from, dm, 0, 1) }], 260, 'cubic-bezier(.3,.7,.3,1)');
-          });
-          later(1490, function () {
-            v.hs.style.visibility = ''; v.slot.classList.remove('on');
-            if (sp.parentNode) sp.parentNode.removeChild(sp);
-            finishClose(v);
+            var settle = anim(sp, [{ transform: tf(lifted, dm, -1.5, 1.07) }, { transform: tf(from, dm, 0, 1) }], 260, 'cubic-bezier(.3,.7,.3,1)');
+            // The shelf cover takes over only once the flying cover has fully settled into its slot, however busy the screen is.
+            var handed = false;
+            function handOff() {
+              if (handed) return; handed = true;
+              v.hs.style.visibility = ''; v.slot.classList.remove('on');
+              if (sp.parentNode) sp.parentNode.removeChild(sp);
+              finishClose(v);
+            }
+            if (settle && settle.finished && settle.finished.then) { settle.finished.then(handOff, handOff); }
+            later(900, handOff);   // safety net
           });
         } else {
           S.wrap.classList.remove('landed');
