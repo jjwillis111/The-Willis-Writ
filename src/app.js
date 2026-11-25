@@ -898,6 +898,10 @@
       }
     }
 
+    // logos and any other page images are decoded before the cover swings, not on the first frames of the swing
+    var dec = [].slice.call(book.querySelectorAll('img[data-src]')).map(function (im) { return im.decode ? im.decode().catch(function () {}) : null; });
+    if (dec.length) { S.artReady = Promise.all([S.artReady].concat(dec)); }
+
     var hl = el('button', 'hot l'); hl.type = 'button'; hl.setAttribute('aria-label', 'Previous pages');
     var hr = el('button', 'hot r'); hr.type = 'button'; hr.setAttribute('aria-label', 'Next pages');
     hl.addEventListener('click', function () { step(-1); });
@@ -934,7 +938,9 @@
     });
     book.classList.toggle('open', S.spread > 0);
     book.classList.toggle('seal', S.spread === 0);
-    book.classList.toggle('snug', S.spread === 0); tuckSet(book, S.spread === 0 ? 1 : 0, S.spread === 0 ? 1 : 0);
+    book.classList.toggle('snug', S.spread === 0); book.classList.toggle('tuck', S.spread === 0);
+    if (leaves[1]) { leaves[1].classList.add('top'); }
+    tuckSet(leaves[1], S.spread === 0 ? 1 : 0, S.spread === 0 ? 1 : 0);
     S.queued = null;
     if (instant) wrap.classList.add('landed');
     void book.offsetWidth;
@@ -982,19 +988,23 @@
   var BARE_OPEN = 0.43, BARE_CLOSE = 0.30;   // fractions of the turn: cover is about 105 degrees open at 0.43 opening, about 125 at 0.30 closing
   var TK_DEG = 8, TL_DEG = 90;
   function tuckAt(deg) { return [Math.max(0, 1 - deg / TK_DEG), Math.max(0, 1 - deg / TL_DEG)]; }
-  function tuckSet(bk, tk, tl) { bk.style.setProperty('--tk', tk); bk.style.setProperty('--tl', tl); }
-  function trackTuck(bk, opening, ms) {
-    var end = tuckAt(opening ? 180 : 0), kf = [], n = 48, i;
+  function tuckSet(el, tk, tl) { if (!el) { return; } el.style.setProperty('--tk', tk); el.style.setProperty('--tl', tl); }
+  function trackTuck(book, opening, ms) {
+    var bk = book.querySelector('.leaf.top'), end = tuckAt(opening ? 180 : 0), kf = [], n = 24, i;
+    if (!bk) { return; }
     if (bk.getAnimations) { bk.getAnimations().forEach(function (x) { if (x.__tuck) { x.cancel(); } }); }
     tuckSet(bk, end[0], end[1]);
     if (!bk.animate) { return; }
+    // Both values are already 0 once the cover is past 90 degrees (CROSS is the moment it gets there), so only that
+    // half of the turn is animated. Running the animation to the end would restyle every page face on every frame for nothing.
     for (i = 0; i <= n; i += 1) {
-      var t = i / n, a = leafCurve(t), v;
+      var t = opening ? CROSS * i / n : CROSS + (1 - CROSS) * i / n, a = leafCurve(t), v;
       if (!opening) { a = 1 - a; }
       v = tuckAt(a * 180);
-      kf.push({ offset: t, '--tk': v[0].toFixed(4), '--tl': v[1].toFixed(4) });
+      kf.push({ offset: i / n, '--tk': v[0].toFixed(4), '--tl': v[1].toFixed(4) });
     }
-    var an = bk.animate(kf, { duration: Math.max(1, ms), easing: 'linear', fill: 'forwards' });
+    var span = opening ? CROSS : 1 - CROSS;
+    var an = bk.animate(kf, { duration: Math.max(1, ms * span), delay: opening ? 0 : ms * CROSS, easing: 'linear', fill: opening ? 'forwards' : 'both' });
     an.__tuck = true;
     an.onfinish = function () { an.cancel(); };
   }
@@ -1019,7 +1029,7 @@
     var cur = S.spread;
     if (target === cur) { if (done) done(); return; }
     var dir = target > cur ? 1 : -1, n = Math.abs(target - cur);
-    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.add('bare'); }
+    if (cur === 0 && S.book) { S.book.classList.remove('seal'); S.book.classList.remove('snug'); S.book.classList.add('bare'); S.book.classList.add('tuck'); }
     var dur = (opts && opts.dur) || (n > 1 ? 560 : 900);
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
@@ -1049,8 +1059,10 @@
       // comes back through vertical (closing)
       if (target > 0) {
         setTimeout(function () { if (S.book === bk && S.spread > 0) { bk.classList.remove('bare'); } }, (cd + dur * BARE_OPEN) * K);
+        setTimeout(function () { if (S.book === bk && S.spread > 0) { bk.classList.remove('tuck'); } }, (cd + dur * CROSS) * K);
       } else {
         setTimeout(function () { if (S.book === bk) { bk.classList.add('bare'); } }, (cd + dur * BARE_CLOSE) * K);
+        setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('tuck'); } }, (cd + dur * CROSS) * K);
       }
       if (target === 0) {
         setTimeout(function () { if (S.book === bk && S.spread === 0) { bk.classList.add('snug'); } }, (cd + dur * 0.12) * K);

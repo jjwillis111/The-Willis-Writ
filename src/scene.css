@@ -359,10 +359,17 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
    only as the cover swings away. Nothing here depends on a timer, so no frame can show paper beyond the cover. */
 @property --tk { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --tl { syntax: '<number>'; inherits: true; initial-value: 0; }
-.book { --tk: 0; --tl: 0; }
-.leaf:not(.cover) .face.front, .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(34px * var(--tl))); }
-.leaf:not(.cover) .face.back { clip-path: inset(calc(2px + 7px * var(--tk)) 0 calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk))); }
-.book.single .leaf:not(.cover) .face.front, .book.single .base .face { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
+.leaf.top { --tk: 0; --tl: 0; }
+/* Only the first page leaf is in view while the cover swings, so only it carries the animated tuck (its own --tk and --tl,
+   so the custom property change restyles just that leaf and not the whole book). Every other face has a fixed clip:
+   fully tucked while class "tuck" is on the book (hidden under the first leaf), the plain inset afterwards. */
+.leaf.top .face.front { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(34px * var(--tl))); }
+.book.single .leaf.top .face.front { clip-path: inset(calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 7px * var(--tk)) calc(2px + 32px * var(--tl))); }
+.leaf:not(.cover):not(.top) .face.front, .base .face { clip-path: inset(2px 2px 2px 0); }
+.book.single .leaf:not(.cover):not(.top) .face.front, .book.single .base .face { clip-path: inset(2px); }
+.book.tuck .leaf:not(.cover):not(.top) .face.front, .book.tuck .base .face { clip-path: inset(9px 9px 9px 34px); }
+.book.single.tuck .leaf:not(.cover):not(.top) .face.front, .book.single.tuck .base .face { clip-path: inset(9px 9px 9px 34px); }
+.leaf:not(.cover) .face.back { clip-path: inset(2px 0 2px 2px); }
 
 /* the back board only overhangs the cover once the book is open; a closed book is just its cover.
    Boards and page-edge strips are out of the picture while the cover is in the first half of its swing (class "bare",
