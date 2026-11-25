@@ -1,28 +1,124 @@
 {
- "updated": "2026-11-24T20:42:51Z",
+ "updated": "2026-11-25T19:58:42Z",
  "items": [
   {
    "section": "privacy",
-   "title": "Top 10 Things Covered Entities Should Know About the New HIPAA Rules",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQYzctUkRkU1MzVTZxek9aTTVlcnlMcjFfN3Fiaml1dUxQcWZKa2pEUVhVNGpncGJCQjJpeU4tbjFxMEpKS1NvYXhQdmVQTWpBbTBic2FXNl8xRWVtMzNCRXdWU3JvMDNWVDFMbnJMWUdWTzVKV2JwdFd6OHJ1UEZRQlZ0YnUxeXc?oc=5",
+   "title": "HHS Announces Updates To HIPAA Privacy Rule",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPb2ZLaXc4TlR4Q0RrWkFSaE1Nang5emlxc2R2Y0p0d2JsSjdFV0QzdllZTzBfRjlhVEI0RWt6QXRTaklQSlNycmx0V1hQR0U5b1FFNDlYQ1FDXzlNRzJJQUJTUWROWGFPbFB1QkxBREdBREdIQlNIWkQ1NUxjdnd5VjVwQnowNTZ3VWhEdWstbEhyX3V2UlR4MDExdnNZSlRyaF9BMG1DZ19NUWsxazF3Tlp3Y1JhSEJKR0xoVFJfWGxVTFhSRjNmMUlWTQ?oc=5",
+   "source": "Legal 500",
+   "date": "2026-11-25T19:24:46Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "Calif. Privacy Law Snares Online Stores",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPUm4ycFY2VURHbTNHU1JlMFhzTFVjRkFSY1NUMVdLT2xVQ0haQ1hmZGpFNEIzQkpoZFNSbFphR1FFRmxuTHVWMHhoaXhCQW00SkxaT2h0eWNfQlJ6Uy1mekVmTjN0V0Q3ODRVWEhGY01yWkVCSmdpUnJ3OExvU0JhODNUdmhwN3k5bXc?oc=5",
+   "source": "Practical Ecommerce",
+   "date": "2026-11-25T16:54:25Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "How the HIPAA privacy rule update could affect providers",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQei1BcV9XRURIbDVSX2dRdWNqSVlTSTU1MGJpeGc1Mzh5LU1tdHdNMVlKU0pZblc2N2RIbFRubUdiSHk2Z3RUMHpFNWNFRExpNWhWY2F3YzVZZHhETGpwQTdsMEN6QVNtdlZUVmJHZC1Zcno2NVIydFlWbFVOTUZCU2ZUcl9ibFFW?oc=5",
+   "source": "Modern Healthcare",
+   "date": "2026-11-25T16:35:10Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "scotus",
+   "title": "Court to hear argument on whether school employees may bring suit under Title IX",
+   "url": "https://www.scotusblog.com/2026/11/court-to-hear-argument-on-whether-school-employees-may-bring-suit-under-title-ix/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-25T15:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "privacy",
+   "title": "Why do technology professionals turn to Reddit for privacy law advice? UMaine researchers investigate",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE92eVlBTFNMQUdnV0pJS3NLRVBUN1lfbmVjZFh2UXI0X0Q2TTZzQXFxNTlRUFNVMDQxenl5MHNLam1TeFhlUlZqb25rRUR4cHZnUmJ1QzJzQXlic3pG?oc=5",
+   "source": "EurekAlert!",
+   "date": "2026-11-25T14:56:17Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "scotus",
+   "title": "Justices to consider whether noncitizens who lose asylum status may still obtain green cards",
+   "url": "https://www.scotusblog.com/2026/11/justices-to-consider-whether-noncitizens-who-lose-asylum-status-may-still-obtain-green-cards/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-25T14:30:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "sec",
+   "title": "SEC Investor Advisory Committee to Host Dec. 3 Virtual Meeting",
+   "url": "https://www.sec.gov/newsroom/press-releases/2026-118-sec-investor-advisory-committee-host-dec-3-virtual-meeting",
+   "source": "SEC Press Releases",
+   "date": "2026-11-25T14:10:24Z",
+   "feed": "sec-press"
+  },
+  {
+   "section": "scotus",
+   "title": "Heading into the Thanksgiving break",
+   "url": "https://www.scotusblog.com/2026/11/heading-into-the-thanksgiving-break/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-25T14:00:00Z",
+   "feed": "scotusblog"
+  },
+  {
+   "section": "privacy",
+   "title": "Pediatric Healthcare Providers Settle Class Action Data Breach Lawsuits",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNczdaQ0twNjJac0ZPVXZMcTl5Y2tSbi12MTdJUmFzUHpGUU5UYlpvX3FlQlpXVFpjOTRxSkgtMzF2ODVjcno3UWlmbTRwQkZyejJmd29JYk1vYzNZcEkxdktUTnNieldfS1hfcnBJcEtTcmlaUjJMUTJPUl94OUFzanpVR3VpaTF2UzN5Rg?oc=5",
+   "source": "The HIPAA Journal",
+   "date": "2026-11-25T12:04:46Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "HHS Finalizes Major HIPAA Privacy Rule Changes: What Covered Entities and Business Associates Need to Know",
+   "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxOQlhVcGVRR3JLcUE4bWh3ckpsWWlDN2xYc1RzT1RLV0VyQ01xTkZDU1RCQ1JOalpmRzc0OGRUUFAza1pkQ2RDVnZZdU0tWTRNSWlJTzN3OFYtamJNYUg1em5qNFlsekZfT1JyaC1kTXZXMTZnZjNqUHJzX2xoN0d5OWNQbVI2NE5ONGJieThqNndiUHhJQy1OMExMWTZfVXQtTWR0S29jNUJhWnUyVGpyTDg3bW5ORXVtUmhRNVRhYW5ES1VMRVdmUDhwOU1iOVBtU2hxbUZHaHJMSFdOVW15TktDOVhWWDFXdm5IMjFvTUhQZ3ZsWjNfUQ?oc=5",
+   "source": "Mayer Brown",
+   "date": "2026-11-25T10:05:04Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "Japan outlines draft rules on child privacy, facial recognition",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQNW9SUWlUUHJuUXFwOFgyVFVuZ2JLWFZoMjY1eHYxTnZpd0dUek1LZkRBNUJjUWoyOUhsSlhXdzlDRkRrc1RCQ0pweDBJUFNKOVdmTHluQUNoLWZpbEFsSXRpcU5qMlgtVW9pWURJRHNaaGg1dmlkN1duSHVuN2htWlNUXzJ2QUloLUZmZXBQaHdDZjRHalZxUVl4LXBtX2UxWkZPLXJ1aHQ5Wm92RFoxQzFmRmE3MVEyNjluc1NSb0l3dk01akHSAVpBVV95cUxNT2hjdGlmaTgzSmdIVXpRa0RuUGRFZ3ByVmF3cWctTG1zYUkzN1BDUnMwSE5Wa21abEE5aWV1MG0wZ1BHcHpnQk5jVUNmd295YjNzQTd5RHU2SFE?oc=5",
+   "source": "MLex",
+   "date": "2026-11-25T09:16:38Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "US Attorney General dodges questions on Nvidia probe, Jensen Huang’s security clearance",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOenNPSzFpVjFLOW00SzRnekFkazlnT2dhNFhYdVFXSE9XMWFMeHRYLUczVDBkVm13VFJSNmlFekN1NklCV0FlNExFR3kyRjlLV3ZiY1VJWFZ6NjA2ZW5RMGQzdVNEekRUMmh6RE0zdkh4cm5rWGZxUTFKbml3T0VnRjFiMXR1eDVlaXZJMXhOMWtCU1R3TXRlNjdZczM2cG1k0gGnAUFVX3lxTE11UFl4aDdEcjdSenI3a1JjcC1lVUNDZmVxXzFydFdJRnlwOGY1VWNwc3dtV055aTVfMW5EV0F5emowdkFvdkxOWGNXcE1nZlRUSlFlb3NLT2I3UmZrbHZ2N3REQjZKemFMS2lnN2U1RTBKbnlDS3FIV0VJVnliSkxPS2tqcHRVR1VIdTc2OFo2bXdnQ1RJUktYTG5RdVU5YXVybndkYkpB?oc=5",
+   "source": "The Indian Express",
+   "date": "2026-11-25T06:36:05Z",
+   "feed": "privacy-news"
+  },
+  {
+   "section": "privacy",
+   "title": "HHS Finalizes Long-Awaited HIPAA Privacy Rule: Faster Access, Easier Care Coordination, and a Firm July 2027 Deadline",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxON3Q2ckR4MjVTb1E2MWZoektCRGdNd1lzdUczUGt5N09JSC1wX1dFV000QzFKLThCX09IMWxWdklVYzNwYnRZYVB5TS1OMWNKN0lJVTR5WnJ4czNQZ2Z0SXk5RFd6R1Z6eUtJUVlHRHNtZm1wekRpdERiMFBmZms2Tw?oc=5",
    "source": "JD Supra",
-   "date": "2026-11-24T18:22:43Z",
+   "date": "2026-11-24T21:28:02Z",
    "feed": "privacy-news"
   },
   {
-   "section": "privacy",
-   "title": "Balint introduces bill on data privacy protections, tech guidelines for schools",
-   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOVnRDSG8xdnc1UTVrd1B3RnZ6VTZOYjZWb2s4M3ZBVmo4aGxYSGxydzdDSkJIaHhWZzM4eUJGWjUyVFFKNTNTbVFwR2xYcWE0N0E5cElWa1lhcTZtY1FwanpUQVY3cXk2aTBONmpTdURYMmhxMW9WbXFfUTlVWWNScUVNcTR6RlpRMjd4aTRBSEdvNzdwWFhiODk4V0h6emkzRkRWWmJpQjI5VFotQ0FPYg?oc=5",
-   "source": "VTDigger",
-   "date": "2026-11-24T17:25:27Z",
-   "feed": "privacy-news"
+   "section": "scotus",
+   "title": "Supreme Court defers decision on whether to dismiss major gun case",
+   "url": "https://www.scotusblog.com/2026/11/supreme-court-defers-decision-on-whether-to-dismiss-major-gun-case/",
+   "source": "SCOTUSblog",
+   "date": "2026-11-24T21:19:48Z",
+   "feed": "scotusblog"
   },
   {
    "section": "privacy",
-   "title": "HHS Finalizes HIPAA Privacy Rule Changes to Expand Patient Access",
-   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPTndGMnBXSldpYXAxOGFaUUhEUVpGLS1qYk96bGUyYzY0aDFtUC1RUW54UFhQc0ZRbjBJTEhrVFdOVFJWdVJxZEpCT1UzRG9TM09ObGVNbzJKc1BMWnhiNTBpazZqZTBwNnJPdVZ5WlJHSXBBZGpJa1h6THdIdXFvZ0xidk4yUlJPRlNicjlXTjAxeHMtZC1HejFRY2xpWGIxREpGRy0zQlJ5Zm85RzlXMExRclEwVmRtN3Bjak9ZRElEbWJhcUhDSWtwSFdyR0JQV3c?oc=5",
-   "source": "HCI Innovation Group",
-   "date": "2026-11-24T15:39:14Z",
+   "title": "Vermont design code law challenged by NetChoice on First Amendment grounds",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPWmFDX0gxMW9fYlRVNkJWS01yYmFfd0s5alBmREpQd0N3aFVxeXdWQ3NyR2lfd2VNSVRtMFMxQnhkY3dfNENqd3NhQzdOTHJiZVhsRzBreG9BaHVhbl85dmU4bzVuLWYxaDlwNlBlNGJuaUtnZjF3bWU2Y3lyTFFTenVZUERxd0VIUFROb1R1RE9MRUR1TlBQT01yTXdLT2dELVlEOGdmSElsYm5ZbmdMS0xOMkZmaGVMQy1taFJRdjN3R0lKdWNxVTVvUW56THhPdnRETm5R0gFaQVVfeXFMTjVGMzByaFV2WGRfaVhrSEx4LWNWYm1TZUNMWnU4RURUVWhBT01SWXZtS1lvcWNsY0Y1YTNOaHdoNHVRVDNfbHBfNmd4SDNOVUZFN2oxS0ZrUndn?oc=5",
+   "source": "MLex",
+   "date": "2026-11-24T18:36:58Z",
    "feed": "privacy-news"
   },
   {
@@ -74,28 +170,44 @@
    "feed": "scotusblog"
   },
   {
-   "section": "privacy",
-   "title": "Zero to One Invention for AI, Superintelligence: Vatsal Soin's Filed Patents Give Regulators Trusted Data, Privacy, Human Say",
-   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBoVGJndUhIUWRmYkhYWXJXVXg0c2tpVGd6MHJqMWplVFg3cWw3dDV2ckQ0VkhKbDNfbmtxNFJHTUt3SEd0NkV6UGRfSkx0RC16c3V3SjI4YjI3Q3VwOXI2bC0tOE9tTm5CNkNKZHliaDk5SDg?oc=5",
-   "source": "Ukhrul Times",
-   "date": "2026-11-24T13:59:32Z",
-   "feed": "privacy-news"
+   "section": "congress",
+   "title": "To provide for the transfer of administrative jurisdiction over certain Federal land in the State of California, and for other purposes.",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/8454",
+   "source": "H.R.8454 (Congress.gov, sent to the President)",
+   "date": "2026-11-24T05:00:00Z",
+   "feed": "cg-president"
   },
   {
-   "section": "privacy",
-   "title": "What the new HIPAA privacy final rule means for assisted living providers",
-   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxORTk2TkZmVlJwWkVaa21rV29ZSzFfXzVBNmFaOW5jVnUtMnFwUHdNNjBLbFRYUjhKWUlYNmJOcm5KZmxkOHpFVkh2eEgxZjgyc25JNWdiajdhSFZxdnpvcDFLbjFLaU1hV1FMc2VrcGtESlpyQ2NEaks3VG5KVlhXcWtqc1RWaUdlT0ZjUE80N2JFaU1JOWhDOFVmaWVLMUZ4Vy16SVQ4X1FuT0NZNDVkM1RKb1RrcHlu?oc=5",
-   "source": "McKnight's Senior Living",
-   "date": "2026-11-24T09:37:22Z",
-   "feed": "privacy-news"
+   "section": "congress",
+   "title": "Safe Cloud Storage Act",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/7834",
+   "source": "H.R.7834 (Congress.gov, sent to the President)",
+   "date": "2026-11-24T05:00:00Z",
+   "feed": "cg-president"
   },
   {
-   "section": "privacy",
-   "title": "GoodRx Agrees to $32 Million Data Privacy Settlement",
-   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQTzFaX2g4c2tGR3RGLS1YbGlleDRHRTR6anBxUTEtZm1OYmcxSEVLcVNmLUhoV0NSZ0RiSUg0WkdBM2ViX1RpMnRIcnRQZVBtSzhLNTJkSHFIcHRRMXZOazJlLVRaNlRYV24zb1hmUlpmMUY4bEtTaEkzV3dwazZ2MlNpd3ZyTkw4MHdnYkxCNA?oc=5",
-   "source": "Wisevoter",
-   "date": "2026-11-24T09:31:13Z",
-   "feed": "privacy-news"
+   "section": "congress",
+   "title": "Gateway Partnership Act",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/5254",
+   "source": "H.R.5254 (Congress.gov, sent to the President)",
+   "date": "2026-11-24T05:00:00Z",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "Pit River Land Transfer Act of 2026",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/2400",
+   "source": "H.R.2400 (Congress.gov, sent to the President)",
+   "date": "2026-11-24T05:00:00Z",
+   "feed": "cg-president"
+  },
+  {
+   "section": "congress",
+   "title": "Shingle Springs Band of Miwok Indians Land Transfer Act of 2025",
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/2302",
+   "source": "H.R.2302 (Congress.gov, sent to the President)",
+   "date": "2026-11-24T05:00:00Z",
+   "feed": "cg-president"
   },
   {
    "section": "regs",
@@ -104,38 +216,6 @@
    "source": "Federal Register",
    "date": "2026-11-24T00:00:00Z",
    "feed": "fr-sec"
-  },
-  {
-   "section": "privacy",
-   "title": "HHS Finalizes HIPAA Privacy Rule Changes",
-   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxObXZ1TEtkLVdjRzF2RWdISE1ybDJmeFIwVGR4ZDhFMktGYkZsUGRBV3lMb1pnM0FUV2VRUUUxQUVmZzJ5eC1DSnpwcVBaUXAzV0JaX0dmOHdMNldDdTBsVW96Y3pXdFlkUTNOQ003V185ZEIyRnpjUjFoWXNQNzdrUA?oc=5",
-   "source": "Snell & Wilmer",
-   "date": "2026-11-23T22:19:12Z",
-   "feed": "privacy-news"
-  },
-  {
-   "section": "privacy",
-   "title": "Client Alert: United States Department of Health and Human Services Finalizes Major HIPAA Privacy Rule Overhaul: What Health Care Businesses Need to Do Before Mid-2027",
-   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPYUVGNFZYLV96cWx2Q3QtUnFOb1ZDbmRndHh1Q3IyQkxqSVZJcmk5dUtJV0Fwb2NwMU9vblFQSGQ3bUZJWjItZ1Q2VTF2UURGUGxTOGR0NzVzUWtCMnczYVZXWm0wR2o0ZXdrVnhYQWhpVFpVQ3k5djVJQWJBckY0S1JHQ1R3Y3RnYkE2TkhhbXozMFNmSzI1bm5qRlNXUUNsRmRPd0tkazB0ZnhONGxyWnhR0gG3AUFVX3lxTE0yMUlpMnlGaXVVaWQ4NFA5eUJmOVJiell0QTdRMzV2d2Vmb05TMlJOekd2UHJPWXVmbExleW4zMWc5OGMtV0o5TlJCd21SVDJVbkRNRXhzVjlvS1AtQ1ZqUjFDdHU0cTQ4UUFUMUQweFMxQklRNlZoYVQ5RHBrRktNQVlpb1RVTWl0R1RKOEF2X3hpeEUyVEhmODRpUExORFYwallmRjlESWliMGt2Q05WMzFfS3BWOA?oc=5",
-   "source": "The National Law Review",
-   "date": "2026-11-23T21:07:07Z",
-   "feed": "privacy-news"
-  },
-  {
-   "section": "privacy",
-   "title": "New York attorney general launches AI safety unit to enforce RAISE Act",
-   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTjBmR0ExX05zQXp5dVROODNlMWRGS1ZTd1kyZGstYkhjUGJ0VkYxLXNSTTdxR0xCWm9zZjNveFhCUmFUbGVFX081RXpYM080SGdwTldrYmptbGlCQzdMYWpPbDEwYno2SUg4WW9JZ0hXTWpzM1EwcnN3VEFQRnNzTXBCWVpaQ3c?oc=5",
-   "source": "JD Supra",
-   "date": "2026-11-23T20:50:48Z",
-   "feed": "privacy-news"
-  },
-  {
-   "section": "privacy",
-   "title": "OCR Finalizes HIPAA Privacy Rule Changes: What Providers, Plans, and Business Associates Need to Know",
-   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOb3ZrV2ZfWVVuVml1aUl3Q2ZVM0JOcmEwcldMb0xfUVVNVzNJS0pxb1R4UmE1MFVUMTROcmkyd1VCUmlBdWdrU0tQa19OanQzNWJLNkZZREZUNUZMQy1ZNzRUekswX2Y2NUt4c0NsV2k5Wl9MQm1ySVRHS2gtRGZTZWowNzNqX1JCQ3lmSHc5RHhVRENwZnpFbGdfMS1sMXF3U01WRzZ1OFdVSzTSAbABQVVfeXFMTlRTRUtMZWg4TkVHaDJuaHVuYWQ1RURNQ0RjZkJnYVFSbXBQMU1XdXkxc1FyZlZnMXlqRUktWnRvVlQ3OFBHZEx1Rlc2VEFZejBRek8xSGUxTHQydnBiSUJpcGJkdHE3LXdOdm5YLUV2NS1yMHVhN1NscWxfd3lYUG1LcjE5RkJyTnhIdVlNUGc1QVdYeFlvcW5fdkp0VndiZzBUellpR3RDdWl6VUNmcDk?oc=5",
-   "source": "The National Law Review",
-   "date": "2026-11-23T20:11:16Z",
-   "feed": "privacy-news"
   },
   {
    "section": "scotus",
@@ -170,12 +250,28 @@
    "feed": "scotusblog"
   },
   {
-   "section": "scotus",
-   "title": "The next round of Supreme Court forecasts",
-   "url": "https://www.scotusblog.com/2026/11/the-next-round-of-supreme-court-forecasts/",
-   "source": "SCOTUSblog",
-   "date": "2026-11-21T04:55:00Z",
-   "feed": "scotusblog"
+   "section": "congress",
+   "title": "Veterans’ Compensation Cost-of-Living Adjustment Act of 2026",
+   "url": "https://www.govtrack.us/congress/bills/119/hr8552?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
+   "source": "H.R. 8552 (GovTrack, signed into law)",
+   "date": "2026-11-23T05:00:00Z",
+   "feed": "govtrack-enacted"
+  },
+  {
+   "section": "congress",
+   "title": "To expand the sharing of information with respect to suspected violations of intellectual property rights in trade.",
+   "url": "https://www.govtrack.us/congress/bills/119/hr4930?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
+   "source": "H.R. 4930 (GovTrack, signed into law)",
+   "date": "2026-11-23T05:00:00Z",
+   "feed": "govtrack-enacted"
+  },
+  {
+   "section": "congress",
+   "title": "Strengthening America’s Turning Point Act",
+   "url": "https://www.govtrack.us/congress/bills/119/hr1550?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
+   "source": "H.R. 1550 (GovTrack, signed into law)",
+   "date": "2026-11-23T05:00:00Z",
+   "feed": "govtrack-enacted"
   },
   {
    "section": "sec",
@@ -202,36 +298,12 @@
    "feed": "sec-press"
   },
   {
-   "section": "scotus",
-   "title": "Criminal law is constitutional law",
-   "url": "https://www.scotusblog.com/2026/11/criminal-law-is-constitutional-law/",
-   "source": "SCOTUSblog",
-   "date": "2026-11-20T15:00:00Z",
-   "feed": "scotusblog"
-  },
-  {
-   "section": "scotus",
-   "title": "Even justices have regrets",
-   "url": "https://www.scotusblog.com/2026/11/even-justices-have-regrets/",
-   "source": "SCOTUSblog",
-   "date": "2026-11-20T14:30:00Z",
-   "feed": "scotusblog"
-  },
-  {
    "section": "sec",
    "title": "SEC Charges Indianapolis-Based Backward Hat Capital and Its Co-Founders With $560 Million Dollar Offering Fraud and Obtains Emergency Relief",
    "url": "https://www.sec.gov/newsroom/press-releases/2026-116-sec-charges-indianapolis-based-backward-hat-capital-its-co-founders-560-million-dollar-offering",
    "source": "SEC Press Releases",
    "date": "2026-11-20T14:28:28Z",
    "feed": "sec-press"
-  },
-  {
-   "section": "scotus",
-   "title": "Trump administration brings climate grant dispute to SCOTUS",
-   "url": "https://www.scotusblog.com/2026/11/trump-administration-brings-climate-grant-dispute-to-scotus/",
-   "source": "SCOTUSblog",
-   "date": "2026-11-20T14:00:00Z",
-   "feed": "scotusblog"
   },
   {
    "section": "congress",
@@ -362,30 +434,6 @@
    "feed": "calprivacy"
   },
   {
-   "section": "congress",
-   "title": "Veterans’ Compensation Cost-of-Living Adjustment Act of 2026",
-   "url": "https://www.congress.gov/bill/119th-congress/house-bill/8552",
-   "source": "H.R.8552 (Congress.gov, sent to the President)",
-   "date": "2026-11-17T05:00:00Z",
-   "feed": "cg-president"
-  },
-  {
-   "section": "congress",
-   "title": "To expand the sharing of information with respect to suspected violations of intellectual property rights in trade.",
-   "url": "https://www.congress.gov/bill/119th-congress/house-bill/4930",
-   "source": "H.R.4930 (Congress.gov, sent to the President)",
-   "date": "2026-11-17T05:00:00Z",
-   "feed": "cg-president"
-  },
-  {
-   "section": "congress",
-   "title": "Strengthening America’s Turning Point Act",
-   "url": "https://www.congress.gov/bill/119th-congress/house-bill/1550",
-   "source": "H.R.1550 (Congress.gov, sent to the President)",
-   "date": "2026-11-17T05:00:00Z",
-   "feed": "cg-president"
-  },
-  {
    "section": "privacy",
    "title": "CalPrivacy Releases Notice of Proposed Regulatory Action for Delete Request and Opt-out Platform Audits",
    "url": "https://privacy.ca.gov/2026/11/calprivacy-releases-notice-of-proposed-regulatory-action-for-delete-request-and-opt-out-platform-audits/",
@@ -506,22 +554,6 @@
    "feed": "govtrack-enacted"
   },
   {
-   "section": "congress",
-   "title": "America’s National Churchill Museum National Historic Landmark Act",
-   "url": "https://www.govtrack.us/congress/bills/119/s650?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
-   "source": "S. 650 (GovTrack, signed into law)",
-   "date": "2026-11-10T05:00:00Z",
-   "feed": "govtrack-enacted"
-  },
-  {
-   "section": "congress",
-   "title": "National Taxpayer Advocate Enhancement Act of 2025",
-   "url": "https://www.govtrack.us/congress/bills/119/hr997?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
-   "source": "H.R. 997 (GovTrack, signed into law)",
-   "date": "2026-11-10T05:00:00Z",
-   "feed": "govtrack-enacted"
-  },
-  {
    "section": "privacy",
    "title": "Pennsylvania Enacts Artificial Intelligence Deceptive Advertising Act",
    "url": "https://www.insideprivacy.com/artificial-intelligence/pennsylvania-enacts-artificial-intelligence-deceptive-advertising-act/",
@@ -592,14 +624,6 @@
    "source": "Inside Privacy (Covington)",
    "date": "2026-11-04T01:31:37Z",
    "feed": "insideprivacy"
-  },
-  {
-   "section": "congress",
-   "title": "Accelerating Access to Critical Therapies for ALS Reauthorization Act of 2026",
-   "url": "https://www.govtrack.us/congress/bills/119/hr8205?utm_campaign=govtrack_feed&utm_source=govtrack/feed&utm_medium=rss",
-   "source": "H.R. 8205 (GovTrack, signed into law)",
-   "date": "2026-11-03T05:00:00Z",
-   "feed": "govtrack-enacted"
   },
   {
    "section": "privacy",
@@ -712,14 +736,6 @@
    "source": "Federal Register",
    "date": "2026-10-20T00:00:00Z",
    "feed": "fr-sec"
-  },
-  {
-   "section": "sec",
-   "title": "SEC Announces Roundtable on Machine-Understandable Data in the Age of Super Intelligence",
-   "url": "https://www.sec.gov/newsroom/press-releases/2026-106-sec-announces-roundtable-machine-understandable-data-age-super-intelligence",
-   "source": "SEC Press Releases",
-   "date": "2026-10-19T17:19:43Z",
-   "feed": "sec-press"
   },
   {
    "section": "regs",
@@ -1007,8 +1023,8 @@
   "calprivacy": "ok (10)",
   "insideprivacy": "ok (10)",
   "dataprotection": "ok (10)",
-  "privacy-news": "ok (37)",
-  "cg-president": "ok (3)",
+  "privacy-news": "ok (68)",
+  "cg-president": "ok (5)",
   "govtrack-enacted": "ok (20)",
   "govtrack-bills": "error: HTTP 404 (kept 0)",
   "scotusblog": "ok (25)"
