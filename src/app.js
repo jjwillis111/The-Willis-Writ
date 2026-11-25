@@ -21,11 +21,11 @@
      ================================================================== */
   var PLATES = {
     l: { img: 'library-v2.jpg', w: 1910, h: 823, rect: {
-      about:      [610, 275, 154, 173],
-      experience: [776, 275, 152, 173],
-      writing:    [941, 275, 148, 173],
-      research:   [1100, 275, 157, 173],
-      contact:    [1271, 275, 157, 173]
+      about:      [610, 275, 154, 175],
+      experience: [776, 275, 152, 175],
+      writing:    [941, 275, 148, 175],
+      research:   [1100, 275, 157, 175],
+      contact:    [1271, 275, 157, 175]
     }, globe: [1262, 98, 138, 160], bust: [645, 100, 108, 156], desk: [815, 738, 286, 58] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
@@ -106,9 +106,9 @@
         if (S.open) { return; }
         if (ev && ev.type === 'focus' && !b.matches(':focus-visible')) { return; }
         if (ev && ev.type === 'mouseenter' && canHover && !canHover.matches) { return; }
-        hs.classList.add('hov');
+        hs.classList.add('hov'); slot.classList.add('hov');
       };
-      var off = function () { hs.classList.remove('hov'); };
+      var off = function () { hs.classList.remove('hov'); slot.classList.remove('hov'); };
       b.addEventListener('click', function () { openVol(v.id, b); });
       b.addEventListener('mouseenter', on); b.addEventListener('focus', on);
       b.addEventListener('mouseleave', off); b.addEventListener('blur', off);

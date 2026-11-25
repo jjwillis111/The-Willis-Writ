@@ -64,10 +64,11 @@ i { font-style: normal; display: block; }
 
 .slot { position: absolute; opacity: 0; transition: opacity 180ms ease; pointer-events: none;
   background: linear-gradient(90deg, #0d0705, #1b100a 45%, #0c0705); box-shadow: inset 0 0 14px 4px rgba(0, 0, 0, .9); }
-.slot.on { opacity: 1; }
+.slot.on, .slot.hov { opacity: 1; }
 .hs {
   position: absolute; pointer-events: none; border-radius: 2px;
   transform-origin: 50% 100%;
+  will-change: transform, filter;
   transition: transform 280ms cubic-bezier(.2, .8, .2, 1), filter 280ms ease;
 }
 .hs.hov {
@@ -931,11 +932,11 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
      ================================================================== */
   var PLATES = {
     l: { img: 'library-v2.jpg', w: 1910, h: 823, rect: {
-      about:      [610, 275, 154, 173],
-      experience: [776, 275, 152, 173],
-      writing:    [941, 275, 148, 173],
-      research:   [1100, 275, 157, 173],
-      contact:    [1271, 275, 157, 173]
+      about:      [610, 275, 154, 175],
+      experience: [776, 275, 152, 175],
+      writing:    [941, 275, 148, 175],
+      research:   [1100, 275, 157, 175],
+      contact:    [1271, 275, 157, 175]
     }, globe: [1262, 98, 138, 160], bust: [645, 100, 108, 156], desk: [815, 738, 286, 58] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
@@ -1016,9 +1017,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         if (S.open) { return; }
         if (ev && ev.type === 'focus' && !b.matches(':focus-visible')) { return; }
         if (ev && ev.type === 'mouseenter' && canHover && !canHover.matches) { return; }
-        hs.classList.add('hov');
+        hs.classList.add('hov'); slot.classList.add('hov');
       };
-      var off = function () { hs.classList.remove('hov'); };
+      var off = function () { hs.classList.remove('hov'); slot.classList.remove('hov'); };
       b.addEventListener('click', function () { openVol(v.id, b); });
       b.addEventListener('mouseenter', on); b.addEventListener('focus', on);
       b.addEventListener('mouseleave', off); b.addEventListener('blur', off);
