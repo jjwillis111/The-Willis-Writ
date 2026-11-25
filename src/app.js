@@ -20,13 +20,13 @@
      Settings you may want to edit
      ================================================================== */
   var PLATES = {
-    l: { img: 'library.jpg', w: 1672, h: 941, rect: {
-      about:      [474, 313, 173, 209],
-      experience: [671, 313, 173, 209],
-      writing:    [866, 313, 169, 209],
-      research:   [1055, 313, 174, 209],
-      contact:    [1250, 313, 172, 209]
-    }, globe: [1234, 105, 156, 184], bust: [548, 112, 126, 178], desk: [711, 850, 302, 70] },
+    l: { img: 'library.jpg', w: 1910, h: 823, rect: {
+      about:      [617, 277, 145, 170],
+      experience: [781, 277, 145, 170],
+      writing:    [945, 277, 145, 170],
+      research:   [1109, 277, 145, 170],
+      contact:    [1273, 277, 145, 170]
+    }, globe: [1262, 98, 138, 160], bust: [645, 100, 108, 156], desk: [815, 738, 286, 58] },
     p: { img: 'library-m.jpg', w: 941, h: 1672, rect: {
       about:      [105, 539, 146, 241],
       experience: [265, 539, 144, 241],
@@ -35,7 +35,7 @@
       contact:    [746, 539, 146, 241]
     }, globe: [718, 320, 162, 190], bust: [250, 332, 126, 178], desk: [281, 1348, 385, 80] }
   };
-  var IW = 1672, IH = 941;
+  var IW = 1910, IH = 823;
   // Colors of the board edges around the pages, matched to each cover.
   var THEMES = {
     about: '#16301a', experience: '#5e1a0e', writing: '#17243a',
@@ -193,9 +193,9 @@
       var left = Math.max(ox + 116 * s, W * 0.04);
       hero.classList.remove('compact');
       hero.style.left = Math.round(left) + 'px'; hero.style.right = '';
-      hero.style.top = Math.round(Math.max(oy + 538 * s, 0)) + 'px';
+      hero.style.top = Math.round(Math.max(oy + 490 * s, 0)) + 'px';
       fitHero(Math.max(20, 52 * s), (ox + 680 * s) - left - 16);
-      org = [840 * s, 860 * s];
+      org = [955 * s, 760 * s];
     } else {
       s = W / 860;
       if (IH * s > H) s = H / IH;
