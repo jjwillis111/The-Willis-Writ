@@ -117,7 +117,7 @@
       v.slot = slot; v.hs = hs; v.hot = b;
     });
 
-    var rl = el('a', 'nv nv-resume', 'R&eacute;sum&eacute;');
+    var rl = el('a', 'nv nv-resume', 'Resume');
     rl.href = 'resume.pdf'; rl.target = '_blank'; rl.rel = 'noopener';
     nav.appendChild(rl);
 
@@ -921,6 +921,11 @@
       if ((ax > 44 || flick) && ax > ay * 1.2) { step(dx < 0 ? 1 : -1); }
     });
     book.addEventListener('pointercancel', function () { sid = null; });
+    book.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a, button, input, textarea, select, label')) { return; }
+      var r = book.getBoundingClientRect();
+      step(e.clientX >= r.left + r.width / 2 ? 1 : -1);
+    });
 
     wrap.appendChild(book); mount.appendChild(wrap);
 

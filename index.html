@@ -713,9 +713,9 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       <p class="sub">Government, in-house, and clinical work</p>
     </article>
     <article class="pg">
-      <h3>R&eacute;sum&eacute;</h3>
-      <p>My full r&eacute;sum&eacute; is available as a PDF.</p>
-      <p><a href="resume.pdf" target="_blank" rel="noopener">Download r&eacute;sum&eacute; (PDF)</a></p>
+      <h3>Resume</h3>
+      <p>My full resume is available as a PDF.</p>
+      <p><a href="resume.pdf" target="_blank" rel="noopener">Download resume (PDF)</a></p>
       <p>The pages that follow give a closer look at each position, most recent first.</p>
     </article>
     <article class="pg org">
@@ -900,7 +900,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
         <li><span>Email</span> <a href="mailto:jjwillis@bu.edu">jjwillis@bu.edu</a></li>
         <li><span>LinkedIn</span> <a href="https://www.linkedin.com/in/jjwillis111" target="_blank" rel="noopener">linkedin.com/in/jjwillis111</a></li>
         <li><span>Based</span> Washington, DC</li>
-        <li><span>R&eacute;sum&eacute;</span> <a href="resume.pdf" target="_blank" rel="noopener">Download (PDF)</a></li>
+        <li><span>Resume</span> <a href="resume.pdf" target="_blank" rel="noopener">Download (PDF)</a></li>
       </ol>
     </article>
   </section>
@@ -1027,7 +1027,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       v.slot = slot; v.hs = hs; v.hot = b;
     });
 
-    var rl = el('a', 'nv nv-resume', 'R&eacute;sum&eacute;');
+    var rl = el('a', 'nv nv-resume', 'Resume');
     rl.href = 'resume.pdf'; rl.target = '_blank'; rl.rel = 'noopener';
     nav.appendChild(rl);
 
@@ -1831,6 +1831,11 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
       if ((ax > 44 || flick) && ax > ay * 1.2) { step(dx < 0 ? 1 : -1); }
     });
     book.addEventListener('pointercancel', function () { sid = null; });
+    book.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a, button, input, textarea, select, label')) { return; }
+      var r = book.getBoundingClientRect();
+      step(e.clientX >= r.left + r.width / 2 ? 1 : -1);
+    });
 
     wrap.appendChild(book); mount.appendChild(wrap);
 

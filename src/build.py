@@ -53,7 +53,7 @@ site_pg = '''<article class="pg">
       <h3>About this site</h3>
       <p>This site is built as a law library, and each book on the shelf is one part of my portfolio.</p>
       <ol>
-        <li><strong>Experience</strong> opens with my r&eacute;sum&eacute; and then walks through each position.</li>
+        <li><strong>Experience</strong> opens with my resume and then walks through each position.</li>
         <li><strong>Writing</strong> holds my writing samples and current scholarship.</li>
         <li><strong>Research</strong> describes my empirical and policy research.</li>
         <li><strong>Contact</strong> is the best way to reach me.</li>
@@ -68,15 +68,15 @@ assert 'About this site' in about
 
 # ---- Experience: resume on the first page after the title page
 resume_pg = '''<article class="pg">
-      <h3>R&eacute;sum&eacute;</h3>
-      <p>My full r&eacute;sum&eacute; is available as a PDF.</p>
-      <p><a href="resume.pdf" target="_blank" rel="noopener">Download r&eacute;sum&eacute; (PDF)</a></p>
+      <h3>Resume</h3>
+      <p>My full resume is available as a PDF.</p>
+      <p><a href="resume.pdf" target="_blank" rel="noopener">Download resume (PDF)</a></p>
       <p>The pages that follow give a closer look at each position.</p>
     </article>
     '''
-exp = re.sub(r'\s*<article class="pg">\s*<h3>R&eacute;sum&eacute;</h3>.*?</article>', '', exp, flags=re.S)
+exp = re.sub(r'\s*<article class="pg">\s*<h3>Resume</h3>.*?</article>', '', exp, flags=re.S)
 exp = exp.replace('<article class="pg">\n      <h3>Experience</h3>', resume_pg + '<article class="pg">\n      <h3>Experience</h3>', 1)
-assert exp.count('R&eacute;sum&eacute;</h3>') == 1 and exp.index('R&eacute;sum&eacute;</h3>') < exp.index('<h3>Experience</h3>')
+assert exp.count('Resume</h3>') == 1 and exp.index('Resume</h3>') < exp.index('<h3>Experience</h3>')
 
 # ---- Writing: samples
 wri = re.sub(r'<article class="pg">\s*<h3>Writing samples</h3>.*?</article>', '''<article class="pg">
