@@ -188,7 +188,7 @@
     applyPlate(portrait ? 'p' : 'l');
     var s, ox, oy, org;
     if (!portrait) {
-      s = Math.max(W / IW, H / IH);
+      s = Math.min(W / IW, H / IH);
       ox = (W - IW * s) / 2; oy = (H - IH * s) / 2;
       var left = Math.max(ox + 116 * s, W * 0.04);
       hero.classList.remove('compact');
