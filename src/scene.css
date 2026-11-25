@@ -352,6 +352,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 /* closed book: only the cover is drawn, so no page edge can show around its rounded corners */
 .book.seal .base, .book.seal .leaf:not(.cover) { visibility: hidden; }
 .book { touch-action: pan-y; }
+/* leaves nobody can see right now (see showLeaves in app.js) */
+.leaf.far, .base.far { visibility: hidden; }
 
 /* Page block sits just inside the cover boards, like a real book.
    --tk (top, right, bottom) and --tl (spine side) tuck the page block inside the cover's silhouette. Script sets them

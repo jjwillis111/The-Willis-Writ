@@ -928,7 +928,8 @@
     S.dual = d; S.leaves = leaves; S.book = book; S.wrap = wrap; S.hotL = hl; S.hotR = hr;
     S.total = d ? n / 2 : n;
     S.spread = startSpread || 0;
-    S.vol = v;
+    S.vol = v; S.base = base;
+    showLeaves(S.spread - 3, S.spread + 2);
 
     book.classList.add('noanim');
     leaves.forEach(function (l, i) {
@@ -1009,6 +1010,15 @@
     an.onfinish = function () { an.cancel(); };
   }
 
+  /* At any moment only the leaves around the current spread can be seen (the one turning and the pages it uncovers).
+     Every other leaf is taken out of the render (class "far"), which cuts the overdraw a long book would otherwise
+     cost on every frame of a turn. lo and hi are leaf indices; the cover (0) is never touched here. */
+  function showLeaves(lo, hi) {
+    if (!S.leaves) { return; }
+    S.leaves.forEach(function (l, i) { if (i) { l.classList.toggle('far', i < lo || i > hi); } });
+    if (S.base) { S.base.classList.toggle('far', hi < S.leaves.length - 1); }
+  }
+
   function flipEl(j, fwd, dur, delay) {
     var l = S.leaves[j], N = S.leaves.length;
     setTimeout(function () {
@@ -1034,6 +1044,7 @@
     var stagger = n > 1 ? 130 : 0;
     var list = [], s;
     for (s = cur; s !== target; s += dir) list.push(dir > 0 ? s : s - 1);
+    showLeaves(Math.min(cur, target) - 3, Math.max(cur, target) + 2);
     list.forEach(function (j, i) { flipEl(j, dir > 0, dur, i * stagger); });
     S.spread = target;
     S.turning = true;
@@ -1073,6 +1084,7 @@
     var sealBook = S.book;
     later(total + 60, function () {
       S.turning = false;
+      if (S.book === sealBook && sealBook) { showLeaves(S.spread - 3, S.spread + 2); }
       if (target === 0 && S.book === sealBook && sealBook) { sealBook.classList.add('seal'); }
       if (done) done();
       if (S.queued && S.open && !S.busy) { var q = S.queued; S.queued = null; step(q); }
