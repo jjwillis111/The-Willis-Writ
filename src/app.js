@@ -214,10 +214,6 @@
     world.style.left = Math.round(ox) + 'px'; world.style.top = Math.round(oy) + 'px';
     world.style.width = Math.round(IW * s) + 'px'; world.style.height = Math.round(IH * s) + 'px';
     world.style.transformOrigin = Math.round(org[0]) + 'px ' + Math.round(org[1]) + 'px';
-    /* Landscape: pin the header to the same line of the plate on every screen
-       (middle of the top shelf, image y 175). Portrait keeps the CSS position. */
-    if (!portrait) top.style.top = Math.round(oy + 175 * s - top.offsetHeight / 2) + 'px';
-    else top.style.top = '';
     if (S.desk) S.desk.style.fontSize = (PLATES[S.plateKey].desk[2] * s / 15.5) + 'px';
     VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s / 28) + 'px'; });
 
