@@ -1608,9 +1608,8 @@
      Events
      ================================================================== */
   ui.close.addEventListener('click', closeVol);
-  var tapAway = window.matchMedia ? window.matchMedia('(pointer: coarse), (max-width: 759px)') : null;
   stage.addEventListener('click', function (e) {
-    if (!tapAway || !tapAway.matches || !S.open) { return; }
+    if (!S.open) { return; }
     var t = e.target;
     if (t === stage || t === mount || t.id === 'dim' || t.id === 'uitop' || t.id === 'uibot') { closeVol(); }
   });
