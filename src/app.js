@@ -851,6 +851,19 @@
       $$('.orgmark', model).forEach(function (f) { var im = f.querySelector('img'); if (!im || IMGOK[im.getAttribute('src')] === false) f.parentNode.removeChild(f); });
       $$('img', model).forEach(function (im) { im.setAttribute('data-src', im.getAttribute('src') || ''); im.removeAttribute('src'); });
       if (model.className.indexOf('title') >= 0) { out.push(model); return; }
+      // Upright spread on a phone: each position gets the whole spread, as on a desktop. The left page carries the logo, the
+      // organization, the role and the dates; the right page carries the description. If either would overflow, flow normally.
+      if (dual && tight && model.classList.contains('org')) {
+        var kids = [].slice.call(model.children), hd = [], bd = [];
+        kids.forEach(function (c) { (c.classList.contains('orgmark') || c.classList.contains('orgline') || c.classList.contains('roleline') ? hd : bd).push(c); });
+        if (bd.length) {
+          kids.forEach(function (c) { model.removeChild(c); });
+          var pl = fresh(model, false); hd.forEach(function (c) { pl.appendChild(c); }); var okL = fits(pl);
+          var pr = fresh(model, true); bd.forEach(function (c) { pr.appendChild(c); }); var okR = fits(pr);
+          if (okL && okR) { if (out.length % 2) out.push(null); out.push(pl, pr); return; }
+          kids.forEach(function (c) { model.appendChild(c); });
+        }
+      }
       var queue = [].slice.call(model.children), cur = fresh(model, false), node, tail, held, guard = 0;
       queue.forEach(function (c) { model.removeChild(c); });
       while (queue.length && guard++ < 400) {
