@@ -314,9 +314,9 @@ i { font-style: normal; display: block; }
 .book.tight .pg .contact span { font-size: 1em; letter-spacing: .12em; min-width: 5em; }
 .book.tight .pg.title .sub2 { font-size: 1em; letter-spacing: .14em; }
 .book.tight .cf h2 { letter-spacing: .16em; text-indent: .16em; font-size: 1.6em; }
-.book.tight .pg .roleline { flex-direction: column; align-items: flex-start; gap: .2em 0; }
-.book.tight .pg .roleline .dates { text-align: left; }
-.book.tight .pg .roleline .dates.wrap { max-width: none; }
+.book.tight .pg .roleline, .book.stack .pg .roleline { flex-direction: column; align-items: flex-start; gap: .2em 0; }
+.book.tight .pg .roleline .dates, .book.stack .pg .roleline .dates { text-align: left; }
+.book.tight .pg .roleline .dates.wrap, .book.stack .pg .roleline .dates.wrap { max-width: none; }
 .pg h3 { margin: 0; font: 700 1.02em/1.2 'Cormorant Garamond', Georgia, serif; letter-spacing: .26em; text-transform: uppercase; color: #4a1d24; }
 .pg h3::after { content: ""; display: block; width: 3em; height: 1px; margin: .7em 0 1em; background: linear-gradient(90deg, #9c7c3e, rgba(156, 124, 62, 0)); }
 .pg h4 { margin: 1.2em 0 .08em; font: 600 1.22em/1.2 'Cormorant Garamond', Georgia, serif; color: #241a10; }

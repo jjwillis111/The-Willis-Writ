@@ -778,7 +778,7 @@
   }
 
   function paginate(src, dual, P, Hh, fs) {
-    var sh = el('div', 'book ' + (dual ? 'dual' : 'single') + (tight ? ' tight' : ''));
+    var sh = el('div', 'book ' + (dual ? 'dual' : 'single') + (tight ? ' tight' : '') + (rotBook ? ' stack' : ''));
     sh.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none;width:' + (dual ? 2 * P : P) + 'px;height:' + Hh + 'px;font-size:' + fs + 'px';
     var base = el('div', 'base'), face = el('div', 'face sheet r');
     base.appendChild(face); sh.appendChild(base); mount.appendChild(sh);
@@ -851,9 +851,9 @@
       $$('.orgmark', model).forEach(function (f) { var im = f.querySelector('img'); if (!im || IMGOK[im.getAttribute('src')] === false) f.parentNode.removeChild(f); });
       $$('img', model).forEach(function (im) { im.setAttribute('data-src', im.getAttribute('src') || ''); im.removeAttribute('src'); });
       if (model.className.indexOf('title') >= 0) { out.push(model); return; }
-      // Upright spread on a phone: each position gets the whole spread, as on a desktop. The left page carries the logo, the
+      // Spread on a phone (upright or sideways): each position gets the whole spread, as on a desktop. The left page carries the logo, the
       // organization, the role and the dates; the right page carries the description. If either would overflow, flow normally.
-      if (dual && tight && model.classList.contains('org')) {
+      if (dual && (tight || rotBook) && model.classList.contains('org')) {
         var kids = [].slice.call(model.children), hd = [], bd = [];
         kids.forEach(function (c) { (c.classList.contains('orgmark') || c.classList.contains('orgline') || c.classList.contains('roleline') ? hd : bd).push(c); });
         if (bd.length) {
@@ -925,7 +925,7 @@
 
     var wrap = el('div', 'bookwrap' + (rotBook ? ' rot' : ''));
     wrap.style.top = Math.round(H * 0.5 - 4) + 'px';
-    var book = el('div', 'book ' + (d ? 'dual' : 'single') + (tight ? ' tight' : ''));
+    var book = el('div', 'book ' + (d ? 'dual' : 'single') + (tight ? ' tight' : '') + (rotBook ? ' stack' : ''));
     book.style.width = (d ? 2 * P : P) + 'px';
     book.style.height = Hh + 'px';
     book.style.left = (d ? -P : -P / 2) + 'px';
@@ -1700,17 +1700,23 @@
   function setMode(m, done) {
     if (!S.open || S.busy || S.turning || !S.vol || S.vol.id === 'news' || S.vol.id === 'jefferson' || W >= 760 || rmode === m) { if (done) done(); return; }
     S.busy = true; S.queued = null;
+    // turning between the upright and the sideways book swings through half the quarter turn each way, fading across
+    var a0 = rotBook ? 90 : 0, a1 = (m === 'turn' && H > W) ? 90 : 0, mid = (a0 + a1) / 2, turnAnim = a0 !== a1;
     function rebuild() {
       rmode = m; syncModes();
       layout(); S.dirty = false;
       rebuildOpen();
       S.busy = false;
-      if (S.wrap && S.wrap.animate) { S.wrap.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160 * K, easing: 'ease-out' }); }
+      if (S.wrap && S.wrap.animate) {
+        S.wrap.animate(turnAnim ? [{ opacity: 0, transform: 'rotate(' + mid + 'deg)' }, { opacity: 1, transform: 'rotate(' + a1 + 'deg)' }] : [{ opacity: 0 }, { opacity: 1 }],
+          { duration: (turnAnim ? 240 : 160) * K, easing: 'ease-out' });
+      }
       if (done) done();
     }
     var old = S.wrap;
     if (old && old.animate) {
-      var a = old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120 * K, easing: 'ease-in', fill: 'forwards' });
+      var a = old.animate(turnAnim ? [{ opacity: 1, transform: 'rotate(' + a0 + 'deg)' }, { opacity: 0, transform: 'rotate(' + mid + 'deg)' }] : [{ opacity: 1 }, { opacity: 0 }],
+        { duration: (turnAnim ? 240 : 120) * K, easing: 'ease-in', fill: 'forwards' });
       a.onfinish = rebuild;
     } else { rebuild(); }
   }
