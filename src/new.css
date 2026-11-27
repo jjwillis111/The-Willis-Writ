@@ -210,6 +210,9 @@ i { font-style: normal; display: block; }
   transition: transform 900ms cubic-bezier(.2, .75, .25, 1), opacity 500ms ease;
 }
 .bookwrap.landed { transform: none; opacity: 1; }
+/* the fully open book on an upright phone lies on its side so both pages get the long edge of the screen */
+.bookwrap.landed.rot { transform: rotate(90deg); }
+.bookwrap.rot .book { touch-action: pan-x; }
 
 .book { position: absolute; pointer-events: auto; isolation: isolate; }
 .book.dual { transform: translateX(-25%); transition: transform 1000ms cubic-bezier(.5, .05, .2, 1); }
@@ -299,6 +302,15 @@ i { font-style: normal; display: block; }
 }
 .book.dual .face.r .pg { padding-left: 2.7em; }
 .book.dual .face.l .pg { padding-right: 2.7em; }
+/* the upright spread on a phone: pages are narrow, so margins and the gutter tighten */
+.book.tight .pg { padding: 1.5em 1.1em 2.3em; }
+.book.tight .face.r .pg { padding-left: 1.8em; }
+.book.tight .face.l .pg { padding-right: 1.8em; }
+.book.tight .folio { font-size: 11px; }
+.book.tight .cf h2 { letter-spacing: .16em; text-indent: .16em; font-size: 1.6em; }
+.book.tight .pg .roleline { flex-direction: column; align-items: flex-start; gap: .2em 0; }
+.book.tight .pg .roleline .dates { text-align: left; }
+.book.tight .pg .roleline .dates.wrap { max-width: none; }
 .pg h3 { margin: 0; font: 700 1.02em/1.2 'Cormorant Garamond', Georgia, serif; letter-spacing: .26em; text-transform: uppercase; color: #4a1d24; }
 .pg h3::after { content: ""; display: block; width: 3em; height: 1px; margin: .7em 0 1em; background: linear-gradient(90deg, #9c7c3e, rgba(156, 124, 62, 0)); }
 .pg h4 { margin: 1.2em 0 .08em; font: 600 1.22em/1.2 'Cormorant Garamond', Georgia, serif; color: #241a10; }
@@ -355,6 +367,8 @@ i { font-style: normal; display: block; }
 .cbtn:hover { background: rgba(50, 32, 16, .85); border-color: rgba(228, 205, 146, .8); }
 .cbtn:focus-visible { outline: 2px solid #e4cd92; outline-offset: 2px; }
 .cbtn svg { width: 13px; height: 13px; }
+.cbtn[hidden] { display: none; }
+.vm { white-space: nowrap; }
 .nbtn { width: 42px; height: 42px; padding: 0; justify-content: center; font-size: 20px; letter-spacing: 0; }
 .nbtn[disabled] { opacity: .28; cursor: default; }
 #plabel { min-width: 9em; text-align: center; font: normal 400 18px 'JSL Ancient', 'EB Garamond', Georgia, serif; color: #d8c9a6; text-shadow: 0 1px 6px #000; }

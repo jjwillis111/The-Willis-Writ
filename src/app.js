@@ -74,7 +74,9 @@
   var viewport = $('#viewport'), room = $('#room'), world = $('#world'), hero = $('#hero'), top = $('#top'), nav = $('#nav'), fly = $('#fly');
   var stage = $('#stage'), mount = $('#mount');
   var ui = { top: $('#uitop'), bot: $('#uibot'), title: $('#vtitle'), label: $('#plabel'),
-             close: $('#btn-close'), prev: $('#btn-prev'), next: $('#btn-next') };
+             close: $('#btn-close'), prev: $('#btn-prev'), next: $('#btn-next'), modes: $('#viewmodes') };
+  // Smallest text allowed on a phone: the size of the Jefferson plaque caption.
+  var MINTXT = 11;
 
   /* ==================================================================
      Scene: nav buttons and clickable books
@@ -172,6 +174,11 @@
      Layout
      ================================================================== */
   var W = 0, H = 0, dual = true, portrait = false;
+  // rmode: how the reader views a book on a phone: 'one' page at a time, 'open' (the two-page spread upright, as on a desktop),
+  // or 'turn' (the spread lying on its side so both pages get the long edge of the screen). wide: a spread is in force (phones
+  // only; desktop and landscape tablets always show the spread). rotBook: the turned layout is in force. tight: the upright
+  // spread on a phone, with smaller type and tighter page margins.
+  var rmode = 'one', wide = false, rotBook = false, tight = false;
   var sc = { s: 1, ox: 0, oy: 0 };
 
   function fitHero(fs, availW) {
@@ -182,7 +189,12 @@
 
   function layout() {
     W = window.innerWidth; H = window.innerHeight;
-    dual = W >= 760;
+    var natDual = W >= 760;
+    wide = !natDual && rmode !== 'one';
+    rotBook = wide && rmode === 'turn' && H > W;
+    tight = wide && rmode === 'open' && H > W;
+    dual = natDual || wide;
+    if (ui.modes) { ui.modes.hidden = natDual; }
     portrait = (W / H < 1.15) || W < 700;
     viewport.classList.toggle('pt', portrait);
     applyPlate(portrait ? 'p' : 'l');
@@ -214,22 +226,42 @@
     world.style.left = Math.round(ox) + 'px'; world.style.top = Math.round(oy) + 'px';
     world.style.width = Math.round(IW * s) + 'px'; world.style.height = Math.round(IH * s) + 'px';
     world.style.transformOrigin = Math.round(org[0]) + 'px ' + Math.round(org[1]) + 'px';
-    if (S.desk) S.desk.style.fontSize = (PLATES[S.plateKey].desk[2] * s / 15.5) + 'px';
+    // The plaque's second line is 0.8em, so the base size never drops below MINTXT / 0.8 on a phone.
+    if (S.desk) S.desk.style.fontSize = Math.max(PLATES[S.plateKey].desk[2] * s / 15.5, portrait ? MINTXT / 0.8 : 0) + 'px';
     // The label on a shelf cover is the flying cover's label at its shelf size (font F at book width P, scaled by shelf width / P),
-    // so the cover and the real one on the shelf match exactly when the flight ends.
-    var bd = bookDims(), lf = clamp(bd.P / 28, 13.5, 19);
-    VOLS.forEach(function (v) { if (v.hs) v.hs.style.fontSize = (v.rect[2] * s * lf / bd.P) + 'px'; });
+    // so the cover and the real one on the shelf match exactly when the flight ends. The shelf covers are small on a phone,
+    // so the label and icon are scaled up together (--lb) until the label is at least MINTXT; the flying cover does the same
+    // (see counter), so the hand-off is seamless.
+    var bd = bookDims(true), lf = clamp(bd.P / 28, 13.5, 19);
+    VOLS.forEach(function (v) {
+      if (!v.hs) return;
+      var f = v.rect[2] * s * lf / bd.P;
+      v.hs.style.fontSize = f + 'px';
+      v.hs.style.setProperty('--lb', Math.max(1, MINTXT / (3 * f)).toFixed(3));
+    });
 
     if (S.open && !S.busy) rebuildOpen();
     else if (S.open) S.dirty = true;
   }
 
-  function bookDims() {
+  // shelf: the size the closed book has on its way to and from the shelf, which is never the reader's wide layout
+  function bookDims(shelf) {
     var P, Hh;
-    if (dual) {
-      P = Math.min(W * 0.455, 560);
-      Hh = Math.min(H * 0.76, P * 1.38);
-      P = Math.min(P, Hh * 0.8);
+    if (dual && !(shelf && wide)) {
+      if (rotBook) {
+        // the open book lies on its side: its length runs down the screen between the two button bars
+        P = Math.min((H - 170) / 2, 400);
+        Hh = Math.min(W - 12, P * 1.4);
+        P = Math.min(P, Hh * 0.95);
+      } else if (tight) {
+        // the upright spread on a phone: two narrow, tall pages side by side
+        P = Math.floor((W - 14) / 2);
+        Hh = Math.min(H * 0.76, P * 2.6);
+      } else {
+        P = Math.min(W * 0.455, 560);
+        Hh = Math.min(H * 0.76, P * 1.38);
+        P = Math.min(P, Hh * 0.8);
+      }
     } else {
       P = Math.min(W - 30, 520);
       Hh = Math.min(H * 0.76, P * 1.4);
@@ -262,9 +294,15 @@
   }
   // The flying cover is stretched from the shape of the open book to the shape of its shelf slot. Its label gets the inverse
   // vertical stretch (about its own center), so the text and icon keep their proportions all the way and match the shelf at the end.
+  // It also carries the same boost as the shelf cover (--lb in layout): when the cover is small enough that its label would
+  // fall under MINTXT, label and icon are scaled up together by exactly that much, and the boost fades to 1 as the cover grows.
   function counter(t) {
     var m = /scale\(([-\d.e]+),\s*([-\d.e]+)\)/.exec(t);
-    return m ? 'scale(1,' + (parseFloat(m[1]) / parseFloat(m[2])) + ')' : '';
+    if (!m) return '';
+    var sx = parseFloat(m[1]), sy = parseFloat(m[2]);
+    var F = clamp(bookDims().P / 28, 13.5, 19);
+    var b = Math.max(1, MINTXT / (3 * F * sx));
+    return 'scale(' + b + ',' + (b * sx / sy) + ')';
   }
   function tf(r, d, rot, mul) {
     return 'translate(' + Math.round(r.cx - d.P / 2) + 'px,' + Math.round(r.cy - d.Hh / 2) + 'px) rotate(' + rot + 'deg) scale(' + ((r.w / d.P) * mul) + ',' + ((r.h / d.Hh) * mul) + ')';
@@ -724,8 +762,9 @@
     BLOBS.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) {} });
     BLOBS = []; ARTJOBS = []; ARTLIVE = {}; ARTURL = {};
   }
+  function bookFs(P) { return tight ? MINTXT : clamp(P / 28, 13.5, 19); }
   function prepBook(v) {
-    var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh, fs = clamp(P / 28, 13.5, 19);
+    var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh, fs = bookFs(P);
     resetArt();
     var pages = paginate(v.pages, d, P, Hh, fs);
     PRE = { id: v.id, d: d, P: P, Hh: Hh, pages: pages, ready: ARTJOBS.length ? Promise.all(ARTJOBS) : null };
@@ -739,7 +778,7 @@
   }
 
   function paginate(src, dual, P, Hh, fs) {
-    var sh = el('div', 'book ' + (dual ? 'dual' : 'single'));
+    var sh = el('div', 'book ' + (dual ? 'dual' : 'single') + (tight ? ' tight' : ''));
     sh.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none;width:' + (dual ? 2 * P : P) + 'px;height:' + Hh + 'px;font-size:' + fs + 'px';
     var base = el('div', 'base'), face = el('div', 'face sheet r');
     base.appendChild(face); sh.appendChild(base); mount.appendChild(sh);
@@ -858,7 +897,7 @@
   function buildBook(v, startSpread, instant) {
     mount.innerHTML = '';
     var d = dual, dm = bookDims(), P = dm.P, Hh = dm.Hh, pages;
-    var fs = clamp(P / 28, 13.5, 19);
+    var fs = bookFs(P);
     if (PRE && PRE.id === v.id && PRE.d === d && PRE.P === P && PRE.Hh === Hh) {
       pages = PRE.pages; S.artReady = PRE.ready;
     } else {
@@ -871,9 +910,9 @@
     var n = pages.length;
     var color = THEMES[v.id] || '#5b2229';
 
-    var wrap = el('div', 'bookwrap');
+    var wrap = el('div', 'bookwrap' + (rotBook ? ' rot' : ''));
     wrap.style.top = Math.round(H * 0.5 - 4) + 'px';
-    var book = el('div', 'book ' + (d ? 'dual' : 'single'));
+    var book = el('div', 'book ' + (d ? 'dual' : 'single') + (tight ? ' tight' : ''));
     book.style.width = (d ? 2 * P : P) + 'px';
     book.style.height = Hh + 'px';
     book.style.left = (d ? -P : -P / 2) + 'px';
@@ -933,7 +972,9 @@
     book.addEventListener('pointerup', function (e) {
       if (e.pointerId !== sid) { return; }
       sid = null;
-      var dx = e.clientX - sx, dy = e.clientY - sy, ax = Math.abs(dx), ay = Math.abs(dy);
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (rotBook) { var t0 = dx; dx = dy; dy = -t0; }   // the book is turned a quarter, so its sideways is the screen's up and down
+      var ax = Math.abs(dx), ay = Math.abs(dy);
       var flick = ax > 26 && ax / Math.max(1, e.timeStamp - st) > 0.35;
       if ((ax > 44 || flick) && ax > ay * 1.2) { step(dx < 0 ? 1 : -1); }
     });
@@ -941,7 +982,7 @@
     book.addEventListener('click', function (e) {
       if (e.target.closest && e.target.closest('a, button, input, textarea, select, label')) { return; }
       var r = book.getBoundingClientRect();
-      step(e.clientX >= r.left + r.width / 2 ? 1 : -1);
+      step((rotBook ? e.clientY >= r.top + r.height / 2 : e.clientX >= r.left + r.width / 2) ? 1 : -1);
     });
 
     wrap.appendChild(book); mount.appendChild(wrap);
@@ -1575,6 +1616,11 @@
     S.queued = null;
     if (!S.open || S.busy || S.turning) return;
     if (S.vol && (S.vol.id === 'news' || S.vol.id === 'jefferson')) { closePaper(); return; }
+    // the closing flight is drawn for the one-page book, so a fully open one steps back to it first
+    if (rmode !== 'one') {
+      if (wide) { setMode('one', closeVol); return; }
+      rmode = 'one'; syncModes();
+    }
     S.busy = true;
     var v = S.vol;
     ui.top.classList.remove('show'); ui.bot.classList.remove('show');
@@ -1630,6 +1676,33 @@
     var ns = pageIdx < 0 ? 0 : (dual ? Math.floor(pageIdx / 2) + 1 : pageIdx + 1);
     buildBook(S.vol, ns, true);
   }
+
+  // Page by page, upright spread, or turned spread (phones only). The book is rebuilt in place at the same page, with a short fade.
+  function syncModes() {
+    $$('button', ui.modes).forEach(function (b) {
+      var on = b.getAttribute('data-mode') === rmode;
+      b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  function setMode(m, done) {
+    if (!S.open || S.busy || S.turning || !S.vol || S.vol.id === 'news' || S.vol.id === 'jefferson' || W >= 760 || rmode === m) { if (done) done(); return; }
+    S.busy = true; S.queued = null;
+    function rebuild() {
+      rmode = m; syncModes();
+      layout(); S.dirty = false;
+      rebuildOpen();
+      S.busy = false;
+      if (S.wrap && S.wrap.animate) { S.wrap.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160 * K, easing: 'ease-out' }); }
+      if (done) done();
+    }
+    var old = S.wrap;
+    if (old && old.animate) {
+      var a = old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120 * K, easing: 'ease-in', fill: 'forwards' });
+      a.onfinish = rebuild;
+    } else { rebuild(); }
+  }
+  $$('button', ui.modes).forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); }); });
+  syncModes();
 
   /* ==================================================================
      Events

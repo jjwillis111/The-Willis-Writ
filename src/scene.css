@@ -44,6 +44,8 @@ i { font-style: normal; display: block; }
 .cv { position: relative; background-repeat: no-repeat; background-size: 100% 100%; background-position: 0 0; color: #dcc48c; }
 .cv .cv-in { position: absolute; left: 12%; right: 5%; top: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: 3%; }
 .cv .cv-ic { width: 29%; color: #dfc283; }
+/* on a phone the shelf covers are tiny: label and icon are scaled up together so the label is never under the minimum text size (--lb is set in layout) */
+.hs .cv-in { transform: scale(var(--lb, 1)); }
 .cv .cv-ic svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .7)); }
 .cv h2 { margin: .55em 0 0; font: normal 400 3em/1.1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-transform: none; text-indent: 0;
   color: #e8d49f; background: none; filter: none; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 10px rgba(0, 0, 0, .4); }
@@ -102,18 +104,19 @@ i { font-style: normal; display: block; }
 #hero .hr { height: 1px; margin: .06em 0 .2em; background: linear-gradient(90deg, rgba(232, 208, 156, .7), rgba(232, 208, 156, .45)); }
 #hero p { margin: 0; font: 400 .42em/1.5 'Times New Roman', Times, serif; color: #e4d5b4; white-space: nowrap; }
 
-/* portrait and small screens: centered title, wrapped tabs on top, the words sit on the chair under a soft scrim */
-.pt #hud::before { height: 190px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .82), rgba(5, 3, 2, .5) 60%, rgba(5, 3, 2, 0)); }
-.pt #top { height: auto; min-height: 0; padding: max(14px, env(safe-area-inset-top)) 14px 12px; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; }
-.pt #top::after { left: 14px; right: 14px; }
-.pt .brandrow { flex-direction: column; align-items: flex-start; text-align: left; }
-.pt #brand { font-size: 30px; }
+/* portrait and small screens: a slim header (name and tagline on one line, all tabs in one small row), the words sit on the chair under a soft scrim */
+.pt #hud::before { height: 112px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .8), rgba(5, 3, 2, .46) 62%, rgba(5, 3, 2, 0)); }
+.pt #top { height: auto; min-height: 0; max-height: none; padding: max(8px, env(safe-area-inset-top)) 12px 7px; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 5px; }
+.pt #top::after { left: 12px; right: 12px; }
+.pt .brandrow { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 0 9px; text-align: left; }
+.pt #brand { font-size: 24px; }
 .pt .brandrow .bar { display: none; }
-.pt #tag { margin-top: 6px; font-size: 14px; white-space: normal; }
-.pt #nav { position: static; flex-wrap: wrap; justify-content: flex-start; gap: 7px 7px; padding: 0 0 4px; overflow: visible; }
-.pt .nv { flex: 0 0 auto; padding: .55em 1.05em; font-size: 15px; border: 1px solid rgba(214, 182, 118, .5); border-radius: 999px; background: rgba(14, 9, 6, .62); }
+.pt #tag { margin-top: 0; font-size: clamp(11px, 2.95vw, 12px); white-space: nowrap; }
+.pt #nav { position: static; flex-wrap: nowrap; justify-content: space-between; gap: 3px; padding: 0 0 3px; overflow-x: auto; scrollbar-width: none; }
+.pt #nav::-webkit-scrollbar { display: none; }
+.pt .nv { flex: 0 0 auto; padding: .38em clamp(4px, 1.5vw, 6px); font-size: clamp(12px, 3.3vw, 13px); border: 1px solid rgba(214, 182, 118, .42); border-radius: 999px; background: rgba(14, 9, 6, .5); }
 .pt .nv + .nv::before, .pt .nv::after { display: none; }
-.pt #nav .nv:last-child { padding-right: 1.05em; }
+.pt #nav .nv:last-child { padding-right: clamp(4px, 1.5vw, 6px); }
 .pt #hero { display: block; text-align: left; }
 .pt #hero br { display: none; }
 .pt #hero::before { left: -14px; right: -14px; top: -1.5em; bottom: -1.3em;
@@ -121,6 +124,14 @@ i { font-style: normal; display: block; }
 .pt #hero h2 { white-space: normal; }
 .pt #hero .hr { width: 3.2em; margin: .22em 0 .3em; background: rgba(232, 208, 156, .6); }
 .pt #hero p { font-size: .5em; white-space: normal; }
+/* reader buttons on phones: room for the Spread toggle beside the page arrows */
+.pt #uibot { gap: 8px; }
+.pt #plabel { min-width: 6em; font-size: 16px; }
+.pt #uibot { flex-wrap: wrap; row-gap: 8px; }
+#viewmodes { display: flex; flex-basis: 100%; justify-content: center; gap: 6px; }
+#viewmodes[hidden] { display: none; }
+.pt .vm { padding: .42em .95em; letter-spacing: .1em; font-size: 11px; }
+.vm.on { background: rgba(86, 58, 26, .92); border-color: rgba(238, 214, 156, .9); color: #f3e3b8; }
 .nv.on { color: #ffe6ae; }
 
 #fx {
@@ -133,7 +144,7 @@ i { font-style: normal; display: block; }
 
 @media (max-width: 759px) {
   #uibot { gap: 8px; }
-  #plabel { min-width: 6.5em; font-size: 16px; }
+  #plabel { min-width: 6em; font-size: 16px; }
   .cbtn { font-size: 11px; letter-spacing: .18em; }
   #vtitle { font-size: 11px; letter-spacing: .2em; }
   .ui .cbtn { white-space: nowrap; padding: .55em 1em; letter-spacing: .14em; }
@@ -416,3 +427,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .dp-face::before { left: 4%; } .dp-face::after { right: 4%; }
 .dp-face b { display: block; font: normal 400 1.3em/1.05 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; text-shadow: 0 1px 0 rgba(255, 238, 190, .55); }
 .dp-face i { display: block; margin-top: .12em; font: italic 400 .8em/1.1 'Cormorant Garamond', 'Times New Roman', Georgia, serif; letter-spacing: .02em; color: #3b2709; }
+/* on a phone the plate is small and its second line must still be 11px, so the frame and line spacing tighten */
+.pt .desk-plate { padding: 2px 8px 4px; }
+.pt .dp-face b { font-size: 1.02em; line-height: 1; }
+.pt .dp-face i { margin-top: .04em; line-height: 1.05; }
