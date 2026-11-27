@@ -174,11 +174,11 @@
      Layout
      ================================================================== */
   var W = 0, H = 0, dual = true, portrait = false;
-  // rmode: how the reader views a book on a phone: 'one' page at a time, 'open' (the two-page spread upright, as on a desktop),
+  // rmode (starts on 'open'): how the reader views a book on a phone: 'one' page at a time, 'open' (the two-page spread upright, as on a desktop),
   // or 'turn' (the spread lying on its side so both pages get the long edge of the screen). wide: a spread is in force (phones
   // only; desktop and landscape tablets always show the spread). rotBook: the turned layout is in force. tight: the upright
   // spread on a phone, with smaller type and tighter page margins.
-  var rmode = 'one', wide = false, rotBook = false, tight = false;
+  var rmode = 'open', wide = false, rotBook = false, tight = false;
   var sc = { s: 1, ox: 0, oy: 0 };
 
   function fitHero(fs, availW) {
@@ -232,7 +232,7 @@
     // so the cover and the real one on the shelf match exactly when the flight ends. The shelf covers are small on a phone,
     // so the label and icon are scaled up together (--lb) until the label is at least MINTXT; the flying cover does the same
     // (see counter), so the hand-off is seamless.
-    var bd = bookDims(true), lf = clamp(bd.P / 28, 13.5, 19);
+    var bd = bookDims(), lf = bookFs(bd.P);
     VOLS.forEach(function (v) {
       if (!v.hs) return;
       var f = v.rect[2] * s * lf / bd.P;
@@ -247,16 +247,16 @@
   // shelf: the size the closed book has on its way to and from the shelf, which is never the reader's wide layout
   function bookDims(shelf) {
     var P, Hh;
-    if (dual && !(shelf && wide)) {
+    if (dual) {
       if (rotBook) {
         // the open book lies on its side: its length runs down the screen between the two button bars
         P = Math.min((H - 170) / 2, 400);
         Hh = Math.min(W - 12, P * 1.4);
         P = Math.min(P, Hh * 0.95);
       } else if (tight) {
-        // the upright spread on a phone: two narrow, tall pages side by side
+        // the upright spread on a phone: two small pages side by side, in the same proportions as on a desktop
         P = Math.floor((W - 14) / 2);
-        Hh = Math.min(H * 0.76, P * 2.6);
+        Hh = Math.min(H * 0.76, P * 1.38);
       } else {
         P = Math.min(W * 0.455, 560);
         Hh = Math.min(H * 0.76, P * 1.38);
@@ -285,7 +285,7 @@
     var sp = el('div', 'sp cv shade' + (lit ? ' lit' : ''), coverInner(v));
     sp.style.backgroundImage = coverImg(v);
     sp.style.width = d.P + 'px'; sp.style.height = d.Hh + 'px';
-    sp.style.fontSize = clamp(d.P / 28, 13.5, 19) + 'px';
+    sp.style.fontSize = bookFs(d.P) + 'px';
     fly.appendChild(sp);
     sp.style.transform = tf(from, d, 0, 1);
     var cin = sp.firstChild;
@@ -300,7 +300,7 @@
     var m = /scale\(([-\d.e]+),\s*([-\d.e]+)\)/.exec(t);
     if (!m) return '';
     var sx = parseFloat(m[1]), sy = parseFloat(m[2]);
-    var F = clamp(bookDims().P / 28, 13.5, 19);
+    var F = bookFs(bookDims().P);
     var b = Math.max(1, MINTXT / (3 * F * sx));
     return 'scale(' + b + ',' + (b * sx / sy) + ')';
   }
@@ -1616,10 +1616,10 @@
     S.queued = null;
     if (!S.open || S.busy || S.turning) return;
     if (S.vol && (S.vol.id === 'news' || S.vol.id === 'jefferson')) { closePaper(); return; }
-    // the closing flight is drawn for the one-page book, so a fully open one steps back to it first
-    if (rmode !== 'one') {
-      if (wide) { setMode('one', closeVol); return; }
-      rmode = 'one'; syncModes();
+    // the closing flight is drawn for the upright book, so the sideways one steps back to it first
+    if (rmode === 'turn') {
+      if (wide) { setMode('open', closeVol); return; }
+      rmode = 'open'; syncModes();
     }
     S.busy = true;
     var v = S.vol;
@@ -1711,7 +1711,15 @@
   stage.addEventListener('click', function (e) {
     if (!S.open) { return; }
     var t = e.target;
-    if (t === stage || t === mount || t.id === 'dim' || t.id === 'uitop' || t.id === 'uibot') { closeVol(); }
+    if (t === stage || t === mount || t.id === 'dim') {
+      // a thumb that just misses a button must not close the book: ignore taps within a finger's width of any control
+      var m = 30, hit = $$('.ui button').some(function (b) {
+        if (b.hidden || b.offsetParent === null) return false;
+        var r = b.getBoundingClientRect();
+        return e.clientX >= r.left - m && e.clientX <= r.right + m && e.clientY >= r.top - m && e.clientY <= r.bottom + m;
+      });
+      if (!hit) closeVol();
+    }
   });
   ui.prev.addEventListener('click', function () { step(-1); });
   ui.next.addEventListener('click', function () { step(1); });
