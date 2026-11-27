@@ -396,6 +396,8 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .pg .orgmark img[src$="/senate-psi.png"], .pg .orgmark img[src$="img/senate-psi.png"] { height: 5.6em; width: auto; }
 .pg .orgmark img[src$="/kansas-house.png"], .pg .orgmark img[src$="img/kansas-house.png"] { height: 5.6em; width: auto; }
 .pg .orgmark img[src$="/wyandotte-da.png"], .pg .orgmark img[src$="img/wyandotte-da.png"] { height: 5.9em; width: auto; }
+.pg.jsl h3, .pg.jsl p { font-family: 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; }
+.pg.jsl p { font-size: 1.25em; line-height: 1.3; }
 .pg .orgmark img[src$="/alms-group.png"], .pg .orgmark img[src$="img/alms-group.png"] { height: 5.5em; width: auto; }
 .pg .orgmark img[src$="/viper.png"], .pg .orgmark img[src$="img/viper.png"] { height: 5.4em; width: auto; }
 .pg .orgmark img[src$="/scrimsher-law.png"], .pg .orgmark img[src$="img/scrimsher-law.png"] { height: 5.5em; width: auto; }
