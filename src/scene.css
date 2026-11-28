@@ -1,6 +1,12 @@
 /* ==========================================================================
    SCENE (the photographic library plate, header, headline, nav)
    ========================================================================== */
+@font-face { font-family: 'EB Garamond'; font-weight: 400; font-style: normal; font-display: swap; src: url('eb-garamond-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 500; font-style: normal; font-display: swap; src: url('eb-garamond-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 600; font-style: normal; font-display: swap; src: url('eb-garamond-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 700; font-style: normal; font-display: swap; src: url('eb-garamond-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 400; font-style: italic; font-display: swap; src: url('eb-garamond-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 700; font-style: italic; font-display: swap; src: url('eb-garamond-latin-700-italic.woff2') format('woff2'); }
 @font-face {
   font-family: 'JSL Ancient'; src: url('JSLAncientItalic-J.ttf') format('truetype');
   font-style: normal; font-weight: 100 900; font-display: swap;
@@ -82,7 +88,7 @@ i { font-style: normal; display: block; }
 .brandrow { display: flex; align-items: center; min-width: 0; }
 #brand { margin: 0; font: 400 clamp(24px, 2.7vw, 52px)/1 'JSL Ancient', 'Cormorant Garamond', Georgia, serif; color: #f0e3c6; letter-spacing: .005em; white-space: nowrap; text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
 .brandrow .bar { width: 1px; height: 1.9vw; min-height: 22px; margin: 0 1.9vw 0 1.9vw; background: rgba(222, 190, 128, .5); }
-#tag { margin: 0; font: 400 clamp(13px, 1.25vw, 23px)/1 'Times New Roman', Times, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
+#tag { margin: 0; font: 400 clamp(13px, 1.25vw, 23px)/1 'EB Garamond', Georgia, serif; color: #e2d3b0; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .7); }
 
 #nav { display: flex; align-items: center; }
 .nv { position: relative; border: 0; background: transparent; cursor: pointer; padding: .5em 1.15vw; white-space: nowrap;
@@ -102,7 +108,7 @@ i { font-style: normal; display: block; }
 #hero.compact p { display: none; }
 #hero h2 { margin: 0; font: 400 1.16em/1 'JSL Ancient', 'Times New Roman', Times, serif; letter-spacing: 0; white-space: nowrap; color: #f1e4c8; }
 #hero .hr { height: 1px; margin: .06em 0 .2em; background: linear-gradient(90deg, rgba(232, 208, 156, .7), rgba(232, 208, 156, .45)); }
-#hero p { margin: 0; font: 400 .42em/1.5 'Times New Roman', Times, serif; color: #e4d5b4; white-space: nowrap; }
+#hero p { margin: 0; font: 400 .42em/1.5 'EB Garamond', Georgia, serif; color: #e4d5b4; white-space: nowrap; }
 
 /* portrait and small screens: a slim header (name and tagline on one line, all tabs in one small row), the words sit on the chair under a soft scrim */
 .pt #hud::before { height: 112px; max-height: none; background: linear-gradient(180deg, rgba(5, 3, 2, .8), rgba(5, 3, 2, .46) 62%, rgba(5, 3, 2, 0)); }
@@ -447,3 +453,7 @@ a.nv { text-decoration: none; display: inline-flex; align-items: center; }
 .pt .desk-plate { padding: 2px 8px 4px; }
 .pt .dp-face b { font-size: 1.02em; line-height: 1; }
 .pt .dp-face i { margin-top: .04em; line-height: 1.05; }
+
+/* EB Garamond has a smaller x-height than Times; keep the apparent size close to what it was. Only ever scales up. */
+#tag, #hero p, .pg, .paper { font-size-adjust: 0.43; }
+.pg.jsl, .pg.jsl h3, .pg.jsl p { font-size-adjust: none; }

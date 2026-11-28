@@ -1753,5 +1753,6 @@
 
   buildScene();
   layout();
+  if (doc.fonts && doc.fonts.load) { ['400','italic 400','500','600','700','italic 700'].forEach(function (w) { doc.fonts.load(w + ' 20px "EB Garamond"'); }); }
   if (doc.fonts && doc.fonts.ready) { doc.fonts.ready.then(layout); }
 })();

@@ -118,6 +118,8 @@ html = '''<!DOCTYPE html>
 <meta name="theme-color" content="#070504">
 <title>The Willis Writ | Jackson Willis</title>
 <meta name="description" content="Portfolio of Jackson Willis, law student at Boston University School of Law: experience, writing, research, and contact.">
+<link rel="preload" as="font" type="font/woff2" href="eb-garamond-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="eb-garamond-latin-400-italic.woff2" crossorigin>
 <link rel="preload" as="image" href="library-v2.jpg" media="(min-aspect-ratio: 23/20)">
 <link rel="preload" as="image" href="library-m.jpg" media="(max-aspect-ratio: 23/20)">
 <style>
@@ -146,8 +148,7 @@ html = '''<!DOCTYPE html>
 </html>
 '''
 import re as _re
-html = html.replace("'Cormorant Garamond'", "'Times New Roman'").replace("'EB Garamond'", "'Times New Roman'").replace(', Georgia', ', Times')
-html = _re.sub(r"('Times New Roman'),\s*'Times New Roman'", r"\1", html)
-html = html.replace("'Times New Roman', 'Times New Roman'", "'Times New Roman'")
+html = html.replace("'Cormorant Garamond'", "'EB Garamond'")
+html = html.replace("'EB Garamond', 'EB Garamond'", "'EB Garamond'")
 open(HERE+'/../index.html', 'w', encoding='utf-8').write(html)
 print(len(html))
