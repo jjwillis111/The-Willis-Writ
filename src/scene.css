@@ -296,9 +296,11 @@ i { font-style: normal; display: block; }
 @media (max-width: 900px) { .p-cols { column-count: 2; } }
 @media (max-width: 640px) {
   .paperwrap { width: calc(100vw - 20px); top: calc(50% - 30px); }
-  .mast-date { grid-template-columns: auto 1fr; gap: 8px; }
-  .mast-r, .mast-loc i, .mast-loc .loc-kc { display: none; }
-  .mast-loc { justify-self: end; }
+  /* same three parts as the desktop dateline: date and Legal Wire on one line, both cities centered under them */
+  .mast-date { grid-template-columns: 1fr auto; grid-template-areas: "d r" "l l"; gap: 3px 8px; max-height: none; font-size: 13px; padding: 6px 2px 5px; }
+  .mast-date > span:first-child { grid-area: d; }
+  .mast-r { grid-area: r; }
+  .mast-loc { grid-area: l; justify-self: center; }
   .paper { font-size: 16px; height: clamp(380px, calc(100vh - 250px), 540px); height: clamp(380px, calc(100dvh - 250px), 540px); }
   /* printed-page framing: a double rule inset from the sheet's edge */
   /* phones keep the newspaper's columns: two narrow columns of short stories, like the desktop sheet */
