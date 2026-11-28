@@ -300,8 +300,21 @@ i { font-style: normal; display: block; }
   .mast-r, .mast-loc i, .mast-loc .loc-kc { display: none; }
   .mast-loc { justify-self: end; }
   .paper { font-size: 16px; height: calc(100vh - 150px); height: calc(100dvh - 150px); }
-  .p-cols { column-count: 1; column-rule: 0; }
-  .st.lead h3 { font-size: 30px; }
+  /* phones keep the newspaper's columns: two narrow columns of short stories, like the desktop sheet */
+  .paper { padding-left: 14px; padding-right: 14px; }
+  .mast-name { font-size: clamp(34px, 11vw, 48px); }
+  .p-tabs { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; gap: 4px 14px; padding: 7px 0 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .p-tabs::-webkit-scrollbar { display: none; }
+  .p-tab { flex: 0 0 auto; white-space: nowrap; }
+  .p-body { padding-top: 10px; }
+  .p-lead { padding-bottom: 10px; margin-bottom: 12px; }
+  .st.lead h3 { font-size: 23px; }
+  .st.lead .sk { font-size: 14px; }
+  .p-cols { column-count: 2; column-gap: 14px; column-rule: 1px solid rgba(40, 28, 14, .4); }
+  .p-cols .st { padding-bottom: 9px; margin-bottom: 9px; }
+  .p-cols .st .sk { font-size: 12px; }
+  .p-cols .st h3 { font-size: 15px; line-height: 1.16; overflow-wrap: break-word; }
+  .p-cols .st .ss { font-size: 12px; margin-top: .3em; }
   .p-empty ul { columns: 1; }
 }
 
